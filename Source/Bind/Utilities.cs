@@ -99,10 +99,14 @@ namespace Bind
             {
                 switch (Settings.Language)
                 {
-                    case GeneratorLanguage.CSharp: return CSharpKeywords;
-                    case GeneratorLanguage.Cpp: return CppKeywords;
-                    case GeneratorLanguage.Java: return JavaKeywords;
-                    default: throw new NotImplementedException();
+                    case GeneratorLanguage.CSharp:
+                        return CSharpKeywords;
+                    case GeneratorLanguage.Cpp:
+                        return CppKeywords;
+                    case GeneratorLanguage.Java:
+                        return JavaKeywords;
+                    default:
+                        throw new NotImplementedException();
                 }
             }
         }

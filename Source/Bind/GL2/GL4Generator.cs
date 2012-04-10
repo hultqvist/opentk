@@ -35,7 +35,7 @@ namespace Bind.GL2
     class GL4Generator : ES.ESGenerator
     {
         public GL4Generator(string name, string dirname)
-			: base(name, dirname)
+            : base(name, dirname)
         {
             glTypemap = "GL2/gl.tm";
             csTypemap = Settings.LanguageTypeMapFile;

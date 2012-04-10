@@ -1197,7 +1197,12 @@ namespace OpenTK
         /// Gets or sets an OpenTK.Vector2d with the X and Y components of this instance.
         /// </summary>
         [XmlIgnore]
-        public Vector2d Xy { get { return new Vector2d(X, Y); } set { X = value.X; Y = value.Y; } }
+        public Vector2d Xy
+        {
+            get { return new Vector2d(X, Y); }
+            set { X = value.X;
+                Y = value.Y; }
+        }
 
         #endregion
 

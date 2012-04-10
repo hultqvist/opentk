@@ -33,7 +33,9 @@ using OpenTK.Input;
 
 namespace OpenTK.Platform.X11
 {
-    struct X11JoyDetails { }
+    struct X11JoyDetails
+    {
+    }
 
     sealed class X11Joystick : IJoystickDriver
     {

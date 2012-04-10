@@ -74,7 +74,8 @@ namespace OpenTK.Platform.X11
         [DllImport("libX11", EntryPoint = "XCreateWindow")]
         public extern static IntPtr XCreateWindow(IntPtr display, IntPtr parent, int x, int y, int width, int height, int border_width, int depth, int xclass, IntPtr visual, IntPtr valuemask, ref XSetWindowAttributes attributes);
 
-        [DllImport("libX11", EntryPoint = "XCreateSimpleWindow")]//, CLSCompliant(false)]
+        [DllImport("libX11", EntryPoint = "XCreateSimpleWindow")]
+        //, CLSCompliant(false)]
         public extern static IntPtr XCreateSimpleWindow(IntPtr display, IntPtr parent, int x, int y, int width, int height, int border_width, UIntPtr border, UIntPtr background);
         [DllImport("libX11", EntryPoint = "XCreateSimpleWindow")]
         public extern static IntPtr XCreateSimpleWindow(IntPtr display, IntPtr parent, int x, int y, int width, int height, int border_width, IntPtr border, IntPtr background);
@@ -102,11 +103,11 @@ namespace OpenTK.Platform.X11
         public extern static Bool XCheckTypedEvent(Display display, XEventName event_type, out XEvent event_return);
 
 
-        public delegate Bool EventPredicate(IntPtr display, ref XEvent e, IntPtr arg);
+        public delegate Bool EventPredicate(IntPtr display,ref XEvent e,IntPtr arg);
         [DllImport("libX11")]
-        public extern static Bool XIfEvent(Display display, ref XEvent e, IntPtr predicate, IntPtr arg );
+        public extern static Bool XIfEvent(Display display, ref XEvent e, IntPtr predicate, IntPtr arg);
         [DllImport("libX11")]
-        public extern static Bool XCheckIfEvent(Display display, ref XEvent e, IntPtr predicate, IntPtr arg );
+        public extern static Bool XCheckIfEvent(Display display, ref XEvent e, IntPtr predicate, IntPtr arg);
 
         [DllImport("libX11")]
         public extern static int XConnectionNumber(IntPtr diplay);
@@ -163,10 +164,12 @@ namespace OpenTK.Platform.X11
         [DllImport("libX11", EntryPoint = "XRaiseWindow")]
         public extern static int XRaiseWindow(IntPtr display, IntPtr window);
 
-        [DllImport("libX11", EntryPoint = "XLowerWindow")]//, CLSCompliant(false)]
+        [DllImport("libX11", EntryPoint = "XLowerWindow")]
+        //, CLSCompliant(false)]
         public extern static uint XLowerWindow(IntPtr display, IntPtr window);
 
-        [DllImport("libX11", EntryPoint = "XConfigureWindow")]//, CLSCompliant(false)]
+        [DllImport("libX11", EntryPoint = "XConfigureWindow")]
+        //, CLSCompliant(false)]
         public extern static uint XConfigureWindow(IntPtr display, IntPtr window, ChangeWindowAttributes value_mask, ref XWindowChanges values);
 
         [DllImport("libX11", EntryPoint = "XInternAtom")]
@@ -231,7 +234,8 @@ namespace OpenTK.Platform.X11
         [DllImport("libX11", EntryPoint = "XGetGeometry")]
         public extern static bool XGetGeometry(IntPtr display, IntPtr window, IntPtr root, IntPtr x, IntPtr y, out int width, out int height, IntPtr border_width, IntPtr depth);
 
-        [DllImport("libX11", EntryPoint = "XWarpPointer")]//, CLSCompliant(false)]
+        [DllImport("libX11", EntryPoint = "XWarpPointer")]
+        //, CLSCompliant(false)]
         public extern static uint XWarpPointer(IntPtr display, IntPtr src_w, IntPtr dest_w, int src_x, int src_y, uint src_width, uint src_height, int dest_x, int dest_y);
 
         [DllImport("libX11", EntryPoint = "XClearWindow")]
@@ -250,7 +254,8 @@ namespace OpenTK.Platform.X11
         [DllImport("libX11", EntryPoint = "XDefaultVisual")]
         public extern static IntPtr XDefaultVisual(IntPtr display, int screen_number);
 
-        [DllImport("libX11", EntryPoint = "XDefaultDepth")]//, CLSCompliant(false)]
+        [DllImport("libX11", EntryPoint = "XDefaultDepth")]
+        //, CLSCompliant(false)]
         public extern static uint XDefaultDepth(IntPtr display, int screen_number);
 
         [DllImport("libX11", EntryPoint = "XDefaultScreen")]
@@ -259,10 +264,12 @@ namespace OpenTK.Platform.X11
         [DllImport("libX11", EntryPoint = "XDefaultColormap")]
         public extern static IntPtr XDefaultColormap(IntPtr display, int screen_number);
 
-        [DllImport("libX11", EntryPoint = "XLookupColor")]//, CLSCompliant(false)]
+        [DllImport("libX11", EntryPoint = "XLookupColor")]
+        //, CLSCompliant(false)]
         public extern static int XLookupColor(IntPtr display, IntPtr Colormap, string Coloranem, ref XColor exact_def_color, ref XColor screen_def_color);
 
-        [DllImport("libX11", EntryPoint = "XAllocColor")]//, CLSCompliant(false)]
+        [DllImport("libX11", EntryPoint = "XAllocColor")]
+        //, CLSCompliant(false)]
         public extern static int XAllocColor(IntPtr display, IntPtr Colormap, ref XColor colorcell_def);
 
         [DllImport("libX11", EntryPoint = "XSetTransientForHint")]
@@ -271,15 +278,18 @@ namespace OpenTK.Platform.X11
         [DllImport("libX11", EntryPoint = "XChangeProperty")]
         public extern static int XChangeProperty(IntPtr display, IntPtr window, IntPtr property, IntPtr type, int format, PropertyMode mode, ref MotifWmHints data, int nelements);
 
-        [DllImport("libX11", EntryPoint = "XChangeProperty")]//, CLSCompliant(false)]
+        [DllImport("libX11", EntryPoint = "XChangeProperty")]
+        //, CLSCompliant(false)]
         public extern static int XChangeProperty(IntPtr display, IntPtr window, IntPtr property, IntPtr type, int format, PropertyMode mode, ref uint value, int nelements);
         [DllImport("libX11", EntryPoint = "XChangeProperty")]
         public extern static int XChangeProperty(IntPtr display, IntPtr window, IntPtr property, IntPtr type, int format, PropertyMode mode, ref int value, int nelements);
 
-        [DllImport("libX11", EntryPoint = "XChangeProperty")]//, CLSCompliant(false)]
+        [DllImport("libX11", EntryPoint = "XChangeProperty")]
+        //, CLSCompliant(false)]
         public extern static int XChangeProperty(IntPtr display, IntPtr window, IntPtr property, IntPtr type, int format, PropertyMode mode, ref IntPtr value, int nelements);
 
-        [DllImport("libX11", EntryPoint = "XChangeProperty")]//, CLSCompliant(false)]
+        [DllImport("libX11", EntryPoint = "XChangeProperty")]
+        //, CLSCompliant(false)]
         public extern static int XChangeProperty(IntPtr display, IntPtr window, IntPtr property, IntPtr type, int format, PropertyMode mode, uint[] data, int nelements);
 
         [DllImport("libX11", EntryPoint = "XChangeProperty")]
@@ -346,7 +356,8 @@ namespace OpenTK.Platform.X11
         [DllImport("libX11", EntryPoint = "XCreateFontCursor")]
         public extern static IntPtr XCreateFontCursor(IntPtr display, CursorFontShape shape);
 
-        [DllImport("libX11", EntryPoint = "XCreatePixmapCursor")]//, CLSCompliant(false)]
+        [DllImport("libX11", EntryPoint = "XCreatePixmapCursor")]
+        //, CLSCompliant(false)]
         public extern static IntPtr XCreatePixmapCursor(IntPtr display, IntPtr source, IntPtr mask, ref XColor foreground_color, ref XColor background_color, int x_hot, int y_hot);
 
         [DllImport("libX11", EntryPoint = "XCreatePixmapFromBitmapData")]
@@ -418,12 +429,14 @@ namespace OpenTK.Platform.X11
         [DllImport("libX11", EntryPoint = "XSetPlaneMask")]
         public extern static int XSetPlaneMask(IntPtr display, IntPtr gc, IntPtr mask);
 
-        [DllImport("libX11", EntryPoint = "XSetForeground")]//, CLSCompliant(false)]
+        [DllImport("libX11", EntryPoint = "XSetForeground")]
+        //, CLSCompliant(false)]
         public extern static int XSetForeground(IntPtr display, IntPtr gc, UIntPtr foreground);
         [DllImport("libX11", EntryPoint = "XSetForeground")]
         public extern static int XSetForeground(IntPtr display, IntPtr gc, IntPtr foreground);
 
-        [DllImport("libX11", EntryPoint = "XSetBackground")]//, CLSCompliant(false)]
+        [DllImport("libX11", EntryPoint = "XSetBackground")]
+        //, CLSCompliant(false)]
         public extern static int XSetBackground(IntPtr display, IntPtr gc, UIntPtr background);
         [DllImport("libX11", EntryPoint = "XSetBackground")]
         public extern static int XSetBackground(IntPtr display, IntPtr gc, IntPtr background);
@@ -584,7 +597,7 @@ namespace OpenTK.Platform.X11
             public byte A, R, G, B;
             public Pixel(byte a, byte r, byte g, byte b)
             {
-                A= a;
+                A = a;
                 R = r;
                 G = g;
                 B = b;
@@ -598,7 +611,7 @@ namespace OpenTK.Platform.X11
                     (byte)(argb & 0xFF));
             }
         }
-        public static IntPtr CreatePixmapFromImage(Display display, Bitmap image) 
+        public static IntPtr CreatePixmapFromImage(Display display, Bitmap image)
         { 
             int width = image.Width;
             int height = image.Height;
@@ -622,19 +635,20 @@ namespace OpenTK.Platform.X11
             return pixmap; 
         } 
         
-        public static IntPtr CreateMaskFromImage(Display display, Bitmap image) 
+        public static IntPtr CreateMaskFromImage(Display display, Bitmap image)
         { 
             int width = image.Width; 
             int height = image.Height; 
             int stride = (width + 7) >> 3; 
             byte[] mask = new byte[stride * height];
-            bool msbfirst = (XBitmapBitOrder(display) == 1); // 1 = MSBFirst
+            bool msbfirst = (XBitmapBitOrder(display) == 1);
+            // 1 = MSBFirst
         
-            for (int y = 0; y < height; ++y) 
+            for (int y = 0; y < height; ++y)
             { 
-                for (int x = 0; x < width; ++x) 
+                for (int x = 0; x < width; ++x)
                 { 
-                    byte bit = (byte) (1 << (msbfirst ? (7 - (x & 7)) : (x & 7))); 
+                    byte bit = (byte)(1 << (msbfirst ? (7 - (x & 7)) : (x & 7))); 
                     int offset = y * stride + (x >> 3); 
         
                     if (image.GetPixel(x, y).A >= 128) 

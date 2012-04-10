@@ -65,7 +65,8 @@ namespace OpenTK
         /// <param name="w">The w component</param>
         public Quaterniond(double x, double y, double z, double w)
             : this(new Vector3d(x, y, z), w)
-        { }
+        {
+        }
 
         #endregion
 
@@ -659,7 +660,8 @@ namespace OpenTK
         /// <returns>True if both objects are Quaternions of equal value. Otherwise it returns false.</returns>
         public override bool Equals(object other)
         {
-            if (other is Quaterniond == false) return false;
+            if (other is Quaterniond == false)
+                return false;
             return this == (Quaterniond)other;
         }
 

@@ -16,6 +16,8 @@ namespace OpenTK.Graphics
         /// Constructs a new GraphicsErrorException instance with the specified error message.
         /// </summary>
         /// <param name="message"></param>
-        public GraphicsErrorException(string message) : base(message) { }
+        public GraphicsErrorException(string message) : base(message)
+        {
+        }
     }
 }

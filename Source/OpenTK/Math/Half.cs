@@ -126,13 +126,18 @@ namespace OpenTK
             if (throwOnError)
             {
                 // handle cases that cause overflow rather than silently ignoring it
-                if (f > Half.MaxValue) throw new ArithmeticException("Half: Positive maximum value exceeded.");
-                if (f < -Half.MaxValue) throw new ArithmeticException("Half: Negative minimum value exceeded.");
+                if (f > Half.MaxValue)
+                    throw new ArithmeticException("Half: Positive maximum value exceeded.");
+                if (f < -Half.MaxValue)
+                    throw new ArithmeticException("Half: Negative minimum value exceeded.");
 
                 // handle cases that make no sense
-                if (Single.IsNaN(f)) throw new ArithmeticException("Half: Input is not a number (NaN).");
-                if (Single.IsPositiveInfinity(f)) throw new ArithmeticException("Half: Input is positive infinity.");
-                if (Single.IsNegativeInfinity(f)) throw new ArithmeticException("Half: Input is negative infinity.");
+                if (Single.IsNaN(f))
+                    throw new ArithmeticException("Half: Input is not a number (NaN).");
+                if (Single.IsPositiveInfinity(f))
+                    throw new ArithmeticException("Half: Input is positive infinity.");
+                if (Single.IsNegativeInfinity(f))
+                    throw new ArithmeticException("Half: Input is negative infinity.");
             }
         }
 
@@ -140,14 +145,18 @@ namespace OpenTK
         /// The new Half instance will convert the parameter into 16-bit half-precision floating-point.
         /// </summary>
         /// <param name="d">64-bit double-precision floating-point number.</param>
-        public Half(Double d) : this((Single)d) { }
+        public Half(Double d) : this((Single)d)
+        {
+        }
 
         /// <summary>
         /// The new Half instance will convert the parameter into 16-bit half-precision floating-point.
         /// </summary>
         /// <param name="d">64-bit double-precision floating-point number.</param>
         /// <param name="throwOnError">Enable checks that will throw if the conversion result is not meaningful.</param>
-        public Half(Double d, bool throwOnError) : this((Single)d, throwOnError) { }
+        public Half(Double d, bool throwOnError) : this((Single)d, throwOnError)
+        {
+        }
 
         #endregion Constructors
 
@@ -235,7 +244,8 @@ namespace OpenTK
                 }
 
                 // exponent overflow
-                if (exponent > 30) throw new ArithmeticException("Half: Hardware floating-point overflow.");
+                if (exponent > 30)
+                    throw new ArithmeticException("Half: Hardware floating-point overflow.");
 
                 // Assemble the half from S, E and M.
 

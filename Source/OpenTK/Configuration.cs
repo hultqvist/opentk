@@ -179,7 +179,7 @@ namespace OpenTK
                         runningOnWindows = true;
                     }
                     else if (System.Environment.OSVersion.Platform == PlatformID.Unix ||
-                             System.Environment.OSVersion.Platform == (PlatformID)4)
+                        System.Environment.OSVersion.Platform == (PlatformID)4)
                     {
                         // Distinguish between Linux, Mac OS X and other Unix operating systems.
                         string kernel_name = DetectUnixKernel();
@@ -212,8 +212,13 @@ namespace OpenTK
                     // when we detect Mac OS X.
                     if (!RunningOnMacOS)
                     {
-                        try { runningOnX11 = OpenTK.Platform.X11.API.DefaultDisplay != IntPtr.Zero; }
-                        catch { }
+                        try
+                        {
+                            runningOnX11 = OpenTK.Platform.X11.API.DefaultDisplay != IntPtr.Zero;
+                        }
+                        catch
+                        {
+                        }
                     }
 
                     // Detect the Mono runtime (code taken from http://mono.wikia.com/wiki/Detecting_if_program_is_running_in_Mono).

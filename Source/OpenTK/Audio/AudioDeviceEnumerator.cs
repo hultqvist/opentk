@@ -133,9 +133,9 @@ namespace OpenTK.Audio
                 if (!dummy_success || dummy_error != AlcError.NoError)
                 {
                     throw new AudioContextException("Failed to create dummy Context. Device (" + dummy_device.ToString() +
-                                                    ") Context (" + dummy_context.Handle.ToString() +
-                                                    ") MakeContextCurrent " + (dummy_success ? "succeeded" : "failed") +
-                                                    ", Alc Error (" + dummy_error.ToString() + ") " + Alc.GetString(IntPtr.Zero, (AlcGetString)dummy_error));
+                        ") Context (" + dummy_context.Handle.ToString() +
+                        ") MakeContextCurrent " + (dummy_success ? "succeeded" : "failed") +
+                        ", Alc Error (" + dummy_error.ToString() + ") " + Alc.GetString(IntPtr.Zero, (AlcGetString)dummy_error));
                 }
 
                 // Get a list of all known playback devices, using best extension available

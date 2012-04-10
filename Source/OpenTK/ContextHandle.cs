@@ -37,7 +37,10 @@ namespace OpenTK
         /// Constructs a new instance with the specified handle.
         /// </summary>
         /// <param name="h">A System.IntPtr containing the value for this instance.</param>
-        public ContextHandle(IntPtr h) { handle = h; }
+        public ContextHandle(IntPtr h)
+        {
+            handle = h;
+        }
 
         #endregion
 
@@ -155,7 +158,10 @@ namespace OpenTK
         /// <returns>Less than 0, if this instance is less than other; 0 if both are equal; Greater than 0 if other is greater than this instance.</returns>
         public int CompareTo(ContextHandle other)
         {
-            unsafe { return (int)((int*)other.handle.ToPointer() - (int*)this.handle.ToPointer()); }
+            unsafe
+            {
+                return (int)((int*)other.handle.ToPointer() - (int*)this.handle.ToPointer());
+            }
         }
 
         #endregion

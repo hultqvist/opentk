@@ -1,28 +1,28 @@
  #region License
- //
- // The Open Toolkit Library License
- //
- // Copyright (c) 2006 - 2010 the Open Toolkit library.
- //
- // Permission is hereby granted, free of charge, to any person obtaining a copy
- // of this software and associated documentation files (the "Software"), to deal
- // in the Software without restriction, including without limitation the rights to 
- // use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
- // the Software, and to permit persons to whom the Software is furnished to do
- // so, subject to the following conditions:
- //
- // The above copyright notice and this permission notice shall be included in all
- // copies or substantial portions of the Software.
- //
- // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
- // EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
- // OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
- // NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
- // HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
- // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
- // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- // OTHER DEALINGS IN THE SOFTWARE.
- //
+//
+// The Open Toolkit Library License
+//
+// Copyright (c) 2006 - 2010 the Open Toolkit library.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights to 
+// use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+// the Software, and to permit persons to whom the Software is furnished to do
+// so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+// OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+// NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+// HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+// OTHER DEALINGS IN THE SOFTWARE.
+//
  #endregion
 
 using System;
@@ -48,9 +48,16 @@ namespace OpenTK.Platform.X11
         // Store information on a mouse warp event, so it can be ignored.
         struct MouseWarp : IEquatable<MouseWarp>
         {
-            public MouseWarp(double x, double y) { X = x; Y = y; }
+            public MouseWarp(double x, double y)
+            {
+                X = x;
+                Y = y;
+            }
             double X, Y;
-            public bool Equals(MouseWarp warp) { return X == warp.X && Y == warp.Y; }
+            public bool Equals(MouseWarp warp)
+            {
+                return X == warp.X && Y == warp.Y;
+            }
         }
         MouseWarp? mouse_warp_event;
         int mouse_warp_event_count;
@@ -145,10 +152,10 @@ namespace OpenTK.Platform.X11
             // Check if a mouse warp with the specified destination exists.
             bool is_warp =
                 mouse_warp_event.HasValue &&
-                mouse_warp_event.Value.Equals(new MouseWarp((int)x, (int)y));
+                    mouse_warp_event.Value.Equals(new MouseWarp((int)x, (int)y));
 
             if (is_warp && --mouse_warp_event_count <= 0)
-                    mouse_warp_event = null;
+                mouse_warp_event = null;
 
             return is_warp;
         }
@@ -201,38 +208,90 @@ namespace OpenTK.Platform.X11
                             case XIEventType.RawButtonPress:
                                 switch (raw.detail)
                                 {
-                                    case 1: state.EnableBit((int)MouseButton.Left); break;
-                                    case 2: state.EnableBit((int)MouseButton.Middle); break;
-                                    case 3: state.EnableBit((int)MouseButton.Right); break;
-                                    case 4: state.WheelPrecise++; break;
-                                    case 5: state.WheelPrecise--; break;
-                                    case 6: state.EnableBit((int)MouseButton.Button1); break;
-                                    case 7: state.EnableBit((int)MouseButton.Button2); break;
-                                    case 8: state.EnableBit((int)MouseButton.Button3); break;
-                                    case 9: state.EnableBit((int)MouseButton.Button4); break;
-                                    case 10: state.EnableBit((int)MouseButton.Button5); break;
-                                    case 11: state.EnableBit((int)MouseButton.Button6); break;
-                                    case 12: state.EnableBit((int)MouseButton.Button7); break;
-                                    case 13: state.EnableBit((int)MouseButton.Button8); break;
-                                    case 14: state.EnableBit((int)MouseButton.Button9); break;
+                                    case 1:
+                                        state.EnableBit((int)MouseButton.Left);
+                                        break;
+                                    case 2:
+                                        state.EnableBit((int)MouseButton.Middle);
+                                        break;
+                                    case 3:
+                                        state.EnableBit((int)MouseButton.Right);
+                                        break;
+                                    case 4:
+                                        state.WheelPrecise++;
+                                        break;
+                                    case 5:
+                                        state.WheelPrecise--;
+                                        break;
+                                    case 6:
+                                        state.EnableBit((int)MouseButton.Button1);
+                                        break;
+                                    case 7:
+                                        state.EnableBit((int)MouseButton.Button2);
+                                        break;
+                                    case 8:
+                                        state.EnableBit((int)MouseButton.Button3);
+                                        break;
+                                    case 9:
+                                        state.EnableBit((int)MouseButton.Button4);
+                                        break;
+                                    case 10:
+                                        state.EnableBit((int)MouseButton.Button5);
+                                        break;
+                                    case 11:
+                                        state.EnableBit((int)MouseButton.Button6);
+                                        break;
+                                    case 12:
+                                        state.EnableBit((int)MouseButton.Button7);
+                                        break;
+                                    case 13:
+                                        state.EnableBit((int)MouseButton.Button8);
+                                        break;
+                                    case 14:
+                                        state.EnableBit((int)MouseButton.Button9);
+                                        break;
                                 }
                                 break;
 
                             case XIEventType.RawButtonRelease:
                                 switch (raw.detail)
                                 {
-                                    case 1: state.DisableBit((int)MouseButton.Left); break;
-                                    case 2: state.DisableBit((int)MouseButton.Middle); break;
-                                    case 3: state.DisableBit((int)MouseButton.Right); break;
-                                    case 6: state.DisableBit((int)MouseButton.Button1); break;
-                                    case 7: state.DisableBit((int)MouseButton.Button2); break;
-                                    case 8: state.DisableBit((int)MouseButton.Button3); break;
-                                    case 9: state.DisableBit((int)MouseButton.Button4); break;
-                                    case 10: state.DisableBit((int)MouseButton.Button5); break;
-                                    case 11: state.DisableBit((int)MouseButton.Button6); break;
-                                    case 12: state.DisableBit((int)MouseButton.Button7); break;
-                                    case 13: state.DisableBit((int)MouseButton.Button8); break;
-                                    case 14: state.DisableBit((int)MouseButton.Button9); break;
+                                    case 1:
+                                        state.DisableBit((int)MouseButton.Left);
+                                        break;
+                                    case 2:
+                                        state.DisableBit((int)MouseButton.Middle);
+                                        break;
+                                    case 3:
+                                        state.DisableBit((int)MouseButton.Right);
+                                        break;
+                                    case 6:
+                                        state.DisableBit((int)MouseButton.Button1);
+                                        break;
+                                    case 7:
+                                        state.DisableBit((int)MouseButton.Button2);
+                                        break;
+                                    case 8:
+                                        state.DisableBit((int)MouseButton.Button3);
+                                        break;
+                                    case 9:
+                                        state.DisableBit((int)MouseButton.Button4);
+                                        break;
+                                    case 10:
+                                        state.DisableBit((int)MouseButton.Button5);
+                                        break;
+                                    case 11:
+                                        state.DisableBit((int)MouseButton.Button6);
+                                        break;
+                                    case 12:
+                                        state.DisableBit((int)MouseButton.Button7);
+                                        break;
+                                    case 13:
+                                        state.DisableBit((int)MouseButton.Button8);
+                                        break;
+                                    case 14:
+                                        state.DisableBit((int)MouseButton.Button9);
+                                        break;
                                 }
                                 break;
                         }
@@ -240,7 +299,7 @@ namespace OpenTK.Platform.X11
                     }
                     Functions.XFreeEventData(window.Display, ref cookie);
                 }
-             }
+            }
         }
 
         static bool IsEventValid(IntPtr display, ref XEvent e, IntPtr arg)

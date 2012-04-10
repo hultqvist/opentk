@@ -84,7 +84,8 @@ namespace OpenTK
         /// <returns>The next power of two.</returns>
         public static long NextPowerOfTwo(long n)
         {
-            if (n < 0) throw new ArgumentOutOfRangeException("n", "Must be positive.");
+            if (n < 0)
+                throw new ArgumentOutOfRangeException("n", "Must be positive.");
             return (long)System.Math.Pow(2, System.Math.Ceiling(System.Math.Log((double)n, 2)));
         }
 
@@ -95,7 +96,8 @@ namespace OpenTK
         /// <returns>The next power of two.</returns>
         public static int NextPowerOfTwo(int n)
         {
-            if (n < 0) throw new ArgumentOutOfRangeException("n", "Must be positive.");
+            if (n < 0)
+                throw new ArgumentOutOfRangeException("n", "Must be positive.");
             return (int)System.Math.Pow(2, System.Math.Ceiling(System.Math.Log((double)n, 2)));
         }
 
@@ -106,7 +108,8 @@ namespace OpenTK
         /// <returns>The next power of two.</returns>
         public static float NextPowerOfTwo(float n)
         {
-            if (n < 0) throw new ArgumentOutOfRangeException("n", "Must be positive.");
+            if (n < 0)
+                throw new ArgumentOutOfRangeException("n", "Must be positive.");
             return (float)System.Math.Pow(2, System.Math.Ceiling(System.Math.Log((double)n, 2)));
         }
 
@@ -117,7 +120,8 @@ namespace OpenTK
         /// <returns>The next power of two.</returns>
         public static double NextPowerOfTwo(double n)
         {
-            if (n < 0) throw new ArgumentOutOfRangeException("n", "Must be positive.");
+            if (n < 0)
+                throw new ArgumentOutOfRangeException("n", "Must be positive.");
             return System.Math.Pow(2, System.Math.Ceiling(System.Math.Log((double)n, 2)));
         }
 
@@ -174,10 +178,14 @@ namespace OpenTK
             unsafe
             {
                 float xhalf = 0.5f * x;
-                int i = *(int*)&x;              // Read bits as integer.
-                i = 0x5f375a86 - (i >> 1);      // Make an initial guess for Newton-Raphson approximation
-                x = *(float*)&i;                // Convert bits back to float
-                x = x * (1.5f - xhalf * x * x); // Perform left single Newton-Raphson step.
+                int i = *(int*)&x;
+                // Read bits as integer.
+                i = 0x5f375a86 - (i >> 1);
+                // Make an initial guess for Newton-Raphson approximation
+                x = *(float*)&i;
+                // Convert bits back to float
+                x = x * (1.5f - xhalf * x * x);
+                // Perform left single Newton-Raphson step.
                 return x;
             }
         }

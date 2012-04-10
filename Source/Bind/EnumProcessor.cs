@@ -197,16 +197,22 @@ namespace Bind
             if (enum_override != null)
             {
                 XPathNavigator constant_override = enum_override.SelectSingleNode(String.Format("token[@name='{0}']", c.OriginalName)) ??
-                    enum_override.SelectSingleNode(String.Format("token[@name={0}]", c.Name));
+                        enum_override.SelectSingleNode(String.Format("token[@name={0}]", c.Name));
                 if (constant_override != null)
                 {
                     foreach (XPathNavigator node in constant_override.SelectChildren(XPathNodeType.Element))
                     {
                         switch (node.Name)
                         {
-                            case "name": c.Name = (string)node.TypedValue; break;
-                            case "value": c.Value = (string)node.TypedValue; break;
-                            case "reference": c.Reference = (string)node.TypedValue; break;
+                            case "name":
+                                c.Name = (string)node.TypedValue;
+                                break;
+                            case "value":
+                                c.Value = (string)node.TypedValue;
+                                break;
+                            case "reference":
+                                c.Reference = (string)node.TypedValue;
+                                break;
                         }
                     }
                 }
@@ -265,7 +271,8 @@ namespace Bind
 
         public static string TranslateConstantValue(string value)
         {
-            if (value.ToLower() == " 0xffffffffffffffff") System.Diagnostics.Debugger.Break();
+            if (value.ToLower() == " 0xffffffffffffffff")
+                System.Diagnostics.Debugger.Break();
 
             // Remove decorations to get a pure number (e.g. 0x80u -> 80).
             if (value.ToLower().StartsWith("0x"))

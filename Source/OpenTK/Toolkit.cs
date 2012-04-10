@@ -41,7 +41,9 @@ namespace OpenTK
 
         #region Constructors
 
-        Toolkit() { }
+        Toolkit()
+        {
+        }
 
         #endregion
 

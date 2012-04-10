@@ -16,9 +16,13 @@ namespace OpenTK
     public class GraphicsException : Exception
     {
         /// <summary>Constructs a new GraphicsException.</summary>
-        public GraphicsException() : base() { }
+        public GraphicsException() : base()
+        {
+        }
         /// <summary>Constructs a new GraphicsException with the specified excpetion message.</summary>
         /// <param name="message"></param>
-        public GraphicsException(string message) : base(message) { }
+        public GraphicsException(string message) : base(message)
+        {
+        }
     }
 }

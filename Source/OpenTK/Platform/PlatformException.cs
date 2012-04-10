@@ -14,6 +14,8 @@ namespace OpenTK
     public class PlatformException : Exception
     {
         /// <summary>Constructs a new PlatformException.</summary>
-        public PlatformException(string s) : base(s) { }
+        public PlatformException(string s) : base(s)
+        {
+        }
     }
 }

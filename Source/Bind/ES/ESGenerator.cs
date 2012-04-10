@@ -23,7 +23,7 @@ namespace Bind.ES
 
             enumSpec = dirName + "/signatures.xml";
             enumSpecExt = String.Empty;
-            glSpec = dirName  + "/signatures.xml";
+            glSpec = dirName + "/signatures.xml";
             glSpecExt = String.Empty;
             Settings.OverridesFile = dirName + "/overrides.xml";
 

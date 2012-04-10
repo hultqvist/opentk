@@ -17,6 +17,7 @@ namespace OpenTK.Graphics
             : base(String.Format(
                 "No context is current in the calling thread (ThreadId: {0}).",
                 System.Threading.Thread.CurrentThread.ManagedThreadId))
-        { }
+        {
+        }
     }
 }

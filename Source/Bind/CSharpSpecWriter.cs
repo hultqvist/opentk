@@ -154,10 +154,14 @@ namespace Bind
             string output_core = Path.Combine(Settings.OutputPath, Settings.ImportsFile);
             string output_wrappers = Path.Combine(Settings.OutputPath, Settings.WrappersFile);
 
-            if (File.Exists(output_enums)) File.Delete(output_enums);
-            if (File.Exists(output_delegates)) File.Delete(output_delegates);
-            if (File.Exists(output_core)) File.Delete(output_core);
-            if (File.Exists(output_wrappers)) File.Delete(output_wrappers);
+            if (File.Exists(output_enums))
+                File.Delete(output_enums);
+            if (File.Exists(output_delegates))
+                File.Delete(output_delegates);
+            if (File.Exists(output_core))
+                File.Delete(output_core);
+            if (File.Exists(output_wrappers))
+                File.Delete(output_wrappers);
 
             File.Move(temp_enums_file, output_enums);
             File.Move(temp_delegates_file, output_delegates);
@@ -409,7 +413,7 @@ namespace Bind
 
         void WriteConstants(BindStreamWriter sw, IEnumerable<Constant> constants)
         {
-             // Make sure everything is sorted. This will avoid random changes between
+            // Make sure everything is sorted. This will avoid random changes between
             // consecutive runs of the program.
             constants = constants.OrderBy(c => c);
 

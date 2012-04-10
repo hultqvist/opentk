@@ -238,13 +238,31 @@ namespace OpenTK
         /// Gets or sets an OpenTK.Vector2h with the X and Y components of this instance.
         /// </summary>
         [XmlIgnore]
-        public Vector2h Xy { get { return new Vector2h(X, Y); } set { X = value.X; Y = value.Y; } }
+        public Vector2h Xy
+        {
+            get { return new Vector2h(X, Y); }
+            set
+            {
+                X = value.X;
+                Y = value.Y;
+            
+            }
+        }
 
         /// <summary>
         /// Gets or sets an OpenTK.Vector3h with the X, Y and Z components of this instance.
         /// </summary>
         [XmlIgnore]
-        public Vector3h Xyz { get { return new Vector3h(X, Y, Z); } set { X = value.X; Y = value.Y; Z = value.Z; } }
+        public Vector3h Xyz
+        {
+            get { return new Vector3h(X, Y, Z); }
+            set
+            {
+                X = value.X;
+                Y = value.Y;
+                Z = value.Z;
+            }
+        }
 
         #endregion
 

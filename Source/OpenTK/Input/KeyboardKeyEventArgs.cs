@@ -54,7 +54,9 @@ namespace OpenTK.Input
         /// <summary>
         /// Constructs a new KeyboardEventArgs instance.
         /// </summary>
-        public KeyboardKeyEventArgs() { }
+        public KeyboardKeyEventArgs()
+        {
+        }
 
         /// <summary>
         /// Constructs a new KeyboardEventArgs instance.

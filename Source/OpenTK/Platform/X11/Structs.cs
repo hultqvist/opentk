@@ -581,78 +581,113 @@ namespace OpenTK.Platform.X11
     internal struct XEvent
     {
         [FieldOffset(0)]
-        public XEventName type;
+        public XEventName
+            type;
         [FieldOffset(0)]
-        public XAnyEvent AnyEvent;
+        public XAnyEvent
+            AnyEvent;
         [FieldOffset(0)]
-        public XKeyEvent KeyEvent;
+        public XKeyEvent
+            KeyEvent;
         [FieldOffset(0)]
-        public XButtonEvent ButtonEvent;
+        public XButtonEvent
+            ButtonEvent;
         [FieldOffset(0)]
-        public XMotionEvent MotionEvent;
+        public XMotionEvent
+            MotionEvent;
         [FieldOffset(0)]
-        public XCrossingEvent CrossingEvent;
+        public XCrossingEvent
+            CrossingEvent;
         [FieldOffset(0)]
-        public XFocusChangeEvent FocusChangeEvent;
+        public XFocusChangeEvent
+            FocusChangeEvent;
         [FieldOffset(0)]
-        public XExposeEvent ExposeEvent;
+        public XExposeEvent
+            ExposeEvent;
         [FieldOffset(0)]
-        public XGraphicsExposeEvent GraphicsExposeEvent;
+        public XGraphicsExposeEvent
+            GraphicsExposeEvent;
         [FieldOffset(0)]
-        public XNoExposeEvent NoExposeEvent;
+        public XNoExposeEvent
+            NoExposeEvent;
         [FieldOffset(0)]
-        public XVisibilityEvent VisibilityEvent;
+        public XVisibilityEvent
+            VisibilityEvent;
         [FieldOffset(0)]
-        public XCreateWindowEvent CreateWindowEvent;
+        public XCreateWindowEvent
+            CreateWindowEvent;
         [FieldOffset(0)]
-        public XDestroyWindowEvent DestroyWindowEvent;
+        public XDestroyWindowEvent
+            DestroyWindowEvent;
         [FieldOffset(0)]
-        public XUnmapEvent UnmapEvent;
+        public XUnmapEvent
+            UnmapEvent;
         [FieldOffset(0)]
-        public XMapEvent MapEvent;
+        public XMapEvent
+            MapEvent;
         [FieldOffset(0)]
-        public XMapRequestEvent MapRequestEvent;
+        public XMapRequestEvent
+            MapRequestEvent;
         [FieldOffset(0)]
-        public XReparentEvent ReparentEvent;
+        public XReparentEvent
+            ReparentEvent;
         [FieldOffset(0)]
-        public XConfigureEvent ConfigureEvent;
+        public XConfigureEvent
+            ConfigureEvent;
         [FieldOffset(0)]
-        public XGravityEvent GravityEvent;
+        public XGravityEvent
+            GravityEvent;
         [FieldOffset(0)]
-        public XResizeRequestEvent ResizeRequestEvent;
+        public XResizeRequestEvent
+            ResizeRequestEvent;
         [FieldOffset(0)]
-        public XConfigureRequestEvent ConfigureRequestEvent;
+        public XConfigureRequestEvent
+            ConfigureRequestEvent;
         [FieldOffset(0)]
-        public XCirculateEvent CirculateEvent;
+        public XCirculateEvent
+            CirculateEvent;
         [FieldOffset(0)]
-        public XCirculateRequestEvent CirculateRequestEvent;
+        public XCirculateRequestEvent
+            CirculateRequestEvent;
         [FieldOffset(0)]
-        public XPropertyEvent PropertyEvent;
+        public XPropertyEvent
+            PropertyEvent;
         [FieldOffset(0)]
-        public XSelectionClearEvent SelectionClearEvent;
+        public XSelectionClearEvent
+            SelectionClearEvent;
         [FieldOffset(0)]
-        public XSelectionRequestEvent SelectionRequestEvent;
+        public XSelectionRequestEvent
+            SelectionRequestEvent;
         [FieldOffset(0)]
-        public XSelectionEvent SelectionEvent;
+        public XSelectionEvent
+            SelectionEvent;
         [FieldOffset(0)]
-        public XColormapEvent ColormapEvent;
+        public XColormapEvent
+            ColormapEvent;
         [FieldOffset(0)]
-        public XClientMessageEvent ClientMessageEvent;
+        public XClientMessageEvent
+            ClientMessageEvent;
         [FieldOffset(0)]
-        public XMappingEvent MappingEvent;
+        public XMappingEvent
+            MappingEvent;
         [FieldOffset(0)]
-        public XErrorEvent ErrorEvent;
+        public XErrorEvent
+            ErrorEvent;
         [FieldOffset(0)]
-        public XKeymapEvent KeymapEvent;
+        public XKeymapEvent
+            KeymapEvent;
         [FieldOffset(0)]
-        public XGenericEvent GenericEvent;
+        public XGenericEvent
+            GenericEvent;
         [FieldOffset(0)]
-        public XGenericEventCookie GenericEventCookie;
+        public XGenericEventCookie
+            GenericEventCookie;
 
         //[MarshalAs(System.Runtime.InteropServices.UnmanagedType.ByValArray, SizeConst=24)]
         //[ FieldOffset(0) ] public int[] pad;
         [FieldOffset(0)]
-        public XEventPad Pad;
+        public XEventPad
+            Pad;
         public override string ToString()
         {
             switch (type)
@@ -1062,7 +1097,7 @@ namespace OpenTK.Platform.X11
         //BackingStore    (1L<<6)
         //BackingPlanes    (1L<<7)
         //BackingPixel    (1L<<8)
-        OverrideRedirect = 1<<9,
+        OverrideRedirect = 1 << 9,
     }
 
     internal enum StackMode
@@ -1156,10 +1191,12 @@ namespace OpenTK.Platform.X11
         internal struct AutoRepeats
         {
             [FieldOffset(0)]
-            public byte first;
+            public byte
+                first;
 
             [FieldOffset(31)]
-            public byte last;
+            public byte
+                last;
         }
     }
 
@@ -1489,7 +1526,7 @@ namespace OpenTK.Platform.X11
         public int height_inc;
     }
 
-    internal delegate int XErrorHandler(IntPtr DisplayHandle, ref XErrorEvent error_event);
+    internal delegate int XErrorHandler(IntPtr DisplayHandle,ref XErrorEvent error_event);
 
     internal enum XRequest : byte
     {

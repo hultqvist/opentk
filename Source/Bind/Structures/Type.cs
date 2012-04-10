@@ -44,7 +44,8 @@ namespace Bind.Structures
         public string CurrentQualifier
         {
             get { return current_qualifier; }
-            set { PreviousQualifier = CurrentQualifier; current_qualifier = value; }
+            set { PreviousQualifier = CurrentQualifier;
+                current_qualifier = value; }
         }
 
         public string PreviousQualifier
@@ -382,7 +383,9 @@ namespace Bind.Structures
                     // A few translations for consistency
                     switch (CurrentType.ToLower())
                     {
-                        case "string": QualifiedType = "String"; break;
+                        case "string":
+                            QualifiedType = "String";
+                            break;
                     }
 
                     QualifiedType = s;
@@ -423,7 +426,8 @@ namespace Bind.Structures
             // guarantee a stable order between program executions.
             int result = this.CurrentType.CompareTo(other.CurrentType);
             if (result == 0)
-                result = Pointer.CompareTo(other.Pointer); // Must come after array/ref, see issue [#1098]
+                result = Pointer.CompareTo(other.Pointer);
+            // Must come after array/ref, see issue [#1098]
             if (result == 0)
                 result = Reference.CompareTo(other.Reference);
             if (result == 0)

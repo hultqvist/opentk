@@ -377,7 +377,7 @@ namespace OpenTK.Platform.X11
             public static SwapIntervalSGI glXSwapIntervalSGI = null;
 
             [SuppressUnmanagedCodeSecurity]
-            unsafe public delegate IntPtr CreateContextAttribsARB(IntPtr display, IntPtr fbconfig, IntPtr share_context, bool direct, int* attribs);
+            unsafe public delegate IntPtr CreateContextAttribsARB(IntPtr display,IntPtr fbconfig,IntPtr share_context,bool direct,int* attribs);
             unsafe public static CreateContextAttribsARB glXCreateContextAttribsARB = null;
         }
 

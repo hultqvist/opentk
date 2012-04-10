@@ -37,13 +37,13 @@ namespace Bind.Structures
             get { return _name ?? ""; }
             set { _name = value; }
         }
-		
-		// Typically 'long' or 'int'. Default is 'int'.
-		public string Type
-		{
-			get { return String.IsNullOrEmpty(_type) ? "int" : _type; }
-			set { _type = value; }
-		}
+        
+        // Typically 'long' or 'int'. Default is 'int'.
+        public string Type
+        {
+            get { return String.IsNullOrEmpty(_type) ? "int" : _type; }
+            set { _type = value; }
+        }
 
         Dictionary<string, Constant> _constant_collection = new Dictionary<string, Constant>();
 
@@ -68,8 +68,7 @@ namespace Bind.Structures
         {
             StringBuilder sb = new StringBuilder();
             List<Constant> constants = new List<Constant>(ConstantCollection.Values);
-            constants.Sort(delegate(Constant c1, Constant c2)
-            {
+            constants.Sort(delegate(Constant c1, Constant c2) {
                 int ret = String.Compare(c1.Value, c2.Value);
                 if (ret == 0)
                     return String.Compare(c1.Name, c2.Name);
@@ -79,9 +78,9 @@ namespace Bind.Structures
             if (IsFlagCollection)
                 sb.AppendLine("[Flags]");
             sb.Append("public enum ");
-			sb.Append(Name);
-			sb.Append(" : ");
-			sb.AppendLine(Type);
+            sb.Append(Name);
+            sb.Append(" : ");
+            sb.AppendLine(Type);
             sb.AppendLine("{");
 
             foreach (Constant c in constants)
@@ -119,12 +118,14 @@ namespace Bind.Structures
             if (ret != 0)
                 return ret;
             
-            ext1 = ext1.Replace("Arb", ""); ext2 = ext2.Replace("Arb", "");
+            ext1 = ext1.Replace("Arb", "");
+            ext2 = ext2.Replace("Arb", "");
             ret = PreferEmpty(ext1, ext2);
             if (ret != 0)
                 return ret;
             
-            ext1 = ext1.Replace("Ext", ""); ext2 = ext2.Replace("Ext", "");
+            ext1 = ext1.Replace("Ext", "");
+            ext2 = ext2.Replace("Ext", "");
             return PreferEmpty(ext1, ext2);
         }
 

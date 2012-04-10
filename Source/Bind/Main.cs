@@ -54,7 +54,7 @@ namespace Bind
             Console.WriteLine("For comments, bugs and suggestions visit http://opentk.sourceforge.net");
             Console.WriteLine();
 
-            string dirName =  null;
+            string dirName = null;
 
             try
             {

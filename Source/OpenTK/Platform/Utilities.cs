@@ -35,7 +35,7 @@ namespace OpenTK.Platform
                 {
                     Type.GetType("System.Windows.Forms.XplatUIX11, System.Windows.Forms")
                         .GetField("ErrorExceptions", System.Reflection.BindingFlags.Static |
-                            System.Reflection.BindingFlags.NonPublic)
+                        System.Reflection.BindingFlags.NonPublic)
                         .SetValue(null, true);
                     throw_on_error = true;
                 }
@@ -43,7 +43,7 @@ namespace OpenTK.Platform
                 {
                     Type.GetType("System.Windows.Forms.XplatUIX11, System.Windows.Forms")
                         .GetField("ErrorExceptions", System.Reflection.BindingFlags.Static |
-                            System.Reflection.BindingFlags.NonPublic)
+                        System.Reflection.BindingFlags.NonPublic)
                         .SetValue(null, false);
                     throw_on_error = false;
                 }
@@ -54,7 +54,7 @@ namespace OpenTK.Platform
 
         #region internal static void LoadExtensions(Type type)
 
-        delegate Delegate LoadDelegateFunction(string name, Type signature);
+        delegate Delegate LoadDelegateFunction(string name,Type signature);
 
         /// <internal />
         /// <summary>Loads all extensions for the specified class. This function is intended

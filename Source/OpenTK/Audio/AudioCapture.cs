@@ -270,8 +270,14 @@ namespace OpenTK.Audio
                 throw new ArgumentOutOfRangeException("sampleCount");
 
             GCHandle buffer_ptr = GCHandle.Alloc(buffer, GCHandleType.Pinned);
-            try { ReadSamples(buffer_ptr.AddrOfPinnedObject(), sampleCount); }
-            finally { buffer_ptr.Free(); }
+            try
+            {
+                ReadSamples(buffer_ptr.AddrOfPinnedObject(), sampleCount);
+            }
+            finally
+            {
+                buffer_ptr.Free();
+            }
         }
 
         #endregion
@@ -367,11 +373,11 @@ namespace OpenTK.Audio
                     break;
             }
             return "The handle returned by Alc.CaptureOpenDevice is null." +
-                   "\nAlc Error: " + alcerrmsg +
-                   "\nDevice Name: " + devicename +
-                   "\nCapture frequency: " + frequency +
-                   "\nBuffer format: " + bufferformat +
-                   "\nBuffer Size: " + buffersize;
+                "\nAlc Error: " + alcerrmsg +
+                "\nDevice Name: " + devicename +
+                "\nCapture frequency: " + frequency +
+                "\nBuffer format: " + bufferformat +
+                "\nBuffer Size: " + buffersize;
         }
 
         #endregion

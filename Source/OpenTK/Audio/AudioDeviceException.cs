@@ -36,9 +36,13 @@ namespace OpenTK.Audio
     public class AudioDeviceException : AudioException
     {
         /// <summary>Constructs a new AudioDeviceException.</summary>
-        public AudioDeviceException() : base() { }
+        public AudioDeviceException() : base()
+        {
+        }
         /// <summary>Constructs a new AudioDeviceException with the specified error message.</summary>
         /// <param name="message">The error message of the AudioDeviceException.</param>
-        public AudioDeviceException(string message) : base(message) { }
+        public AudioDeviceException(string message) : base(message)
+        {
+        }
     }
 }

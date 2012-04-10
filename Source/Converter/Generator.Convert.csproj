@@ -105,19 +105,15 @@
   <ItemGroup>
     <Reference Include="System">
       <Name>System</Name>
-      <Private>False</Private>
     </Reference>
     <Reference Include="System.Core">
       <Name>System.Core</Name>
-      <Private>False</Private>
     </Reference>
     <Reference Include="System.Xml">
       <Name>System.Xml</Name>
-      <Private>False</Private>
     </Reference>
     <Reference Include="System.Xml.Linq">
       <Name>System.Xml.Linq</Name>
-      <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>

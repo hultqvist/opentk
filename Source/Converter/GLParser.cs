@@ -39,7 +39,12 @@ namespace CHeaderToXML
             RegexOptions.RightToLeft | RegexOptions.Compiled);
         static readonly char[] splitters = new char[] { ' ', '\t', ',', '(', ')', ';', '\n', '\r' };
 
-        enum ParserModes { None, Enum, Func };
+        enum ParserModes
+        {
+            None,
+            Enum,
+            Func }
+        ;
         ParserModes CurrentMode;
 
         public override IEnumerable<XElement> Parse(string[] lines)

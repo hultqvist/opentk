@@ -34,14 +34,14 @@ namespace CHeaderToXML
 {
     class EnumTokenComparer : IEqualityComparer<XNode>
     {
-        public bool Equals (XNode a, XNode b)
+        public bool Equals(XNode a, XNode b)
         {
             var a_attr = ((XElement)a).Attribute("name") ?? ((XElement)a).Attribute("token");
             var b_attr = ((XElement)b).Attribute("name") ?? ((XElement)b).Attribute("token");
             return a_attr.Value == b_attr.Value;
         }
 
-        public int GetHashCode (XNode a)
+        public int GetHashCode(XNode a)
         {
             XElement e = (XElement)a;
             if (e.Name == "enum" || e.Name == "token")
@@ -140,7 +140,7 @@ namespace CHeaderToXML
                 {
                     new XElement("signatures",
                         new XElement("add",
-                            entries.Values.OrderBy(s => s.Attribute("name").Value),  // only enums
+                            entries.Values.OrderBy(s => s.Attribute("name").Value), // only enums
                             sigs.SelectMany(s => s).Where(s => s.Name.LocalName == "function")    // only functions
                                  .OrderBy(s => s.Attribute("extension").Value)
                                  .ThenBy(s => s.Attribute("name").Value)

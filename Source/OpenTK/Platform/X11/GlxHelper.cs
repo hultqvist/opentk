@@ -21,14 +21,16 @@ namespace OpenTK.Platform.X11
         static readonly object sync_root = new object();
 
         // Disable BeforeFieldInit optimization.
-        static Glx() { }
+        static Glx()
+        {
+        }
 
         protected override object SyncRoot
         {
             get { return sync_root; }
         }
 
-        protected override IntPtr GetAddress (string funcname)
+        protected override IntPtr GetAddress(string funcname)
         {
             return Glx.GetProcAddress(funcname);
         }

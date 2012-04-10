@@ -66,7 +66,8 @@ namespace OpenTK.Audio
         static AudioContext()
         {
             if (AudioDeviceEnumerator.IsOpenALSupported) // forces enumeration
-            { }
+            {
+            }
         }
 
         #endregion static AudioContext()
@@ -75,7 +76,9 @@ namespace OpenTK.Audio
 
         /// <summary>Constructs a new AudioContext, using the default audio device.</summary>
         public AudioContext()
-            : this(null, 0, 0, false, true, MaxAuxiliarySends.UseDriverDefault) { }
+            : this(null, 0, 0, false, true, MaxAuxiliarySends.UseDriverDefault)
+        {
+        }
 
         #endregion
 
@@ -85,7 +88,9 @@ namespace OpenTK.Audio
         /// Constructs a new AudioContext instance.
         /// </summary>
         /// <param name="device">The device name that will host this instance.</param>
-        public AudioContext(string device) : this(device, 0, 0, false, true, MaxAuxiliarySends.UseDriverDefault) { }
+        public AudioContext(string device) : this(device, 0, 0, false, true, MaxAuxiliarySends.UseDriverDefault)
+        {
+        }
 
         #endregion
 
@@ -98,7 +103,9 @@ namespace OpenTK.Audio
         /// Use AudioContext.AvailableDevices to obtain a list of all available audio devices.
         /// devices.
         /// </remarks>
-        public AudioContext(string device, int freq) : this(device, freq, 0, false, true, MaxAuxiliarySends.UseDriverDefault) { }
+        public AudioContext(string device, int freq) : this(device, freq, 0, false, true, MaxAuxiliarySends.UseDriverDefault)
+        {
+        }
 
         #endregion
 
@@ -113,7 +120,9 @@ namespace OpenTK.Audio
         /// devices.
         /// </remarks>
         public AudioContext(string device, int freq, int refresh)
-            : this(device, freq, refresh, false, true, MaxAuxiliarySends.UseDriverDefault) { }
+            : this(device, freq, refresh, false, true, MaxAuxiliarySends.UseDriverDefault)
+        {
+        }
 
         #endregion
 
@@ -129,7 +138,9 @@ namespace OpenTK.Audio
         /// devices.
         /// </remarks>
         public AudioContext(string device, int freq, int refresh, bool sync)
-            : this(AudioDeviceEnumerator.AvailablePlaybackDevices[0], freq, refresh, sync, true) { }
+            : this(AudioDeviceEnumerator.AvailablePlaybackDevices[0], freq, refresh, sync, true)
+        {
+        }
 
         #endregion
 
@@ -256,9 +267,12 @@ namespace OpenTK.Audio
 
             if (AudioDeviceEnumerator.Version == AudioDeviceEnumerator.AlcVersion.Alc1_1 && AudioDeviceEnumerator.AvailablePlaybackDevices.Count == 0)    // Alc 1.0 does not support device enumeration.
                 throw new NotSupportedException("No audio hardware is available.");
-            if (context_exists) throw new NotSupportedException("Multiple AudioContexts are not supported.");
-            if (freq < 0) throw new ArgumentOutOfRangeException("freq", freq, "Should be greater than zero.");
-            if (refresh < 0) throw new ArgumentOutOfRangeException("refresh", refresh, "Should be greater than zero.");
+            if (context_exists)
+                throw new NotSupportedException("Multiple AudioContexts are not supported.");
+            if (freq < 0)
+                throw new ArgumentOutOfRangeException("freq", freq, "Should be greater than zero.");
+            if (refresh < 0)
+                throw new ArgumentOutOfRangeException("refresh", refresh, "Should be greater than zero.");
 
 
             if (!String.IsNullOrEmpty(device))
@@ -405,8 +419,10 @@ namespace OpenTK.Audio
             }
             set
             {
-                if (value) AudioContext.MakeCurrent(this);
-                else AudioContext.MakeCurrent(null);
+                if (value)
+                    AudioContext.MakeCurrent(this);
+                else
+                    AudioContext.MakeCurrent(null);
             }
         }
 

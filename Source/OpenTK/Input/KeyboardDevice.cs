@@ -30,7 +30,9 @@ namespace OpenTK.Input
 
         #region --- Constructors ---
 
-        internal KeyboardDevice() { }
+        internal KeyboardDevice()
+        {
+        }
 
         #endregion
 

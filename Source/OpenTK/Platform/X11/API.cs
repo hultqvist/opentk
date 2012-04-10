@@ -245,7 +245,7 @@ namespace OpenTK.Platform.X11
             /*[MarshalAs(UnmanagedType.FunctionPtr)] */ CheckEventPredicate predicate, /*XPointer*/ IntPtr arg);
 
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        public delegate bool CheckEventPredicate(Display display, ref XEvent @event, IntPtr arg);
+        public delegate bool CheckEventPredicate(Display display,ref XEvent @event,IntPtr arg);
 
         [DllImport(_dll_name, EntryPoint = "XCheckMaskEvent")]
         [return: MarshalAs(UnmanagedType.Bool)]
@@ -399,9 +399,11 @@ namespace OpenTK.Platform.X11
         internal struct XF86VidModeMonitor
         {
             [MarshalAs(UnmanagedType.LPStr)]
-            string vendor;     /* Name of manufacturer */
+            string
+                vendor;     /* Name of manufacturer */
             [MarshalAs(UnmanagedType.LPStr)]
-            string model;      /* Model name */
+            string
+                model;      /* Model name */
             float EMPTY;      /* unused, for backward compatibility */
             byte nhsync;     /* Number of horiz sync ranges */
             /*XF86VidModeSyncRange* */
@@ -691,7 +693,10 @@ XF86VidModeGetGammaRampSize(
         {
             public int x;       /* numerator */
             public int y;       /* denominator */
-            private void stop_the_compiler_warnings() { x = y = 0; }
+            private void stop_the_compiler_warnings()
+            {
+                x = y = 0;
+            }
         }
         /* this structure may be extended in the future */
     }
@@ -757,9 +762,9 @@ XF86VidModeGetGammaRampSize(
         internal IntPtr input_mode;
         internal IntPtr status;
 
-        public override string ToString ()
+        public override string ToString()
         {
-            return string.Format("MotifWmHints <flags={0}, functions={1}, decorations={2}, input_mode={3}, status={4}", (MotifFlags) flags.ToInt32 (), (MotifFunctions) functions.ToInt32 (), (MotifDecorations) decorations.ToInt32 (), (MotifInputMode) input_mode.ToInt32 (), status.ToInt32 ());
+            return string.Format("MotifWmHints <flags={0}, functions={1}, decorations={2}, input_mode={3}, status={4}", (MotifFlags)flags.ToInt32(), (MotifFunctions)functions.ToInt32(), (MotifDecorations)decorations.ToInt32(), (MotifInputMode)input_mode.ToInt32(), status.ToInt32());
         }
     }
     
@@ -823,19 +828,19 @@ XF86VidModeGetGammaRampSize(
         public const int InputOnly = 2;
 
         /* The hints we recognize */
-        public const string XA_WIN_PROTOCOLS           = "_WIN_PROTOCOLS";
-        public const string XA_WIN_ICONS               = "_WIN_ICONS";
-        public const string XA_WIN_WORKSPACE           = "_WIN_WORKSPACE";
-        public const string XA_WIN_WORKSPACE_COUNT     = "_WIN_WORKSPACE_COUNT";
-        public const string XA_WIN_WORKSPACE_NAMES     = "_WIN_WORKSPACE_NAMES";
-        public const string XA_WIN_LAYER               = "_WIN_LAYER";
-        public const string XA_WIN_STATE               = "_WIN_STATE";
-        public const string XA_WIN_HINTS               = "_WIN_HINTS";
-        public const string XA_WIN_WORKAREA            = "_WIN_WORKAREA";
-        public const string XA_WIN_CLIENT_LIST         = "_WIN_CLIENT_LIST";
-        public const string XA_WIN_APP_STATE           = "_WIN_APP_STATE";
-        public const string XA_WIN_EXPANDED_SIZE       = "_WIN_EXPANDED_SIZE";
-        public const string XA_WIN_CLIENT_MOVING       = "_WIN_CLIENT_MOVING";
+        public const string XA_WIN_PROTOCOLS = "_WIN_PROTOCOLS";
+        public const string XA_WIN_ICONS = "_WIN_ICONS";
+        public const string XA_WIN_WORKSPACE = "_WIN_WORKSPACE";
+        public const string XA_WIN_WORKSPACE_COUNT = "_WIN_WORKSPACE_COUNT";
+        public const string XA_WIN_WORKSPACE_NAMES = "_WIN_WORKSPACE_NAMES";
+        public const string XA_WIN_LAYER = "_WIN_LAYER";
+        public const string XA_WIN_STATE = "_WIN_STATE";
+        public const string XA_WIN_HINTS = "_WIN_HINTS";
+        public const string XA_WIN_WORKAREA = "_WIN_WORKAREA";
+        public const string XA_WIN_CLIENT_LIST = "_WIN_CLIENT_LIST";
+        public const string XA_WIN_APP_STATE = "_WIN_APP_STATE";
+        public const string XA_WIN_EXPANDED_SIZE = "_WIN_EXPANDED_SIZE";
+        public const string XA_WIN_CLIENT_MOVING = "_WIN_CLIENT_MOVING";
         public const string XA_WIN_SUPPORTING_WM_CHECK = "_WIN_SUPPORTING_WM_CHECK";
     }
 
@@ -852,26 +857,26 @@ XF86VidModeGetGammaRampSize(
 
     internal enum WindowState
     {
-        Sticky           = (1<<0), /* everyone knows sticky */
-        Minimized        = (1<<1), /* ??? */
-        MaximizedVertically = (1<<2), /* window in maximized V state */
-        MaximizedHorizontally = (1<<3), /* window in maximized H state */
-        Hidden           = (1<<4), /* not on taskbar but window visible */
-        Shaded           = (1<<5), /* shaded (NeXT style), */
-        HID_WORKSPACE    = (1<<6), /* not on current desktop */
-        HID_TRANSIENT    = (1<<7), /* owner of transient is hidden */
-        FixedPosition    = (1<<8), /* window is fixed in position even */
-        ArrangeIgnore    = (1<<9),  /* ignore for auto arranging */
+        Sticky           = (1 << 0), /* everyone knows sticky */
+        Minimized        = (1 << 1), /* ??? */
+        MaximizedVertically = (1 << 2), /* window in maximized V state */
+        MaximizedHorizontally = (1 << 3), /* window in maximized H state */
+        Hidden           = (1 << 4), /* not on taskbar but window visible */
+        Shaded           = (1 << 5), /* shaded (NeXT style), */
+        HID_WORKSPACE    = (1 << 6), /* not on current desktop */
+        HID_TRANSIENT    = (1 << 7), /* owner of transient is hidden */
+        FixedPosition    = (1 << 8), /* window is fixed in position even */
+        ArrangeIgnore    = (1 << 9),  /* ignore for auto arranging */
     }
 
     internal enum WindowHints
     {
-        SkipFocus = (1<<0), /* "alt-tab" skips this win */
-        SkipWinlist = (1<<1), /* not in win list */
-        SkipTaskbar = (1<<2), /* not on taskbar */
-        GroupTransient = (1<<3), /* ??????? */
-        FocusOnClick = (1<<4), /* app only accepts focus when clicked */
-        DoNotCover = (1<<5),  /* attempt to not cover this window */
+        SkipFocus = (1 << 0), /* "alt-tab" skips this win */
+        SkipWinlist = (1 << 1), /* not in win list */
+        SkipTaskbar = (1 << 2), /* not on taskbar */
+        GroupTransient = (1 << 3), /* ??????? */
+        FocusOnClick = (1 << 4), /* app only accepts focus when clicked */
+        DoNotCover = (1 << 5),  /* attempt to not cover this window */
     }
 
     internal enum ErrorCodes : int
@@ -899,21 +904,21 @@ XF86VidModeGetGammaRampSize(
     [Flags]
     internal enum CreateWindowMask : long//: ulong
     {
-        CWBackPixmap    = (1L<<0),
-        CWBackPixel     = (1L<<1),
-        CWSaveUnder        = (1L<<10),
-        CWEventMask        = (1L<<11),
-        CWDontPropagate    = (1L<<12),
-        CWColormap      = (1L<<13),
-        CWCursor        = (1L<<14),
-        CWBorderPixmap    = (1L<<2),
-        CWBorderPixel    = (1L<<3),
-        CWBitGravity    = (1L<<4),
-        CWWinGravity    = (1L<<5),
-        CWBackingStore    = (1L<<6),
-        CWBackingPlanes    = (1L<<7),
-        CWBackingPixel     = (1L<<8),
-        CWOverrideRedirect    = (1L<<9),
+        CWBackPixmap    = (1L << 0),
+        CWBackPixel     = (1L << 1),
+        CWSaveUnder        = (1L << 10),
+        CWEventMask        = (1L << 11),
+        CWDontPropagate    = (1L << 12),
+        CWColormap      = (1L << 13),
+        CWCursor        = (1L << 14),
+        CWBorderPixmap    = (1L << 2),
+        CWBorderPixel    = (1L << 3),
+        CWBitGravity    = (1L << 4),
+        CWWinGravity    = (1L << 5),
+        CWBackingStore    = (1L << 6),
+        CWBackingPlanes    = (1L << 7),
+        CWBackingPixel     = (1L << 8),
+        CWOverrideRedirect    = (1L << 9),
 
         //CWY    = (1<<1),
         //CWWidth    = (1<<2),
@@ -1318,8 +1323,8 @@ XF86VidModeGetGammaRampSize(
         XF86Bluetooth = 0x1008ff94,
         XF86WLAN = 0x1008ff95,
 
-         SunProps = 0x1005ff70,
-         SunOpen = 0x1005ff73,
+        SunProps = 0x1005ff70,
+        SunOpen = 0x1005ff73,
     }
 
     #endregion
@@ -1415,7 +1420,8 @@ XF86VidModeGetGammaRampSize(
         /// <para>The XCreateSimpleWindow function creates an unmapped InputOutput subwindow for a specified parent window, returns the window ID of the created window, and causes the X server to generate a CreateNotify event. The created window is placed on top in the stacking order with respect to siblings. Any part of the window that extends outside its parent window is clipped. The border_width for an InputOnly window must be zero, or a BadMatch error results. XCreateSimpleWindow inherits its depth, class, and visual from its parent. All other window attributes, except background and border, have their default values. </para>
         /// <para>XCreateSimpleWindow can generate BadAlloc, BadMatch, BadValue, and BadWindow errors.</para>
         /// </remarks>
-        [DllImport(X11Library, EntryPoint = "XCreateWindow")]//, CLSCompliant(false)]
+        [DllImport(X11Library, EntryPoint = "XCreateWindow")]
+        //, CLSCompliant(false)]
         public extern static Window XCreateWindow(Display display, Window parent,
             int x, int y, int width, int height, int border_width, int depth,
             int @class, IntPtr visual, UIntPtr valuemask, ref XSetWindowAttributes attributes);
@@ -1565,7 +1571,8 @@ XF86VidModeGetGammaRampSize(
             {
                 //ptr = XRRSizes(dpy, screen, &nsizes);
 
-                byte* data = (byte*)XRRSizes(dpy, screen, &count);//(byte*)ptr;
+                byte* data = (byte*)XRRSizes(dpy, screen, &count);
+                //(byte*)ptr;
                 if (count == 0)
                     return null;
                 sizes = new XRRScreenSize[count];

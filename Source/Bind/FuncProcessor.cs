@@ -279,7 +279,7 @@ namespace Bind
 
             foreach (List<Function> wrappers in collection.Values)
             {
-            restart:
+                restart:
                 for (int i = 0; i < wrappers.Count; i++)
                 {
                     for (int j = i + 1; j < wrappers.Count; j++)
@@ -296,10 +296,10 @@ namespace Bind
                                     break;
 
                                 if (wrappers[i].Parameters[k].DiffersOnlyOnReference(wrappers[j].Parameters[k]))
-                                    if (wrappers[i].Parameters[k].Reference)
-                                        function_i_is_problematic = true;
-                                    else
-                                        function_j_is_problematic = true;
+                                if (wrappers[i].Parameters[k].Reference)
+                                    function_i_is_problematic = true;
+                                else
+                                    function_j_is_problematic = true;
                             }
 
                             if (k == wrappers[i].Parameters.Count)
@@ -597,7 +597,8 @@ namespace Bind
             // of the wrapper directly.
             if ((Settings.Compatibility & Settings.Legacy.KeepUntypedEnums) != 0)
             {
-                int parameter_index = -1; // Used for comparing wrapper parameters with delegate parameters
+                int parameter_index = -1;
+                // Used for comparing wrapper parameters with delegate parameters
                 foreach (Parameter p in f.Parameters)
                 {
                     parameter_index++;

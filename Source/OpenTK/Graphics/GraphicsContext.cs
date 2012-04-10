@@ -77,7 +77,8 @@ namespace OpenTK.Graphics
         /// <param name="window">The OpenTK.Platform.IWindowInfo to attach the GraphicsContext to.</param>
         public GraphicsContext(GraphicsMode mode, IWindowInfo window)
             : this(mode, window, 1, 0, GraphicsContextFlags.Default)
-        { }
+        {
+        }
 
         /// <summary>
         /// Constructs a new GraphicsContext with the specified GraphicsMode, version and flags,  and attaches it to the specified window.
@@ -97,8 +98,10 @@ namespace OpenTK.Graphics
                 bool designMode = false;
                 if (mode == null && window == null)
                     designMode = true;
-                else if (mode == null) throw new ArgumentNullException("mode", "Must be a valid GraphicsMode.");
-                else if (window == null) throw new ArgumentNullException("window", "Must point to a valid window.");
+                else if (mode == null)
+                    throw new ArgumentNullException("mode", "Must be a valid GraphicsMode.");
+                else if (window == null)
+                    throw new ArgumentNullException("window", "Must point to a valid window.");
 
                 // Silently ignore invalid major and minor versions.
                 if (major <= 0)
@@ -127,8 +130,12 @@ namespace OpenTK.Graphics
                         IPlatformFactory factory = null;
                         switch ((flags & GraphicsContextFlags.Embedded) == GraphicsContextFlags.Embedded)
                         {
-                            case false: factory = Factory.Default; break;
-                            case true: factory = Factory.Embedded; break;
+                            case false:
+                                factory = Factory.Default;
+                                break;
+                            case true:
+                                factory = Factory.Embedded;
+                                break;
                         }
 
                         implementation = factory.CreateGLContext(mode, window, shareContext, direct_rendering, major, minor, flags);
@@ -165,7 +172,8 @@ namespace OpenTK.Graphics
         /// <exception cref="GraphicsContextException">Occurs if handle is identical to a context already registered with OpenTK.</exception>
         public GraphicsContext(ContextHandle handle, IWindowInfo window)
             : this(handle, window, null, 1, 0, GraphicsContextFlags.Default)
-        { }
+        {
+        }
 
         /// <summary>
         /// Constructs a new GraphicsContext from a pre-existing context created outside of OpenTK.
@@ -196,8 +204,12 @@ namespace OpenTK.Graphics
                 {
                     switch ((flags & GraphicsContextFlags.Embedded) == GraphicsContextFlags.Embedded)
                     {
-                        case false: implementation = Factory.Default.CreateGLContext(handle, window, shareContext, direct_rendering, major, minor, flags); break;
-                        case true: implementation = Factory.Embedded.CreateGLContext(handle, window, shareContext, direct_rendering, major, minor, flags); break;
+                        case false:
+                            implementation = Factory.Default.CreateGLContext(handle, window, shareContext, direct_rendering, major, minor, flags);
+                            break;
+                        case true:
+                            implementation = Factory.Embedded.CreateGLContext(handle, window, shareContext, direct_rendering, major, minor, flags);
+                            break;
                     }
                 }
 

@@ -67,8 +67,7 @@ namespace OpenTK.Platform.X11
 
         public virtual GraphicsContext.GetCurrentContextDelegate CreateGetCurrentGraphicsContext()
         {
-            return (GraphicsContext.GetCurrentContextDelegate)delegate
-            {
+            return (GraphicsContext.GetCurrentContextDelegate)delegate {
                 return new ContextHandle(Glx.GetCurrentContext());
             };
         }
@@ -88,7 +87,8 @@ namespace OpenTK.Platform.X11
             if (XI2Mouse.IsSupported(IntPtr.Zero))
                 return new XI2Mouse(); // Requires xorg 1.7 or higher.
             else
-                return new X11Mouse(); // Always supported.
+                return new X11Mouse();
+            // Always supported.
         }
 
         #endregion

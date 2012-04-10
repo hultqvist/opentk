@@ -72,7 +72,9 @@ namespace OpenTK.Graphics
 
         public abstract int SwapInterval { get; set; }
 
-        public virtual void Update(IWindowInfo window) { }
+        public virtual void Update(IWindowInfo window)
+        {
+        }
 
         public GraphicsMode GraphicsMode { get { return Mode; } }
 

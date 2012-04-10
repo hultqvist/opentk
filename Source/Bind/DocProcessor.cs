@@ -63,7 +63,7 @@ namespace Bind
                     Text = Text.Insert(m.Index, "<![CDATA[" + eqn_substring + "]]>");
                 }
 
-            next:
+                next:
                 m = remove_mathml.Match(Text);
             }
 

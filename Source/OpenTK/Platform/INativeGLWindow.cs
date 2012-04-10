@@ -42,7 +42,7 @@ namespace OpenTK.Platform
     }
 
     [Obsolete]
-    internal delegate void CreateEvent(object sender, EventArgs e);
+    internal delegate void CreateEvent(object sender,EventArgs e);
     [Obsolete]
-    internal delegate void DestroyEvent(object sender, EventArgs e);
+    internal delegate void DestroyEvent(object sender,EventArgs e);
 }

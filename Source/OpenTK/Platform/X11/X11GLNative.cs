@@ -1345,8 +1345,8 @@ namespace OpenTK.Platform.X11
         public event EventHandler<EventArgs> WindowBorderChanged = delegate { };
         public event EventHandler<EventArgs> WindowStateChanged = delegate { };
         public event EventHandler<KeyboardKeyEventArgs> KeyDown = delegate { };
-		public event EventHandler<KeyPressEventArgs> KeyPress = delegate { };
-		public event EventHandler<KeyboardKeyEventArgs> KeyUp = delegate { };
+        public event EventHandler<KeyPressEventArgs> KeyPress = delegate { };
+        public event EventHandler<KeyboardKeyEventArgs> KeyUp = delegate { };
         public event EventHandler<EventArgs> MouseEnter = delegate { };
         public event EventHandler<EventArgs> MouseLeave = delegate { };
         

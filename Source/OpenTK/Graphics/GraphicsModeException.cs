@@ -12,10 +12,14 @@ namespace OpenTK.Graphics
         /// <summary>
         /// Constructs a new GraphicsModeException.
         /// </summary>
-        public GraphicsModeException() : base() { }
+        public GraphicsModeException() : base()
+        {
+        }
         /// <summary>
         /// Constructs a new GraphicsModeException with the given error message.
         /// </summary>
-        public GraphicsModeException(string message) : base(message) { }
+        public GraphicsModeException(string message) : base(message)
+        {
+        }
     }
 }

@@ -187,7 +187,9 @@ namespace Bind
                                     e.ConstantCollection[c.Name] = c;
                                 }
                                 else if (existing.Reference == null && c.Reference != null)
-                                { } // Keep existing
+                                {
+                                    // Keep existing
+                                }
                                 else
                                 {
                                     Console.WriteLine("[Warning] Conflicting token {0}.{1} with value {2} != {3}",

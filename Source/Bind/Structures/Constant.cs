@@ -47,7 +47,7 @@ namespace Bind.Structures
         public string Name
         {
             get { return _name; }
-            set 
+            set
             {
                 if (String.IsNullOrEmpty(value))
                     throw new ArgumentNullException("value");
@@ -100,7 +100,8 @@ namespace Bind.Structures
             {
                 if (!String.IsNullOrEmpty(value))
                     _reference = EnumProcessor.TranslateEnumName(value.Trim());
-                else _reference = value;
+                else
+                    _reference = value;
             }
         }
 

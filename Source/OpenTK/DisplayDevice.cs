@@ -238,8 +238,8 @@ namespace OpenTK
                     original_resolution = current_resolution;
                 current_resolution = resolution;
             }
-            else throw new Graphics.GraphicsModeException(String.Format("Device {0}: Failed to change resolution to {1}.",
-                    this, resolution));
+            else
+                throw new Graphics.GraphicsModeException(String.Format("Device {0}: Failed to change resolution to {1}.", this, resolution));
 
             //effect.FadeIn();
         }
@@ -276,7 +276,8 @@ namespace OpenTK
                     current_resolution = original_resolution;
                     original_resolution = null;
                 }
-                else throw new Graphics.GraphicsModeException(String.Format("Device {0}: Failed to restore resolution.", this));
+                else
+                    throw new Graphics.GraphicsModeException(String.Format("Device {0}: Failed to restore resolution.", this));
 
                 //effect.FadeIn();
             }
@@ -341,8 +342,7 @@ namespace OpenTK
 
         DisplayResolution FindResolution(int width, int height, int bitsPerPixel, float refreshRate)
         {
-            return available_resolutions.Find(delegate(DisplayResolution test)
-            {
+            return available_resolutions.Find(delegate(DisplayResolution test) {
                 return
                     ((width > 0 && width == test.Width) || width == 0) &&
                     ((height > 0 && height == test.Height) || height == 0) &&

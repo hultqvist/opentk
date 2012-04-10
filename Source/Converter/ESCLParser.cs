@@ -40,7 +40,7 @@ namespace CHeaderToXML
     {
         Regex extensions = new Regex("(ARB|EXT|AMD|NV|OES|QCOM)", RegexOptions.RightToLeft | RegexOptions.Compiled);
         Regex array_size = new Regex(@"\[.+\]", RegexOptions.RightToLeft | RegexOptions.Compiled);
-        Regex EnumToken  = new Regex(@"^#define \w+\s+\(?-?\w+\s?<?<?\s?-?\w*\)?$", RegexOptions.Compiled);
+        Regex EnumToken = new Regex(@"^#define \w+\s+\(?-?\w+\s?<?<?\s?-?\w*\)?$", RegexOptions.Compiled);
 
         public override IEnumerable<XElement> Parse(string[] lines)
         {
@@ -52,155 +52,162 @@ namespace CHeaderToXML
 
             // Adds new enum to the accumulator (acc)
             Func<string, List<XElement>, List<XElement>> enum_name = (line, acc) =>
-            {
-				bool is_long_bitfield = false;
-				
-                Func<string, string[]> get_tokens = (_) =>
-                    line.Trim("/*. ".ToCharArray()).Split(" _-+".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).Select(t =>
-                    {
-                        switch (t.ToLower())
-                        {
-                            case ("bitfield"):
-								is_long_bitfield = true;
-								return "Flags";
-						
-                            default:
-                                if (t.ToLower() == Prefix)
-                                    return "";
-                                else
-                                    return t;
-                        }
-                        /* gmcs bug 336258 */ return "";
-                    }).ToArray();
-
-                Func<string[], string> get_name = tokens =>
                 {
-                    // Some comments do not indicate enums. Cull them!
-                    if (tokens[0].StartsWith("$"))
-                        return null;
+                    bool is_long_bitfield = false;
+                
+                    Func<string, string[]> get_tokens = (_) =>
+                    line.Trim("/*. ".ToCharArray()).Split(" _-+".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).Select(t =>
+                        {
+                            switch (t.ToLower())
+                            {
+                                case ("bitfield"):
+                                    is_long_bitfield = true;
+                                    return "Flags";
+                        
+                                default:
+                                    if (t.ToLower() == Prefix)
+                                        return "";
+                                    else
+                                        return t;
+                            }
+                            /* gmcs bug 336258 */
+                            return "";
+                        }).ToArray();
+
+                    Func<string[], string> get_name = tokens =>
+                        {
+                            // Some comments do not indicate enums. Cull them!
+                            if (tokens[0].StartsWith("$"))
+                                return null;
                     
-                    // Some names consist of more than one tokens. Concatenate them.
-                    return tokens.Aggregate(
+                            // Some names consist of more than one tokens. Concatenate them.
+                            return tokens.Aggregate(
                         "",
                         (string n, string token) =>
-                        {
-                            n += String.IsNullOrEmpty(token) ? "" : Char.ToUpper(token[0]).ToString() + token.Substring(1);
-                            return n;
-                        },
+                            {
+                                n += String.IsNullOrEmpty(token) ? "" : Char.ToUpper(token[0]).ToString() + token.Substring(1);
+                                return n;
+                            },
                         n => n);
-                };
+                        };
 
-                Func<string, string> translate_name = name =>
-                {
-                    if (String.IsNullOrEmpty(name))
-                        return name;
+                    Func<string, string> translate_name = name =>
+                        {
+                            if (String.IsNullOrEmpty(name))
+                                return name;
 
-                    // Patch some names that are known to be problematic
-                    if (name.EndsWith("FlagsFlags"))
-                        name = name.Replace("FlagsFlags", "Flags");
+                            // Patch some names that are known to be problematic
+                            if (name.EndsWith("FlagsFlags"))
+                                name = name.Replace("FlagsFlags", "Flags");
 
-                    switch (name)
-                    {
-                        case "OpenGLEScoreversions":
-                        case "EGLVersioning":
-                        case "OpenCLVersion": return "Version";
-                        case "ShaderPrecision-SpecifiedTypes": return "ShaderPrecision";
-                        case "Texturecombine+dot3": return "TextureCombine";
-                        case "MacroNamesAndCorrespondingValuesDefinedByOpenCL": return null;
-                        default: return name;
-                    }
-                };
+                            switch (name)
+                            {
+                                case "OpenGLEScoreversions":
+                                case "EGLVersioning":
+                                case "OpenCLVersion":
+                                    return "Version";
+                                case "ShaderPrecision-SpecifiedTypes":
+                                    return "ShaderPrecision";
+                                case "Texturecombine+dot3":
+                                    return "TextureCombine";
+                                case "MacroNamesAndCorrespondingValuesDefinedByOpenCL":
+                                    return null;
+                                default:
+                                    return name;
+                            }
+                        };
 
-                Func<string, List<XElement>> add_enum = @enum =>
-                {
-                    switch (@enum)
-                    {
-                        case null:
-                        case "":
-                            return acc;
-                        default:
-                            acc.Add(new XElement("enum",
-							    new XAttribute("name", @enum),
+                    Func<string, List<XElement>> add_enum = @enum =>
+                        {
+                            switch (@enum)
+                            {
+                                case null:
+                                case "":
+                                    return acc;
+                                default:
+                                    acc.Add(new XElement("enum",
+                                new XAttribute("name", @enum),
                                 new XAttribute("type", is_long_bitfield ? "long" : "int")));
-                            return acc;
-                    }
-                };
+                                    return acc;
+                            }
+                        };
 
-                return add_enum(translate_name(get_name(get_tokens(line))));
-            };
+                    return add_enum(translate_name(get_name(get_tokens(line))));
+                };
 
             // Adds new token to last enum in accumulator
             Func<string, List<XElement>, List<XElement>> enum_token = (line, acc) =>
-            {
-                if (EnumToken.IsMatch(line))
                 {
-                    if (acc.Count == 0 || acc.Last().Name.LocalName != "enum")
-                        acc.Add(new XElement("enum", new XAttribute("name", "Unknown")));
-
-                    var tokens = split(line);
-                    // Some constants are defined bitshifts, e.g. (1 << 2). If a constant contains parentheses
-                    // we assume it is a bitshift. Otherwise, we assume it is single value, separated by space
-                    // (e.g. 0xdeadbeef).
-                    if (line.Contains("("))
-                        tokens[2] = "(" + line.Split('(')[1];
-
-                    // Check whether this is an include guard (e.g. #define __OPENCL_CL_H)
-                    if (tokens[1].StartsWith("__"))
-                        return acc;
-
-                    // Check whether this is a known header define like WIN32_LEAN_AND_MEAN
-                    switch (tokens[1])
+                    if (EnumToken.IsMatch(line))
                     {
-                        case "WIN32_LEAN_AND_MEAN":
-                        case "APIENTRY":
-                        case "GLAPI":
+                        if (acc.Count == 0 || acc.Last().Name.LocalName != "enum")
+                            acc.Add(new XElement("enum", new XAttribute("name", "Unknown")));
+
+                        var tokens = split(line);
+                        // Some constants are defined bitshifts, e.g. (1 << 2). If a constant contains parentheses
+                        // we assume it is a bitshift. Otherwise, we assume it is single value, separated by space
+                        // (e.g. 0xdeadbeef).
+                        if (line.Contains("("))
+                            tokens[2] = "(" + line.Split('(')[1];
+
+                        // Check whether this is an include guard (e.g. #define __OPENCL_CL_H)
+                        if (tokens[1].StartsWith("__"))
                             return acc;
-                    }
 
-                    acc[acc.Count - 1].Add(new XElement("token",
-                        new XAttribute("name", tokens[1].Substring(Prefix.Length + 1)),   // remove prefix
+                        // Check whether this is a known header define like WIN32_LEAN_AND_MEAN
+                        switch (tokens[1])
+                        {
+                            case "WIN32_LEAN_AND_MEAN":
+                            case "APIENTRY":
+                            case "GLAPI":
+                                return acc;
+                        }
+
+                        acc[acc.Count - 1].Add(new XElement("token",
+                        new XAttribute("name", tokens[1].Substring(Prefix.Length + 1)), // remove prefix
                         new XAttribute("value", tokens[2])));
-                }
-                return acc;
-            };
-
-            // Parses a function declaration
-            var function_string = ""; // Used to concatenate functions that are split in different lines. (e.g. "void\nclFoo(int /* a */,\nint b);")
-            Func<string, List<XElement>, List<XElement>> function = (line, acc) =>
-            {
-                if (!line.EndsWith(";"))
-                {
-                    function_string += line + " ";
+                    }
                     return acc;
-                }
-
-                line = function_string + line;
-                function_string = "";
-
-                Func<string, string> GetExtension = name =>
-                {
-                    var match = extensions.Match(name);
-                    return match != null && String.IsNullOrEmpty(match.Value) ? "Core" : match.Value;
                 };
 
-                var words = line.Split(splitters, StringSplitOptions.RemoveEmptyEntries);
-                //var words = line.Replace("/*", "").Replace("*/", "").Split(" ()".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-                // ES does not start methods with 'extern', while CL does.
-                // Remove the 'extern' keyword to create a single code-path.
-                if (words[0] == "extern")
-                    words = words.Skip(1).ToArray();
+            // Parses a function declaration
+            var function_string = "";
+            // Used to concatenate functions that are split in different lines. (e.g. "void\nclFoo(int /* a */,\nint b);")
+            Func<string, List<XElement>, List<XElement>> function = (line, acc) =>
+                {
+                    if (!line.EndsWith(";"))
+                    {
+                        function_string += line + " ";
+                        return acc;
+                    }
 
-                string rettype = null;
-                string funcname = null;
-                GetFunctionNameAndType(words, out funcname, out rettype);
+                    line = function_string + line;
+                    function_string = "";
 
-                var parameters_string = Regex.Match(line, @"\(.*\)").Captures[0].Value.TrimStart('(').TrimEnd(')');
+                    Func<string, string> GetExtension = name =>
+                        {
+                            var match = extensions.Match(name);
+                            return match != null && String.IsNullOrEmpty(match.Value) ? "Core" : match.Value;
+                        };
 
-                var parameters =
+                    var words = line.Split(splitters, StringSplitOptions.RemoveEmptyEntries);
+                    //var words = line.Replace("/*", "").Replace("*/", "").Split(" ()".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+                    // ES does not start methods with 'extern', while CL does.
+                    // Remove the 'extern' keyword to create a single code-path.
+                    if (words[0] == "extern")
+                        words = words.Skip(1).ToArray();
+
+                    string rettype = null;
+                    string funcname = null;
+                    GetFunctionNameAndType(words, out funcname, out rettype);
+
+                    var parameters_string = Regex.Match(line, @"\(.*\)").Captures[0].Value.TrimStart('(').TrimEnd(')');
+
+                    var parameters =
                     (from item in get_param.Matches(parameters_string).OfType<Match>()
                     select item.Captures[0].Value.TrimEnd(',')).ToList();
 
-                var fun =
+                    var fun =
                     new
                     {
                         Name = funcname,
@@ -211,45 +218,46 @@ namespace CHeaderToXML
                         Parameters = GetParameters(funcname, parameters_string)
                     };
 
-                XElement func = new XElement("function", new XAttribute("name", fun.Name));
-                func.Add(new XAttribute("extension", fun.Extension));
-                func.Add(new XAttribute("profile", fun.Profile));
-                func.Add(new XAttribute("category", fun.Version));
-                func.Add(new XAttribute("version", fun.Version));
+                    XElement func = new XElement("function", new XAttribute("name", fun.Name));
+                    func.Add(new XAttribute("extension", fun.Extension));
+                    func.Add(new XAttribute("profile", fun.Profile));
+                    func.Add(new XAttribute("category", fun.Version));
+                    func.Add(new XAttribute("version", fun.Version));
 
-                func.Add(new XElement("returns", new XAttribute("type", fun.Return)));
-                foreach (var p in fun.Parameters)
-                {
-                    var param = new XElement("param", new XAttribute("type", p.Type), new XAttribute("name", p.Name));
-                    if (p.Count > 0)
-                        param.Add(new XAttribute("count", p.Count));
-                    param.Add(new XAttribute("flow", p.Flow));
-                    func.Add(param);
-                }
+                    func.Add(new XElement("returns", new XAttribute("type", fun.Return)));
+                    foreach (var p in fun.Parameters)
+                    {
+                        var param = new XElement("param", new XAttribute("type", p.Type), new XAttribute("name", p.Name));
+                        if (p.Count > 0)
+                            param.Add(new XAttribute("count", p.Count));
+                        param.Add(new XAttribute("flow", p.Flow));
+                        func.Add(param);
+                    }
 
-                acc.Add(func);
-                return acc;
-            };
+                    acc.Add(func);
+                    return acc;
+                };
 
             Func<string, bool> is_comment = line => line.StartsWith("/*") || line.StartsWith("//");
             Func<string, bool> is_enum = line => {
-                if (!is_comment(line))
-                    return false;
+                    if (!is_comment(line))
+                        return false;
 
-                // Some enum tokens are commented out and should not be confused with new enum declarations.
-                // Since tokens are always in ALL_CAPS, while enum names always contain at least one lower case
-                // character, we'll try to use this information to distinguish between the two.
-                // Warning: rather fragile.
-                if (Regex.IsMatch(line, @"/\*\s+([A-Z]+_?[0-9]*_?)+\s+\*/"))
+                    // Some enum tokens are commented out and should not be confused with new enum declarations.
+                    // Since tokens are always in ALL_CAPS, while enum names always contain at least one lower case
+                    // character, we'll try to use this information to distinguish between the two.
+                    // Warning: rather fragile.
+                    if (Regex.IsMatch(line, @"/\*\s+([A-Z]+_?[0-9]*_?)+\s+\*/"))
                         return false;
                 
-                var toks = split(line);
-                return toks.Length > 1;// && toks[1].StartsWith("GL");
-            };
+                    var toks = split(line);
+                    return toks.Length > 1;
+                    // && toks[1].StartsWith("GL");
+                };
             Func<string, bool> is_function = line =>
                 (line.StartsWith("GL_APICALL") || line.StartsWith("GL_API") ||
-                line.StartsWith("GLAPI") || line.StartsWith("EGLAPI") ||
-                line.StartsWith("extern CL_API_ENTRY"));
+                    line.StartsWith("GLAPI") || line.StartsWith("EGLAPI") ||
+                    line.StartsWith("extern CL_API_ENTRY"));
 
             var signatures = lines.Aggregate(
                 new List<XElement>(),
@@ -307,11 +315,11 @@ namespace CHeaderToXML
                 var indirection_level =
                     is_function_pointer ? 0 :
                     (from c in param_name where c == '*' select c).Count() +
-                    (from c in param_type where c == '*' select c).Count() +
-                    (from t in tokens where t == "***" select t).Count() * 3 +
-                    (from t in tokens where t == "**" select t).Count() * 2 +
-                    (from t in tokens where t == "*" select t).Count() +
-                    (has_array_size ? 1 : 0);
+                        (from c in param_type where c == '*' select c).Count() +
+                        (from t in tokens where t == "***" select t).Count() * 3 +
+                        (from t in tokens where t == "**" select t).Count() * 2 +
+                        (from t in tokens where t == "*" select t).Count() +
+                        (has_array_size ? 1 : 0);
                 // for adding indirection levels (pointers) to param_type
                 var pointers = new string[] { "*", "*", "*", "*" };
 
@@ -320,12 +328,13 @@ namespace CHeaderToXML
                     // Pointers are placed into the parameter Type, not Name
                     var name = (has_array_size ? array_size.Replace(param_name, "") : param_name).Replace("*", "");
                     var type = is_function_pointer ? param_type :
-                        (tokens.Contains("unsigned") && !param_type.StartsWith("byte") ? "u" : "") +    // Make sure we don't ignore the unsigned part of unsigned parameters (e.g. unsigned int -> uint)
-                        param_type.Replace("*", "") + String.Join("", pointers, 0, indirection_level);  // Normalize pointer indirection level (place as many asterisks as in indirection_level variable)
+                        (tokens.Contains("unsigned") && !param_type.StartsWith("byte") ? "u" : "") + // Make sure we don't ignore the unsigned part of unsigned parameters (e.g. unsigned int -> uint)
+                            param_type.Replace("*", "") + String.Join("", pointers, 0, indirection_level);
+                    // Normalize pointer indirection level (place as many asterisks as in indirection_level variable)
                     var count = has_array_size ? Int32.Parse(array_size.Match(param_name).Value.Trim('[', ']')) : 0;
                     var flow =
                         param_name.EndsWith("ret") ||
-                        ((funcname.StartsWith("Get") || funcname.StartsWith("Gen")) &&
+                            ((funcname.StartsWith("Get") || funcname.StartsWith("Gen")) &&
                             indirection_level > 0 &&
                             !(funcname.EndsWith("Info") || funcname.EndsWith("IDs") || funcname.EndsWith("ImageFormats"))) ? // OpenCL contains Get*[Info|IDs|ImageFormats] methods with 'in' pointer parameters
                         "out" : "in";
@@ -338,12 +347,14 @@ namespace CHeaderToXML
         void GetFunctionNameAndType(string[] words, out string funcname, out string rettype)
         {
             funcname = null;
-            rettype  = null;
+            rettype = null;
 
             bool inRettype = false;
             bool quit = false;
-            for (int i = 0; !quit && i < words.Length; ++i) {
-                switch (words [i]) {
+            for (int i = 0; !quit && i < words.Length; ++i)
+            {
+                switch (words[i])
+                {
                     case "const":
                         // ignore
                         break;
@@ -357,12 +368,12 @@ namespace CHeaderToXML
                     case "GL_APIENTRY":  // ES 1.1 & 2.0
                     case "CL_API_CALL": // CL 1.0
                         inRettype = false;
-                        funcname = words [i+1].Substring(Prefix.Length);
+                        funcname = words[i + 1].Substring(Prefix.Length);
                         quit = true;
                         break;
                     default:
                         if (inRettype)
-                            rettype += words [i];
+                            rettype += words[i];
                         break;
                 }
             }

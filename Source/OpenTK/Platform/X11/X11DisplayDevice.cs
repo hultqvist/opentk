@@ -95,7 +95,9 @@ namespace OpenTK.Platform.X11
                 {
                     xrandr_supported = QueryXRandR(devices);
                 }
-                catch { }
+                catch
+                {
+                }
 
                 if (!xrandr_supported)
                 {
@@ -104,7 +106,9 @@ namespace OpenTK.Platform.X11
                     {
                         xf86_supported = QueryXF86(devices);
                     }
-                    catch { }
+                    catch
+                    {
+                    }
 
                     if (!xf86_supported)
                     {
@@ -120,9 +124,9 @@ namespace OpenTK.Platform.X11
 
         static DisplayDevice FindDefaultDevice(IEnumerable<DisplayDevice> devices)
         {
-                foreach (DisplayDevice dev in devices)
-                    if (dev.IsPrimary)
-                        return dev;
+            foreach (DisplayDevice dev in devices)
+                if (dev.IsPrimary)
+                    return dev;
 
             throw new InvalidOperationException("No primary display found. Please file a bug at http://www.opentk.com");
         }
@@ -152,7 +156,7 @@ namespace OpenTK.Platform.X11
                     deviceToScreen.Add(dev, 0 /*screen.ScreenNumber*/);
                 }
             }
-            return (devices.Count>0);
+            return (devices.Count > 0);
         }
 
         bool QueryXRandR(List<DisplayDevice> devices)
@@ -217,7 +221,8 @@ namespace OpenTK.Platform.X11
                 float current_refresh_rate = FindCurrentRefreshRate(screen);
                 int current_depth = FindCurrentDepth(screen);
                 IntPtr screen_config = Functions.XRRGetScreenInfo(API.DefaultDisplay, Functions.XRootWindow(API.DefaultDisplay, screen));
-                ushort current_rotation;  // Not needed.
+                ushort current_rotation;
+                // Not needed.
                 int current_resolution_index = Functions.XRRConfigCurrentConfiguration(screen_config, out current_rotation);
 
                 if (dev.Bounds == Rectangle.Empty)
@@ -350,7 +355,7 @@ namespace OpenTK.Platform.X11
                     screen, current_resolution_index, new_resolution_index);
 
                 int ret = 0;
-                short refresh_rate =(short)(resolution != null ? resolution.RefreshRate : 0);
+                short refresh_rate = (short)(resolution != null ? resolution.RefreshRate : 0);
                 if (refresh_rate > 0)
                 {
                     ret = Functions.XRRSetScreenConfigAndRate(API.DefaultDisplay,
@@ -418,7 +423,7 @@ namespace OpenTK.Platform.X11
             public static extern bool XineramaQueryExtension(IntPtr dpy, out int event_basep, out int error_basep);
 
             [DllImport(Xinerama)]
-            public static extern int XineramaQueryVersion (IntPtr dpy, out int major_versionp, out int minor_versionp);
+            public static extern int XineramaQueryVersion(IntPtr dpy, out int major_versionp, out int minor_versionp);
 
             [DllImport(Xinerama)]
             public static extern bool XineramaIsActive(IntPtr dpy);

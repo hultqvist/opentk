@@ -25,7 +25,9 @@ namespace OpenTK
 
         #region --- Constructors ---
 
-        internal DisplayResolution() { }
+        internal DisplayResolution()
+        {
+        }
 
         #region public DisplayResolution(int width, int height, int bitsPerPixel, float refreshRate)
 
@@ -33,10 +35,14 @@ namespace OpenTK
         internal DisplayResolution(int x, int y, int width, int height, int bitsPerPixel, float refreshRate)
         {
             // Refresh rate may be zero, since this information may not be available on some platforms.
-            if (width <= 0) throw new ArgumentOutOfRangeException("width", "Must be greater than zero.");
-            if (height <= 0) throw new ArgumentOutOfRangeException("height", "Must be greater than zero.");
-            if (bitsPerPixel <= 0) throw new ArgumentOutOfRangeException("bitsPerPixel", "Must be greater than zero.");
-            if (refreshRate < 0) throw new ArgumentOutOfRangeException("refreshRate", "Must be greater than, or equal to zero.");
+            if (width <= 0)
+                throw new ArgumentOutOfRangeException("width", "Must be greater than zero.");
+            if (height <= 0)
+                throw new ArgumentOutOfRangeException("height", "Must be greater than zero.");
+            if (bitsPerPixel <= 0)
+                throw new ArgumentOutOfRangeException("bitsPerPixel", "Must be greater than zero.");
+            if (refreshRate < 0)
+                throw new ArgumentOutOfRangeException("refreshRate", "Must be greater than, or equal to zero.");
 
             this.bounds = new Rectangle(x, y, width, height);
             this.bits_per_pixel = bitsPerPixel;
@@ -165,7 +171,8 @@ namespace OpenTK
         /// <returns>True if the System.Object is an equal DisplayResolution; false otherwise.</returns>
         public override bool Equals(object obj)
         {
-            if (obj == null) return false;
+            if (obj == null)
+                return false;
             if (this.GetType() == obj.GetType())
             {
                 DisplayResolution res = (DisplayResolution)obj;
@@ -202,7 +209,7 @@ namespace OpenTK
         /// <param name="left">The first instance.</param>
         /// <param name="right">The second instance.</param>
         /// <returns>True, if left equals right; false otherwise.</returns>
-        public static bool operator== (DisplayResolution left, DisplayResolution right)
+        public static bool operator==(DisplayResolution left, DisplayResolution right)
         {
             if (((object)left) == null && ((object)right) == null)
                 return true;

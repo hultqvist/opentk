@@ -104,7 +104,8 @@ namespace OpenTK.Graphics
         [Obsolete("Use new Color4(r, g, b, a) instead.")]
         public Color4(Color color)
             : this(color.R, color.G, color.B, color.A)
-        { }
+        {
+        }
 
         #endregion
 

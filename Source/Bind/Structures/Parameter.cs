@@ -147,7 +147,7 @@ namespace Bind.Structures
             get
             {
                 return (Array > 0 || Reference || CurrentType == "object") &&
-                        !CurrentType.ToLower().Contains("string");
+                    !CurrentType.ToLower().Contains("string");
             }
         }
 
@@ -236,7 +236,7 @@ namespace Bind.Structures
 
             if (!String.IsNullOrEmpty(cache) && !rebuild)
             {
-               return cache;
+                return cache;
             }
             else
             {
@@ -481,7 +481,7 @@ namespace Bind.Structures
 
         #region public bool HasGenericParameters
 
-        public bool HasGenericParameters
+        public bool HasGenericParameters
         {
             get
             {

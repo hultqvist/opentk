@@ -215,8 +215,8 @@ namespace Bind
             valid = true;
             var sb = new StringBuilder();
 
-            if (f.TrimmedName == "ExtGetBufferPointer")
-                ;// Debugger.Break();
+            //if (f.TrimmedName == "ExtGetBufferPointer")
+            //    Debugger.Break();
 
             if (f.Parameters.Count > 0)
             {

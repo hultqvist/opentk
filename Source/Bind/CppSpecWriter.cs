@@ -319,7 +319,7 @@ typedef const char* GLstring;
                 sw.WriteLine("#define GLPP_H");
                 sw.WriteLine();
 
-                WriteLicense(sw);
+                sw.WriteGeneratorAndLicense();
 
                 sw.WriteLine("namespace {0}", Settings.OutputNamespace);
                 sw.WriteLine("{");
@@ -726,14 +726,5 @@ typedef const char* GLstring;
 
         #endregion
 
-        #region WriteLicense
-
-        public void WriteLicense(BindStreamWriter sw)
-        {
-            sw.WriteLine(File.ReadAllText(Path.Combine(Settings.InputPath, Settings.LicenseFile)));
-            sw.WriteLine();
-        }
-
-        #endregion
     }
 }

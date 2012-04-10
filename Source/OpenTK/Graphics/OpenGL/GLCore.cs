@@ -1,3 +1,6 @@
+// This file is auto-generated through the Generator.Bind project.
+// Do not edit by hand!
+
 //
 // The Open Toolkit Library License
 //

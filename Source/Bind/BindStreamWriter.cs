@@ -75,5 +75,20 @@ namespace Bind
             foreach (string s in splitLines.Split(f.ToString()))
                 WriteLine(s);
         }
+
+        #region WriteGeneratorAndLicense
+
+        public void WriteGeneratorAndLicense()
+        {
+            WriteLine("// This file is auto-generated through the Generator.Bind project.");
+            WriteLine("// Do not edit by hand!");
+            WriteLine();
+
+            WriteLine(System.IO.File.ReadAllText(Path.Combine(Settings.InputPath, Settings.LicenseFile)));
+            WriteLine();
+        }
+
+        #endregion
+
     }
 }

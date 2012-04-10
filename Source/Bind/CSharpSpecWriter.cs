@@ -64,7 +64,7 @@ namespace Bind
             // Enums
             using (BindStreamWriter sw = new BindStreamWriter(temp_enums_file))
             {
-                WriteLicense(sw);
+                sw.WriteGeneratorAndLicense();
 
                 sw.WriteLine("using System;");
                 sw.WriteLine();
@@ -97,7 +97,7 @@ namespace Bind
             // Delegates
             using (BindStreamWriter sw = new BindStreamWriter(temp_delegates_file))
             {
-                WriteLicense(sw);
+                sw.WriteGeneratorAndLicense();
                 sw.WriteLine("namespace {0}", Settings.OutputNamespace);
                 sw.WriteLine("{");
                 sw.Indent();
@@ -116,7 +116,7 @@ namespace Bind
             // Core
             using (BindStreamWriter sw = new BindStreamWriter(temp_core_file))
             {
-                WriteLicense(sw);
+                sw.WriteGeneratorAndLicense();
                 sw.WriteLine("namespace {0}", Settings.OutputNamespace);
                 sw.WriteLine("{");
                 sw.Indent();
@@ -134,7 +134,7 @@ namespace Bind
             // Wrappers
             using (BindStreamWriter sw = new BindStreamWriter(temp_wrappers_file))
             {
-                WriteLicense(sw);
+                sw.WriteGeneratorAndLicense();
                 sw.WriteLine("namespace {0}", Settings.OutputNamespace);
                 sw.WriteLine("{");
                 sw.Indent();
@@ -189,7 +189,7 @@ namespace Bind
             {
                 sw.WriteLine("[System.Security.SuppressUnmanagedCodeSecurity()]");
                 sw.WriteLine("internal {0};", d.ToString());
-                sw.WriteLine("internal {0}static {1} {2}{1};",   //  = null
+                sw.WriteLine("internal {0}static {1} {2}{1};", //  = null
                     d.Unsafe ? "unsafe " : "",
                     d.Name,
                     Settings.FunctionPrefix);

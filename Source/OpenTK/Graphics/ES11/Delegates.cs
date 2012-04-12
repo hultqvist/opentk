@@ -1,8 +1,10 @@
-#region License
+// This file is auto-generated through the Generator.Bind project.
+// Do not edit by hand!
+
 //
 // The Open Toolkit Library License
 //
-// Copyright (c) 2006 - 2009 the Open Toolkit library.
+// Copyright (c) 2006 - 2012 the Open Toolkit library.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +25,8 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
 //
-#endregion
+
+
 
 namespace OpenTK.Graphics.ES11
 {
@@ -393,7 +396,7 @@ namespace OpenTK.Graphics.ES11
             internal unsafe delegate void GetRenderbufferParameterivOES(OpenTK.Graphics.ES11.All target, OpenTK.Graphics.ES11.All pname, Int32* @params);
             internal unsafe static GetRenderbufferParameterivOES glGetRenderbufferParameterivOES;
             [System.Security.SuppressUnmanagedCodeSecurity()]
-            internal unsafe delegate System.IntPtr GetString(OpenTK.Graphics.ES11.All name);
+            internal unsafe delegate IntPtr GetString(OpenTK.Graphics.ES11.All name);
             internal unsafe static GetString glGetString;
             [System.Security.SuppressUnmanagedCodeSecurity()]
             internal unsafe delegate void GetTexEnvfv(OpenTK.Graphics.ES11.All env, OpenTK.Graphics.ES11.All pname, Single* @params);
@@ -513,7 +516,7 @@ namespace OpenTK.Graphics.ES11
             internal delegate void LogicOp(OpenTK.Graphics.ES11.All opcode);
             internal static LogicOp glLogicOp;
             [System.Security.SuppressUnmanagedCodeSecurity()]
-            internal unsafe delegate System.IntPtr MapBufferOES(OpenTK.Graphics.ES11.All target, OpenTK.Graphics.ES11.All access);
+            internal unsafe delegate IntPtr MapBufferOES(OpenTK.Graphics.ES11.All target, OpenTK.Graphics.ES11.All access);
             internal unsafe static MapBufferOES glMapBufferOES;
             [System.Security.SuppressUnmanagedCodeSecurity()]
             internal delegate void Materialf(OpenTK.Graphics.ES11.All face, OpenTK.Graphics.ES11.All pname, Single param);

@@ -85,15 +85,15 @@ namespace Build.UpdateVersion
         {
             // Build number is defined as the number of days since 1/1/2010.
             // Revision number is defined as the fraction of the current day, expressed in seconds.
-            double timespan = now.Subtract(new DateTime(2010, 1, 1)).TotalDays;
-            string build = ((int)timespan).ToString();
+            TimeSpan timespan = now - new DateTime(2010, 1, 1);
+            int build = (int)timespan.TotalDays;
 
-            string revision = RetrieveSvnRevision() ?? RetrieveBzrRevision() ?? RetrieveSeconds(timespan);
+            string revision = RetrieveSvnRevision() ?? RetrieveBzrRevision() ?? RetrieveSeconds(now);
             revision = revision.Trim();
 
             File.WriteAllLines(file, new string[]
             {
-                "// This file is auto-generated through Source/Build.Tasks/GenerateAssemblyInfo.cs.",
+                "// This file is auto-generated through Source/Build.UpdateVersion.",
                 "// Do not edit by hand!",
                 "",
                 "using System;",
@@ -104,16 +104,16 @@ namespace Build.UpdateVersion
                 "",
                 "[assembly: AssemblyCompany(\"The Open Toolkit Library\")]",
                 "[assembly: AssemblyProduct(\"The Open Toolkit Library\")]",
-                "[assembly: AssemblyCopyright(\"Copyright © 2006 - 2010 the Open Toolkit Library\")]",
+                "[assembly: AssemblyCopyright(\"Copyright © 2006 - 2012 the Open Toolkit Library\")]",
                 "[assembly: AssemblyTrademark(\"OpenTK\")]",
                 String.Format("[assembly: AssemblyVersion(\"{0}.{1}.0.0\")]", Major, Minor),
                 String.Format("[assembly: AssemblyFileVersion(\"{0}.{1}.{2}.{3}\")]", Major, Minor, build, revision),
             });
         }
 
-        static string RetrieveSeconds(double timespan)
+        static string RetrieveSeconds(DateTime now)
         {
-            string revision = ((int)((timespan - (int)timespan) * UInt16.MaxValue)).ToString();
+            string revision = ((int)(now.TimeOfDay.TotalDays * UInt16.MaxValue)).ToString();
             return revision;
         }
 
@@ -141,7 +141,13 @@ namespace Build.UpdateVersion
             try
             {
                 string output = RunProcess("bzr", "revno", RootDirectory);
-                return output != null && !output.StartsWith("bzr") ? output : null;
+                if (output == null)
+                    return null;
+                int rev;
+                if (int.TryParse(output, out rev))
+                    return rev.ToString();
+                else
+                    return null;
             }
             catch (Exception e)
             {

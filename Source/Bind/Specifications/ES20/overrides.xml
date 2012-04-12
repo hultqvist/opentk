@@ -545,7 +545,7 @@
       <token name="InvalidValue" value="0X0501" />
       <token name="InvalidOperation" value="0X0502" />
       <token name="OutOfMemory" value="0X0505" />
-      <token name="InvalidFramebufferOperation " value="0X0506" />
+      <token name="InvalidFramebufferOperation" value="0X0506" />
     </enum>
      
     <enum name="ProgramParameter">

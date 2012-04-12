@@ -111,8 +111,8 @@ namespace Bind
                             case "mode":
                                 {
                                     string arg = val.ToLower();
+                                    dirName = val.ToUpperInvariant();
                                     SetGeneratorMode(dirName, arg);
-                                    dirName = val;
                                     break;
                                 }
                             case "namespace":
@@ -284,6 +284,7 @@ Available switches:
 -namespace:  Same as -ns
 -class:      Output class (e.g. -class:GL3).
              Default: GL/Wgl/Glu/Glx (depends on -mode)
+-mode:       GL/ES10/ES11/ES20/CL
 -o/-option:  Set advanced option. Available options:
     -o:tao   Tao compatibility mode.
     -o:enums Follow OpenGL instead .Net naming conventions.

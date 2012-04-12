@@ -274,7 +274,89 @@ namespace OpenTK
         #endregion
 
         #region Static
+
+        #region CreateFromQuaternion
         
+        /// <summary>
+        /// Build a rotation matrix from the specified quaternion.
+        /// </summary>
+        /// <param name="q">Quaternion to translate.</param>
+        /// <param name="m">Matrix result.</param>
+        public static void CreateFromQuaternion(ref Quaternion q, ref Matrix4 m)
+        {
+            float X = q.X;
+            float Y = q.Y;
+            float Z = q.Z;
+            float W = q.W;
+
+            float xx = X * X;
+            float xy = X * Y;
+            float xz = X * Z;
+            float xw = X * W;
+            float yy = Y * Y;
+            float yz = Y * Z;
+            float yw = Y * W;
+            float zz = Z * Z;
+            float zw = Z * W;
+
+            m = new Matrix4();
+            m.Row0.X = 1 - 2 * (yy + zz);
+            m.Row1.X = 2 * (xy - zw);
+            m.Row2.X = 2 * (xz + yw);
+
+            m.Row0.Y = 2 * (xy + zw);
+            m.Row1.Y = 1 - 2 * (xx + zz);
+            m.Row2.Y = 2 * (yz - xw);
+
+            m.Row0.Z = 2 * (xz - yw);
+            m.Row1.Z = 2 * (yz + xw);
+            m.Row2.Z = 1 - 2 * (xx + yy);
+
+            m.Row3.W = 1;
+        }
+
+        /// <summary>
+        /// Build a rotation matrix from the specified quaternion.
+        /// </summary>
+        /// <param name="q">Quaternion to translate.</param>
+        /// <returns>A matrix instance.</returns>
+        public static Matrix4 CreateFromQuaternion(ref Quaternion q)
+        {
+            float X = q.X;
+            float Y = q.Y;
+            float Z = q.Z;
+            float W = q.W;
+
+            float xx = X * X;
+            float xy = X * Y;
+            float xz = X * Z;
+            float xw = X * W;
+            float yy = Y * Y;
+            float yz = Y * Z;
+            float yw = Y * W;
+            float zz = Z * Z;
+            float zw = Z * W;
+
+            Matrix4 m = new Matrix4();
+            m.Row0.X = 1 - 2 * (yy + zz);
+            m.Row1.X = 2 * (xy - zw);
+            m.Row2.X = 2 * (xz + yw);
+
+            m.Row0.Y = 2 * (xy + zw);
+            m.Row1.Y = 1 - 2 * (xx + zz);
+            m.Row2.Y = 2 * (yz - xw);
+
+            m.Row0.Z = 2 * (xz - yw);
+            m.Row1.Z = 2 * (yz + xw);
+            m.Row2.Z = 1 - 2 * (xx + yy);
+
+            m.Row3.W = 1;
+
+            return m;
+        }
+
+        #endregion
+
         #region CreateFromAxisAngle
         
         /// <summary>

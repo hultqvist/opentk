@@ -171,9 +171,6 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="OpenCL\VectorAdd.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="OpenGL\1.x\DisplayLists.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -232,9 +229,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="OpenGLES\2.0\SimpleWindow20.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="OpenGLES\1.1\SimpleWindow.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Utilities\LoaderGDI.cs">

@@ -139,16 +139,6 @@
     <None Include="..\..\OpenTK.snk">
       <Link>OpenTK.snk</Link>
     </None>
-    <None Include="Headers\CL10\cl_gl.h">
-    </None>
-    <None Include="Headers\CL10\cl.h">
-    </None>
-    <None Include="Headers\ES10\gl.h">
-    </None>
-    <None Include="Headers\ES11\glext.h">
-    </None>
-    <None Include="Headers\ES11\gl.h">
-    </None>
     <None Include="Headers\EGL\eglext.h">
     </None>
     <None Include="Headers\EGL\egl.h">

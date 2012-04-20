@@ -455,42 +455,6 @@
     <Compile Include="Graphics\OpenGL\ErrorHelper.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Graphics\ES10\ES.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Graphics\ES10\Enums.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Graphics\ES10\ErrorHelper.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Graphics\ES10\Helper.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Graphics\ES10\Delegates.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Graphics\ES10\Core.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Graphics\ES11\ES.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Graphics\ES11\Enums.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Graphics\ES11\ErrorHelper.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Graphics\ES11\Helper.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Graphics\ES11\Delegates.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Graphics\ES11\Core.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Graphics\ES20\ES.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -630,69 +594,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Math\BezierCurveCubic.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Compute\Memory.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Compute\Device.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Compute\Platform.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Compute\Sampler.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Compute\Kernel.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Compute\Profiler.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Compute\Program.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Compute\Enums.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Compute\CommandQueue.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Compute\CLHelper.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Compute\Event.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Compute\Structs.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Compute\Configuration.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Compute\ComputeContext.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Compute\CL10\Enums.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Compute\CL10\ErrorHelper.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Compute\CL10\Delegates.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Compute\CL10\Core.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Compute\CL10\CLHelper.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Compute\CL10\CL.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Compute\CL10\ImageFormat.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Audio\AudioDeviceException.cs">

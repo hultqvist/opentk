@@ -10,7 +10,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Security;
-using Bind.CL;
 using Bind.ES;
 using Bind.GL;
 using System.Text.RegularExpressions;
@@ -22,10 +21,7 @@ namespace Bind
         Unknown,
         GL2,
         GL3,
-        ES10,
-        ES11,
         ES20,
-        CL10,
     }
 
     enum GeneratorLanguage
@@ -171,20 +167,8 @@ namespace Bind
                         Generator = new GL4Generator("OpenGL", dirName);
                         break;
 
-                    case GeneratorMode.ES10:
-                        Generator = new ESGenerator("ES10", dirName);
-                        break;
-                    
-                    case GeneratorMode.ES11:
-                        Generator = new ESGenerator("ES11", dirName);
-                        break;
-                    
                     case GeneratorMode.ES20:
                         Generator = new ESGenerator("ES20", dirName);
-                        break;
-
-                    case GeneratorMode.CL10:
-                        Generator = new CLGenerator("CL10", dirName);
                         break;
                     
                     case GeneratorMode.Unknown:
@@ -242,22 +226,6 @@ namespace Bind
                 mode = GeneratorMode.GL2;
                 Settings.DefaultOutputNamespace = "OpenTK.Graphics.OpenGL";
             }
-            else if (arg == "es10")
-            {
-                mode = GeneratorMode.ES10;
-                Settings.DefaultOutputPath = Path.Combine(
-                    Directory.GetParent(Settings.DefaultOutputPath).ToString(),
-                    dirName);
-                Settings.DefaultOutputNamespace = "OpenTK.Graphics.ES10";
-            }
-            else if (arg == "es11")
-            {
-                mode = GeneratorMode.ES11;
-                Settings.DefaultOutputPath = Path.Combine(
-                    Directory.GetParent(Settings.DefaultOutputPath).ToString(),
-                    dirName);
-                Settings.DefaultOutputNamespace = "OpenTK.Graphics.ES11";
-            }
             else if (arg == "es20")
             {
                 mode = GeneratorMode.ES20;
@@ -265,10 +233,6 @@ namespace Bind
                     Directory.GetParent(Settings.DefaultOutputPath).ToString(),
                     dirName);
                 Settings.DefaultOutputNamespace = "OpenTK.Graphics.ES20";
-            }
-            else if (arg == "cl" || arg == "cl10")
-            {
-                mode = GeneratorMode.CL10;
             }
             else
             {
@@ -288,7 +252,7 @@ Available switches:
 -namespace:  Same as -ns
 -class:      Output class (e.g. -class:GL3).
              Default: GL/Wgl/Glu/Glx (depends on -mode)
--mode:       GL/ES10/ES11/ES20/CL
+-mode:       GL/ES20/CL
 -o/-option:  Set advanced option. Available options:
     -o:tao   Tao compatibility mode.
     -o:enums Follow OpenGL instead .Net naming conventions.

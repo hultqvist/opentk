@@ -150,9 +150,6 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="CL\CLGenerator.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Structures\Type.cs">
       <SubType>Code</SubType>
     </Compile>

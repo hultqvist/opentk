@@ -1,38 +1,16 @@
-# License Applicability. Except to the extent portions of this file are
-# made subject to an alternative license as permitted in the SGI Free
-# Software License B, Version 1.1 (the "License"), the contents of this
-# file are subject only to the provisions of the License. You may not use
-# this file except in compliance with the License. You may obtain a copy
-# of the License at Silicon Graphics, Inc., attn: Legal Services, 1600
-# Amphitheatre Parkway, Mountain View, CA 94043-1351, or at:
+# Copyright (c) 1991-2005 Silicon Graphics, Inc. All Rights Reserved.
+# Copyright (c) 2006-2010 The Khronos Group, Inc.
 #
-# http://oss.sgi.com/projects/FreeB
+# This document is licensed under the SGI Free Software B License Version
+# 2.0. For details, see http://oss.sgi.com/projects/FreeB/ .
 #
-# Note that, as provided in the License, the Software is distributed on an
-# "AS IS" basis, with ALL EXPRESS AND IMPLIED WARRANTIES AND CONDITIONS
-# DISCLAIMED, INCLUDING, WITHOUT LIMITATION, ANY IMPLIED WARRANTIES AND
-# CONDITIONS OF MERCHANTABILITY, SATISFACTORY QUALITY, FITNESS FOR A
-# PARTICULAR PURPOSE, AND NON-INFRINGEMENT.
-#
-# Original Code. The Original Code is: OpenGL Sample Implementation,
-# Version 1.2.1, released January 26, 2000, developed by Silicon Graphics,
-# Inc. The Original Code is Copyright (c) 1991-2005 Silicon Graphics, Inc.
-# Copyright in any portions created by third parties is as indicated
-# elsewhere herein. All Rights Reserved.
-#
-# Additional Notice Provisions: This software was created using the
-# OpenGL(R) version 1.2.1 Sample Implementation published by SGI, but has
-# not been independently verified as being compliant with the OpenGL(R)
-# version 1.2.1 Specification.
-#
-# $Date: 2005/01/20 08:44:12 $ $Revision: 1.8 $
-# $Header: /oss/CVS/cvs/projects/ogl-sample/main/doc/registry/specs/wglenumext.spec,v 1.8 2005/01/20 08:44:12 ljp Exp $
+# $Revision: 17027 $ on $Date: 2012-03-05 11:19:50 -0800 (Mon, 05 Mar 2012) $
 
 # List of WGL enumerants for wglext.h header
 #
-# This is NOT the master WGL enumerant registry. Microsoft used
-#   to maintain that, but given their limited interest in OpenGL,
-#   SGI now maintains the registry in wglenum.spec.
+# This is not the master WGL enumerant registry. Microsoft used
+#   to maintain that, but given their limited interest in OpenGL, the
+#   Khronos API Registrar maintains the registry in wglenum.spec.
 #
 # Unlike wglenum.spec, wglenumext.spec is
 #   (1) In order by extension number
@@ -48,9 +26,9 @@
 
 passthru:
 passthru: /* Header file version number */
-passthru: /* wglext.h last updated 2005/01/07 */
-passthru: /* Current version at http://oss.sgi.com/projects/ogl-sample/registry/ */
-passthru: #define WGL_WGLEXT_VERSION 6
+passthru: /* wglext.h last updated 2012/01/04 */
+passthru: /* Current version at http://www.opengl.org/registry/ */
+passthru: #define WGL_WGLEXT_VERSION 24
 
 ###############################################################################
 #
@@ -203,6 +181,42 @@ WGL_ARB_render_texture enum:
 WGL_ARB_pixel_format_float enum:
 	WGL_TYPE_RGBA_FLOAT_ARB				= 0x21A0
 
+###############################################################################
+
+# ARB Extension #46
+WGL_ARB_framebuffer_sRGB enum:
+	WGL_FRAMEBUFFER_SRGB_CAPABLE_ARB		= 0x20A9
+
+###############################################################################
+
+# ARB Extension #55
+WGL_ARB_create_context enum:
+	WGL_CONTEXT_DEBUG_BIT_ARB			= 0x00000001
+	WGL_CONTEXT_FORWARD_COMPATIBLE_BIT_ARB		= 0x00000002
+	WGL_CONTEXT_MAJOR_VERSION_ARB			= 0x2091
+	WGL_CONTEXT_MINOR_VERSION_ARB			= 0x2092
+	WGL_CONTEXT_LAYER_PLANE_ARB			= 0x2093
+	WGL_CONTEXT_FLAGS_ARB				= 0x2094
+	ERROR_INVALID_VERSION_ARB			= 0x2095
+
+###############################################################################
+
+# ARB Extension #74
+WGL_ARB_create_context_profile enum:
+	WGL_CONTEXT_PROFILE_MASK_ARB			= 0x9126
+	WGL_CONTEXT_CORE_PROFILE_BIT_ARB		= 0x00000001
+	WGL_CONTEXT_COMPATIBILITY_PROFILE_BIT_ARB	= 0x00000002
+	ERROR_INVALID_PROFILE_ARB			= 0x2096
+
+###############################################################################
+
+# ARB Extension #102
+# All values are shared with GLX and GL
+WGL_ARB_create_context_robustness enum:
+	WGL_CONTEXT_ROBUST_ACCESS_BIT_ARB		= 0x00000004
+	WGL_LOSE_CONTEXT_ON_RESET_ARB			= 0x8252
+	WGL_CONTEXT_RESET_NOTIFICATION_STRATEGY_ARB	= 0x8256
+	WGL_NO_RESET_NOTIFICATION_ARB			= 0x8261
 
 ###############################################################################
 #
@@ -380,3 +394,127 @@ WGL_NV_float_buffer enum:
 	WGL_TEXTURE_FLOAT_RG_NV				= 0x20B6
 	WGL_TEXTURE_FLOAT_RGB_NV			= 0x20B7
 	WGL_TEXTURE_FLOAT_RGBA_NV			= 0x20B8
+
+###############################################################################
+
+# Extension #313
+WGL_3DL_stereo_control enum:
+	WGL_STEREO_EMITTER_ENABLE_3DL			= 0x2055
+	WGL_STEREO_EMITTER_DISABLE_3DL			= 0x2056
+	WGL_STEREO_POLARITY_NORMAL_3DL			= 0x2057
+	WGL_STEREO_POLARITY_INVERT_3DL			= 0x2058
+
+###############################################################################
+
+# Extension #328
+WGL_EXT_pixel_format_packed_float enum:
+	WGL_TYPE_RGBA_UNSIGNED_FLOAT_EXT		= 0x20A8
+
+###############################################################################
+
+# Extension #337
+WGL_EXT_framebuffer_sRGB enum:
+	WGL_FRAMEBUFFER_SRGB_CAPABLE_EXT		= 0x20A9
+
+###############################################################################
+
+# Extension #347
+WGL_NV_present_video enum:
+	WGL_NUM_VIDEO_SLOTS_NV				= 0x20F0
+
+###############################################################################
+
+# Extension #349
+WGL_NV_video_out enum:
+	WGL_BIND_TO_VIDEO_RGB_NV			= 0x20C0
+	WGL_BIND_TO_VIDEO_RGBA_NV			= 0x20C1
+	WGL_BIND_TO_VIDEO_RGB_AND_DEPTH_NV		= 0x20C2
+	WGL_VIDEO_OUT_COLOR_NV				= 0x20C3
+	WGL_VIDEO_OUT_ALPHA_NV				= 0x20C4
+	WGL_VIDEO_OUT_DEPTH_NV				= 0x20C5
+	WGL_VIDEO_OUT_COLOR_AND_ALPHA_NV		= 0x20C6
+	WGL_VIDEO_OUT_COLOR_AND_DEPTH_NV		= 0x20C7
+	WGL_VIDEO_OUT_FRAME				= 0x20C8
+	WGL_VIDEO_OUT_FIELD_1				= 0x20C9
+	WGL_VIDEO_OUT_FIELD_2				= 0x20CA
+	WGL_VIDEO_OUT_STACKED_FIELDS_1_2		= 0x20CB
+	WGL_VIDEO_OUT_STACKED_FIELDS_2_1		= 0x20CC
+
+###############################################################################
+
+# No new tokens
+# Extension #351
+WGL_NV_swap_group enum:
+
+###############################################################################
+
+# Extension #355
+WGL_NV_gpu_affinity enum:
+	WGL_ERROR_INCOMPATIBLE_AFFINITY_MASKS_NV	= 0x20D0
+	WGL_ERROR_MISSING_AFFINITY_MASK_NV		= 0x20D1
+
+###############################################################################
+
+# Extension #361
+WGL_AMD_gpu_association enum:
+	WGL_GPU_VENDOR_AMD				= 0x1F00
+	WGL_GPU_RENDERER_STRING_AMD			= 0x1F01
+	WGL_GPU_OPENGL_VERSION_STRING_AMD		= 0x1F02
+	WGL_GPU_FASTEST_TARGET_GPUS_AMD			= 0x21A2
+	WGL_GPU_RAM_AMD					= 0x21A3
+	WGL_GPU_CLOCK_AMD				= 0x21A4
+	WGL_GPU_NUM_PIPES_AMD				= 0x21A5
+	WGL_GPU_NUM_SIMD_AMD				= 0x21A6
+	WGL_GPU_NUM_RB_AMD				= 0x21A7
+	WGL_GPU_NUM_SPI_AMD				= 0x21A8
+
+###############################################################################
+
+# Extension #374
+WGL_NV_video_capture enum:
+	WGL_UNIQUE_ID_NV				= 0x20CE
+	WGL_NUM_VIDEO_CAPTURE_SLOTS_NV			= 0x20CF
+
+###############################################################################
+
+# No new tokens
+# Extension #376
+WGL_NV_copy_image enum:
+
+###############################################################################
+
+# Extension #393
+WGL_NV_multisample_coverage enum:
+	WGL_COVERAGE_SAMPLES_NV				= 0x2042
+	WGL_COLOR_SAMPLES_NV				= 0x20B9
+
+###############################################################################
+
+# Extension #400
+# All values are shared with GLX and GL
+WGL_EXT_create_context_es2_profile enum:
+	WGL_CONTEXT_ES2_PROFILE_BIT_EXT			= 0x00000004
+
+###############################################################################
+
+# Extension #407
+# Not a bitfield but not from an assigned range, either
+WGL_NV_DX_interop enum:
+	WGL_ACCESS_READ_ONLY_NV				= 0x00000000
+	WGL_ACCESS_READ_WRITE_NV			= 0x00000001
+	WGL_ACCESS_WRITE_DISCARD_NV			= 0x00000002
+
+###############################################################################
+
+# No new tokens
+# Extension #412
+WGL_NV_DX_interop2 enum:
+
+###############################################################################
+
+# No new tokens
+# Extension #415
+WGL_EXT_swap_control_tear enum:
+
+
+

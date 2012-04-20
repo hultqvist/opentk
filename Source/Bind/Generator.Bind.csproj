@@ -914,6 +914,10 @@
     </None>
     <None Include="Specifications\License.txt">
     </None>
+    <None Include="Specifications\GL\enum.spec" />
+    <None Include="Specifications\GL\enumext.spec" />
+    <None Include="Specifications\GL\gl.spec" />
+    <None Include="Specifications\GL\gl.tm" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Specifications\Docs\glActiveShaderProgram.xml" />

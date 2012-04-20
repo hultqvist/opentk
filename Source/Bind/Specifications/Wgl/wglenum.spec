@@ -1,32 +1,10 @@
-# License Applicability. Except to the extent portions of this file are
-# made subject to an alternative license as permitted in the SGI Free
-# Software License B, Version 1.1 (the "License"), the contents of this
-# file are subject only to the provisions of the License. You may not use
-# this file except in compliance with the License. You may obtain a copy
-# of the License at Silicon Graphics, Inc., attn: Legal Services, 1600
-# Amphitheatre Parkway, Mountain View, CA 94043-1351, or at:
+# Copyright (c) 1991-2005 Silicon Graphics, Inc. All Rights Reserved.
+# Copyright (c) 2006-2010 The Khronos Group, Inc.
 #
-# http://oss.sgi.com/projects/FreeB
+# This document is licensed under the SGI Free Software B License Version
+# 2.0. For details, see http://oss.sgi.com/projects/FreeB/ .
 #
-# Note that, as provided in the License, the Software is distributed on an
-# "AS IS" basis, with ALL EXPRESS AND IMPLIED WARRANTIES AND CONDITIONS
-# DISCLAIMED, INCLUDING, WITHOUT LIMITATION, ANY IMPLIED WARRANTIES AND
-# CONDITIONS OF MERCHANTABILITY, SATISFACTORY QUALITY, FITNESS FOR A
-# PARTICULAR PURPOSE, AND NON-INFRINGEMENT.
-#
-# Original Code. The Original Code is: OpenGL Sample Implementation,
-# Version 1.2.1, released January 26, 2000, developed by Silicon Graphics,
-# Inc. The Original Code is Copyright (c) 1991-2005 Silicon Graphics, Inc.
-# Copyright in any portions created by third parties is as indicated
-# elsewhere herein. All Rights Reserved.
-#
-# Additional Notice Provisions: This software was created using the
-# OpenGL(R) version 1.2.1 Sample Implementation published by SGI, but has
-# not been independently verified as being compliant with the OpenGL(R)
-# version 1.2.1 Specification.
-#
-# $Date: 2005/01/20 08:44:12 $ $Revision: 1.6 $
-# $Header: /oss/CVS/cvs/projects/ogl-sample/main/doc/registry/specs/wglenum.spec,v 1.6 2005/01/20 08:44:12 ljp Exp $
+# $Revision: 14504 $ on $Date: 2011-04-13 21:31:13 -0700 (Wed, 13 Apr 2011) $
 
 # This is the master WGL enumerant registry.
 #
@@ -35,9 +13,9 @@
 #
 # Rules for modification are similar to the rules for the OpenGL
 # enumerant registry (gl.spec). Basically, don't modify this file
-# unless you're SGI's ARB Representative. In principle Microsoft
-# owns the WGL registry, but they have for practical purposes
-# ceded administration of it to SGI.
+# unless you're Khronos API Registrar. In principle Microsoft owns
+# the WGL registry, but they have for practical purposes ceded
+# administration of it to Khronos.
 #
 # Finally, note that this registry does not currently include
 # any core WGL enumerants - only enumerants defined by WGL
@@ -45,12 +23,32 @@
 
 ###############################################################################
 
+# Not a bitfield but not from an assigned range, either
+WGL_NV_DX_interop enum:
+	WGL_ACCESS_READ_ONLY_NV				= 0x00000000
+	WGL_ACCESS_READ_WRITE_NV			= 0x00000001
+	WGL_ACCESS_WRITE_DISCARD_NV			= 0x00000002
+
 # Bitmasks - not consumed by the registry
 WGL_ARB_buffer_region enum:
 	WGL_FRONT_COLOR_BUFFER_BIT_ARB			= 0x00000001
 	WGL_BACK_COLOR_BUFFER_BIT_ARB			= 0x00000002
 	WGL_DEPTH_BUFFER_BIT_ARB			= 0x00000004
 	WGL_STENCIL_BUFFER_BIT_ARB			= 0x00000008
+
+# CONTEXT_FLAGS_ARB bits (shared with GLX and GL)
+WGLContextFlags enum:
+	WGL_CONTEXT_DEBUG_BIT_ARB			= 0x00000001	# ARB_create_context
+	WGL_CONTEXT_FORWARD_COMPATIBLE_BIT_ARB		= 0x00000002	# ARB_create_context
+	WGL_CONTEXT_ROBUST_ACCESS_BIT_ARB		= 0x00000004	# ARB_create_context_robustness
+
+# CONTEXT_PROFILE_MASK_ARB bits
+WGLContextProfileMask enum:
+	WGL_CONTEXT_CORE_PROFILE_BIT_ARB		= 0x00000001	# ARB_create_context_profile
+	WGL_CONTEXT_COMPATIBILITY_PROFILE_BIT_ARB	= 0x00000002	# ARB_create_context_profile
+	WGL_CONTEXT_ES2_PROFILE_BIT_EXT			= 0x00000004	# EXT_create_context_es2_profile
+
+# AMD: 0x1F00-0x1F02 (additional; see below; equivalent to corresponding GL token)
 
 ###############################################################################
 
@@ -210,6 +208,9 @@ WGL_ARB_multisample enum:
 	WGL_SAMPLE_BUFFERS_ARB				= 0x2041
 	WGL_SAMPLES_ARB					= 0x2042
 
+WGL_NV_multisample_coverage enum: (additional; see below)
+	WGL_COVERAGE_SAMPLES_NV				= 0x2042
+
 ###############################################################################
 
 WGL_EXT_make_current_read enum:
@@ -244,7 +245,7 @@ WGL_I3D_gamma enum:
 
 ###############################################################################
 
-# Intense3D hasn't spec'ed this extension, but it's in the enum registry
+# Intense3D hasn't specified this extension, but it's in the enum registry
 WGL_I3D_digital_video_control enum:
 	WGL_DIGITAL_VIDEO_CURSOR_ALPHA_FRAMEBUFFER_I3D	= 0x2050
 	WGL_DIGITAL_VIDEO_CURSOR_ALPHA_VALUE_I3D	= 0x2051
@@ -257,7 +258,15 @@ WGL_I3D_digital_video_control enum:
 
 ###############################################################################
 
-# Intense3D_future_use: 0x2055-0x205F
+WGL_3DL_stereo_control enum:
+	WGL_STEREO_EMITTER_ENABLE_3DL			= 0x2055
+	WGL_STEREO_EMITTER_DISABLE_3DL			= 0x2056
+	WGL_STEREO_POLARITY_NORMAL_3DL			= 0x2057
+	WGL_STEREO_POLARITY_INVERT_3DL			= 0x2058
+
+###############################################################################
+
+# Intense3D_future_use: 0x2059-0x205F
 
 ###############################################################################
 
@@ -306,11 +315,26 @@ WGL_ARB_render_texture enum:
 	WGL_AUX8_ARB					= 0x208F
 	WGL_AUX9_ARB					= 0x2090
 
-# ARB_future_use: 0x2091-0x209F
+# Shared with GLX - synchronize create_context_* enums with glxenum.spec!
+
+# Also includes a bitmask - see CotnextFlags above
+WGL_ARB_create_context enum:
+	WGL_CONTEXT_MAJOR_VERSION_ARB			= 0x2091
+	WGL_CONTEXT_MINOR_VERSION_ARB			= 0x2092
+	WGL_CONTEXT_LAYER_PLANE_ARB			= 0x2093
+	WGL_CONTEXT_FLAGS_ARB				= 0x2094
+# 0x2096 collides with GLX_CONTEXT_ALLOW_BUFFER_BYTE_ORDER_MISMATCH!
+	ERROR_INVALID_VERSION_ARB			= 0x2095
+
+# Also includes a bitmask - see ContextProfileMask above
+WGL_ARB_create_context_profile enum: (additional; see above and below)
+	ERROR_INVALID_PROFILE_ARB			= 0x2096
+
+# ARB_future_use: 0x2097-0x209F
 
 ###############################################################################
 
-# NVIDIA: 0x20A0-0x219F
+# NVIDIA: 0x20A0-0x219F (shared with GLX)
 
 WGL_NV_render_texture_rectangle enum:
 	WGL_BIND_TO_TEXTURE_RECTANGLE_RGB_NV		= 0x20A0
@@ -324,7 +348,16 @@ WGL_NV_render_depth_texture enum:
 	WGL_TEXTURE_DEPTH_COMPONENT_NV			= 0x20A6
 	WGL_DEPTH_COMPONENT_NV				= 0x20A7
 
-# NV_future_use: 0x20A8-0x20AF
+WGL_EXT_pixel_format_packed_float enum:
+	WGL_TYPE_RGBA_UNSIGNED_FLOAT_EXT		= 0x20A8
+
+WGL_ARB_framebuffer_sRGB enum:
+	WGL_FRAMEBUFFER_SRGB_CAPABLE_ARB		= 0x20A9
+
+WGL_EXT_framebuffer_sRGB enum:
+	WGL_FRAMEBUFFER_SRGB_CAPABLE_EXT		= 0x20A9
+
+# NV_future_use: 0x20AA-0x20AF
 
 WGL_NV_float_buffer enum:
 	WGL_FLOAT_COMPONENTS_NV				= 0x20B0
@@ -337,18 +370,66 @@ WGL_NV_float_buffer enum:
 	WGL_TEXTURE_FLOAT_RGB_NV			= 0x20B7
 	WGL_TEXTURE_FLOAT_RGBA_NV			= 0x20B8
 
-# NV_future_use: 0x20B9-0x219F
+WGL_NV_multisample_coverage enum: (additional; see below)
+	WGL_COLOR_SAMPLES_NV				= 0x20B9
+
+# NV_future_use: 0x20BA-0x20BF
+
+WGL_NV_video_out enum:
+	WGL_BIND_TO_VIDEO_RGB_NV			= 0x20C0
+	WGL_BIND_TO_VIDEO_RGBA_NV			= 0x20C1
+	WGL_BIND_TO_VIDEO_RGB_AND_DEPTH_NV		= 0x20C2
+	WGL_VIDEO_OUT_COLOR_NV				= 0x20C3
+	WGL_VIDEO_OUT_ALPHA_NV				= 0x20C4
+	WGL_VIDEO_OUT_DEPTH_NV				= 0x20C5
+	WGL_VIDEO_OUT_COLOR_AND_ALPHA_NV		= 0x20C6
+	WGL_VIDEO_OUT_COLOR_AND_DEPTH_NV		= 0x20C7
+	WGL_VIDEO_OUT_FRAME				= 0x20C8
+	WGL_VIDEO_OUT_FIELD_1				= 0x20C9
+	WGL_VIDEO_OUT_FIELD_2				= 0x20CA
+	WGL_VIDEO_OUT_STACKED_FIELDS_1_2		= 0x20CB
+	WGL_VIDEO_OUT_STACKED_FIELDS_2_1		= 0x20CC
+
+# 0x20CD reserved for GLX_DEVICE_ID_NV (not present in WGL interface)
+NV_video_capture enum:
+	WGL_UNIQUE_ID_NV				= 0x20CE
+	WGL_NUM_VIDEO_CAPTURE_SLOTS_NV			= 0x20CF
+
+WGL_NV_gpu_affinity:
+	WGL_ERROR_INCOMPATIBLE_AFFINITY_MASKS_NV	= 0x20D0
+	WGL_ERROR_MISSING_AFFINITY_MASK_NV		= 0x20D1
+
+# NV_future_use: 0x20D2-0x20EF
+
+WGL_NV_present_video enum:
+	WGL_NUM_VIDEO_SLOTS_NV				= 0x20F0
+
+# NV_future_use: 0x20F1-0x219F
 
 ###############################################################################
 
-# ATI: 0x21A0-0x21AF
+# AMD: 0x21A0-0x21AF
 WGL_ARB_pixel_format_float enum:
 	WGL_TYPE_RGBA_FLOAT_ARB				= 0x21A0
 
 WGL_ATI_pixel_format_float enum:
 	WGL_TYPE_RGBA_FLOAT_ATI				= 0x21A0
 
-# ATI_future_use: 0x21A1-0x21AF
+# AMD_future_use: 0x21A1
+
+WGL_AMD_gpu_association enum:
+	WGL_GPU_VENDOR_AMD				= 0x1F00
+	WGL_GPU_RENDERER_STRING_AMD			= 0x1F01
+	WGL_GPU_OPENGL_VERSION_STRING_AMD		= 0x1F02
+	WGL_GPU_FASTEST_TARGET_GPUS_AMD			= 0x21A2
+	WGL_GPU_RAM_AMD					= 0x21A3
+	WGL_GPU_CLOCK_AMD				= 0x21A4
+	WGL_GPU_NUM_PIPES_AMD				= 0x21A5
+	WGL_GPU_NUM_SIMD_AMD				= 0x21A6
+	WGL_GPU_NUM_RB_AMD				= 0x21A7
+	WGL_GPU_NUM_SPI_AMD				= 0x21A8
+
+# AMD_future_use: 0x21A9-0x21AF
 
 ###############################################################################
 
@@ -356,9 +437,21 @@ WGL_ATI_pixel_format_float enum:
 
 ###############################################################################
 
-# Any_vendor_future_use: 0x21C0-0xFFFF
+# Any_vendor_future_use: 0x21C0-0x2FFFF
 
-# Added by hand:
-WGL_font_type enum:
-	WGL_FONT_LINES						= 0
-	WGL_FONT_POLYGONS					= 1
+###############################################################################
+
+# Values shared with GLX and/or GL
+
+# Also includes a bitmask - see ContextFlags above
+# All values are shared with GLX and GL
+WGL_ARB_create_context_robustness:
+	WGL_LOSE_CONTEXT_ON_RESET_ARB			= 0x8252    # shared with GLX and GL
+	WGL_CONTEXT_RESET_NOTIFICATION_STRATEGY_ARB	= 0x8256    # shared with GLX and GL
+	WGL_NO_RESET_NOTIFICATION_ARB			= 0x8261    # shared with GLX and GL
+
+# Also includes a bitmask - see ContextProfileMask above
+# All values are shared with GLX and GL
+WGL_ARB_create_context_profile enum:
+	WGL_CONTEXT_PROFILE_MASK_ARB			= 0x9126
+

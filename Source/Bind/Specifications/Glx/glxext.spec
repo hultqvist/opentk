@@ -1,39 +1,20 @@
 # glxext.spec file
 # DON'T REMOVE PREVIOUS LINE!!! libspec depends on it!
 #
-# License Applicability. Except to the extent portions of this file are
-# made subject to an alternative license as permitted in the SGI Free
-# Software License B, Version 1.1 (the "License"), the contents of this
-# file are subject only to the provisions of the License. You may not use
-# this file except in compliance with the License. You may obtain a copy
-# of the License at Silicon Graphics, Inc., attn: Legal Services, 1600
-# Amphitheatre Parkway, Mountain View, CA 94043-1351, or at:
+# Copyright (c) 1991-2005 Silicon Graphics, Inc. All Rights Reserved.
+# Copyright (c) 2006-2010 The Khronos Group, Inc.
 #
-# http://oss.sgi.com/projects/FreeB
+# This document is licensed under the SGI Free Software B License Version
+# 2.0. For details, see http://oss.sgi.com/projects/FreeB/ .
 #
-# Note that, as provided in the License, the Software is distributed on an
-# "AS IS" basis, with ALL EXPRESS AND IMPLIED WARRANTIES AND CONDITIONS
-# DISCLAIMED, INCLUDING, WITHOUT LIMITATION, ANY IMPLIED WARRANTIES AND
-# CONDITIONS OF MERCHANTABILITY, SATISFACTORY QUALITY, FITNESS FOR A
-# PARTICULAR PURPOSE, AND NON-INFRINGEMENT.
-#
-# Original Code. The Original Code is: OpenGL Sample Implementation,
-# Version 1.2.1, released January 26, 2000, developed by Silicon Graphics,
-# Inc. The Original Code is Copyright (c) 1991-2005 Silicon Graphics, Inc.
-# Copyright in any portions created by third parties is as indicated
-# elsewhere herein. All Rights Reserved.
-#
-# Additional Notice Provisions: This software was created using the
-# OpenGL(R) version 1.2.1 Sample Implementation published by SGI, but has
-# not been independently verified as being compliant with the OpenGL(R)
-# version 1.2.1 Specification.
+# $Revision: 17002 $ on $Date: 2012-02-29 22:18:07 -0800 (Wed, 29 Feb 2012) $
 
 required-props:
 param:		retval retained
 glxflags:	client-handcode client-intercept server-handcode
 glxvendorglx:	*
 vectorequiv:	*
-category:	VERSION_1_3 VERSION_1_4 ARB_get_proc_address ARB_multisample ARB_fbconfig_float EXT_import_context SGIX_dmbuffer SGIX_fbconfig SGIX_pbuffer SGIX_swap_barrier SGIX_swap_group SGIX_video_resize SGIX_video_source SGI_cushion SGI_make_current_read SGI_swap_control SGI_video_sync SUN_get_transparent_index MESA_agp_offset MESA_copy_sub_buffer MESA_pixmap_colormap MESA_release_buffers MESA_set_3dfx_mode SGIX_visual_select_group OML_sync_control SGIX_hyperpipe
+category:	VERSION_1_3 VERSION_1_4 ARB_get_proc_address ARB_multisample ARB_fbconfig_float EXT_import_context SGIX_dmbuffer SGIX_fbconfig SGIX_pbuffer SGIX_swap_barrier SGIX_swap_group SGIX_video_resize SGIX_video_source SGI_cushion SGI_make_current_read SGI_swap_control SGI_video_sync SUN_get_transparent_index MESA_agp_offset MESA_copy_sub_buffer MESA_pixmap_colormap MESA_release_buffers MESA_set_3dfx_mode SGIX_visual_select_group OML_sync_control SGIX_hyperpipe EXT_texture_from_pixmap NV_swap_group NV_video_output NV_present_video ARB_create_context NV_video_capture NV_copy_image EXT_swap_control ARB_framebuffer_sRGB
 glxopcode:	*
 
 #
@@ -73,19 +54,49 @@ passthru:     int count;		  /* if nonzero, at least this many more */
 passthru: } GLXBufferClobberEventSGIX;
 passthru: #endif
 passthru:
-passthru: /* Define int32_t and int64_t types for UST/MSC */
+passthru: #ifndef GLX_NV_video_output
+passthru: typedef unsigned int GLXVideoDeviceNV;
+passthru: #endif
+passthru:
+passthru: #ifndef GLX_NV_video_capture
+passthru: typedef XID GLXVideoCaptureDeviceNV;
+passthru: #endif
+passthru:
+passthru: #ifndef GLEXT_64_TYPES_DEFINED
+passthru: /* This code block is duplicated in glext.h, so must be protected */
+passthru: #define GLEXT_64_TYPES_DEFINED
+passthru: /* Define int32_t, int64_t, and uint64_t types for UST/MSC */
 passthru: /* (as used in the GLX_OML_sync_control extension). */
 passthru: #if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L
 passthru: #include <inttypes.h>
-passthru: #elif defined( __VMS )
+passthru: #elif defined(__sun__) || defined(__digital__)
+passthru: #include <inttypes.h>
+passthru: #if defined(__STDC__)
+passthru: #if defined(__arch64__) || defined(_LP64)
+passthru: typedef long int int64_t;
+passthru: typedef unsigned long int uint64_t;
+passthru: #else
+passthru: typedef long long int int64_t;
+passthru: typedef unsigned long long int uint64_t;
+passthru: #endif /* __arch64__ */
+passthru: #endif /* __STDC__ */
+passthru: #elif defined( __VMS ) || defined(__sgi)
 passthru: #include <inttypes.h>
 passthru: #elif defined(__SCO__) || defined(__USLC__)
 passthru: #include <stdint.h>
 passthru: #elif defined(__UNIXOS2__) || defined(__SOL64__)
 passthru: typedef long int int32_t;
 passthru: typedef long long int int64_t;
+passthru: typedef unsigned long long int uint64_t;
+passthru: #elif defined(_WIN32) && defined(__GNUC__)
+passthru: #include <stdint.h>
+passthru: #elif defined(_WIN32)
+passthru: typedef __int32 int32_t;
+passthru: typedef __int64 int64_t;
+passthru: typedef unsigned __int64 uint64_t;
 passthru: #else
-passthru: #warn "int32_t and int64_t are undefined!"
+passthru: #include <inttypes.h>     /* Fallback option */
+passthru: #endif
 passthru: #endif
 passthru:
 
@@ -191,7 +202,7 @@ QueryDrawable(dpy, draw, attribute, value)
 	param		dpy		Display out reference
 	param		draw		GLXDrawable in value
 	param		attribute	int in value
-	param		value		Uint out reference
+	param		value		uint out reference
 	category	VERSION_1_3
 	glxflags	client-handcode client-intercept server-handcode
 
@@ -303,6 +314,55 @@ newcategory: ARB_fbconfig_float
 
 ###############################################################################
 #
+# ARB Extension #46
+# ARB_framebuffer_sRGB commands
+#
+###############################################################################
+
+# (none)
+newcategory: ARB_framebuffer_sRGB
+
+###############################################################################
+#
+# ARB Extension #56
+# ARB_create_context commands
+#
+###############################################################################
+
+CreateContextAttribsARB(dpy, config, share_context, direct, attrib_list)
+	return		GLXContext
+	param		dpy		Display out reference
+	param		config		GLXFBConfig in value
+	param		share_context	GLXContext in value
+	param		direct		Bool in value
+	param		attrib_list	int in reference
+	category	ARB_create_context
+	glxflags	client-handcode client-intercept server-handcode
+	glxopcode	34
+
+###############################################################################
+#
+# ARB Extension #75
+# ARB_create_context_profile commands
+#
+###############################################################################
+
+# (none)
+newcategory: ARB_create_context_profile
+
+###############################################################################
+#
+# ARB Extension #101
+# ARB_create_context_robustness commands
+#
+###############################################################################
+
+# (none)
+newcategory: ARB_create_context_robustness
+
+
+###############################################################################
+#
 # Extension #25
 # SGIS_multisample commands
 #
@@ -344,7 +404,7 @@ SwapIntervalSGI(interval)
 
 GetVideoSyncSGI(count)
 	return		int
-	param		count		Uint out reference
+	param		count		uint out reference
 	category	SGI_video_sync
 	glxflags	client-handcode client-intercept server-handcode
 
@@ -352,7 +412,7 @@ WaitVideoSyncSGI(divisor, remainder, count)
 	return		int
 	param		divisor		int in value
 	param		remainder	int in value
-	param		count		Uint out reference
+	param		count		uint out reference
 	category	SGI_video_sync
 	glxflags	client-handcode client-intercept server-handcode
 
@@ -540,8 +600,8 @@ CreateGLXPbufferSGIX(dpy, config, width,  height, attrib_list)
 	return		GLXPbufferSGIX
 	param		dpy		Display out reference
 	param		config		GLXFBConfigSGIX in value
-	param		width		Uint in value
-	param		height		Uint in value
+	param		width		uint in value
+	param		height		uint in value
 	param		attrib_list	int out reference
 	category	SGIX_pbuffer
 	glxflags	client-handcode server-handcode
@@ -560,7 +620,7 @@ QueryGLXPbufferSGIX(dpy, pbuf, attribute, value)
 	param		dpy		Display out reference
 	param		pbuf		GLXPbufferSGIX in value
 	param		attribute	int in value
-	param		value		Uint out reference
+	param		value		uint out reference
 	category	SGIX_pbuffer
 
 SelectEventSGIX(dpy, drawable, mask)
@@ -961,7 +1021,7 @@ QueryHyperpipeBestAttribSGIX(dpy, timeSlice, attrib, size, attribList, returnAtt
 	param		timeSlice	int in value
 	param		attrib		int in value
 	param		size		int in value
-	param		attribList	void in array [COMPSIZE(size)]			# Changed out to in
+	param		attribList	void out array [COMPSIZE(size)]
 	param		returnAttribList void out array [COMPSIZE(size)]
 	glxflags	client-handcode server-handcode
 	category	SGIX_hyperpipe
@@ -973,7 +1033,7 @@ HyperpipeAttribSGIX(dpy, timeSlice, attrib, size, attribList)
 	param		timeSlice	int in value
 	param		attrib		int in value
 	param		size		int in value
-	param		attribList	void in array [COMPSIZE(size)]			# Changed out to in
+	param		attribList	void out array [COMPSIZE(size)]
 	glxflags	client-handcode server-handcode
 	category	SGIX_hyperpipe
 	glxvendorglx	???
@@ -1001,3 +1061,444 @@ GetAGPOffsetMESA(pointer)
 	param		pointer		void in reference
 	glxflags	client-handcode client-intercept server-handcode
 	category	MESA_agp_offset
+
+###############################################################################
+#
+# Extension #328
+# EXT_fbconfig_packed_float commands
+#
+###############################################################################
+
+# (none)
+newcategory: EXT_fbconfig_packed_float
+
+###############################################################################
+#
+# Extension #337
+# EXT_framebuffer_sRGB commands
+#
+###############################################################################
+
+# (none)
+newcategory: EXT_framebuffer_sRGB
+
+###############################################################################
+#
+# Extension #344
+# EXT_texture_from_pixmap commands
+#
+###############################################################################
+
+BindTexImageEXT(dpy, drawable, buffer, attrib_list)
+	return		void
+	param		dpy		Display out reference
+	param		drawable	GLXDrawable in value
+	param		buffer		int in value
+	param		attrib_list	int in reference
+	category	EXT_texture_from_pixmap
+	glxflags	client-handcode server-handcode
+	glxvendorglx	1330
+
+ReleaseTexImageEXT(dpy, drawable, buffer)
+	return		void
+	param		dpy		Display out reference
+	param		drawable	GLXDrawable in value
+	param		buffer		int in value
+	category	EXT_texture_from_pixmap
+	glxflags	client-handcode server-handcode
+	glxvendorglx	1331
+
+###############################################################################
+#
+# Extension #347
+# NV_present_video commands
+#
+###############################################################################
+
+EnumerateVideoDevicesNV(dpy, screen, nelements)
+	return		uintPointer
+	param		dpy		Display out reference
+	param		screen		int in value
+	param		nelements	int out reference
+	category	NV_present_video
+	glxflags	client-handcode server-handcode
+
+BindVideoDeviceNV(dpy, video_slot, video_device, attrib_list)
+	return		int
+	param		dpy		Display out reference
+	param		video_slot	uint in value
+	param		video_device	uint in value
+	param		attrib_list	int in reference
+	category	NV_present_video
+	glxflags	client-handcode server-handcode
+
+###############################################################################
+#
+# Extension #348
+# NV_video_output commands
+#
+###############################################################################
+
+GetVideoDeviceNV(dpy, screen, numVideoDevices, pVideoDevice)
+	return		int
+	param		dpy		Display out reference
+	param		screen		int in value
+	param		numVideoDevices int in value
+	param		pVideoDevice	GLXVideoDeviceNV out array [COMPSIZE(numVideoDevices)]
+	category	NV_video_output
+	glxflags	client-handcode server-handcode
+
+ReleaseVideoDeviceNV(dpy, screen, VideoDevice)
+	return		int
+	param		dpy		Display out reference
+	param		screen		int in value
+	param		VideoDevice	GLXVideoDeviceNV in value
+	category	NV_video_output
+	glxflags	client-handcode server-handcode
+
+BindVideoImageNV(dpy, VideoDevice, pbuf, iVideoBuffer)
+	return		int
+	param		dpy		Display out reference
+	param		VideoDevice	GLXVideoDeviceNV in value
+	param		pbuf		GLXPbuffer in value
+	param		iVideoBuffer	int in value
+	category	NV_video_output
+	glxflags	client-handcode server-handcode
+
+ReleaseVideoImageNV(dpy, pbuf)
+	return		int
+	param		dpy		Display out reference
+	param		pbuf		GLXPbuffer in value
+	category	NV_video_output
+	glxflags	client-handcode server-handcode
+
+SendPbufferToVideoNV(dpy, pbuf, iBufferType, pulCounterPbuffer, bBlock)
+	return		int
+	param		dpy		Display out reference
+	param		pbuf		GLXPbuffer in value
+	param		iBufferType	int in value
+	param		pulCounterPbuffer ulong out reference
+	param		bBlock		GLboolean in value
+	category	NV_video_output
+	glxflags	client-handcode server-handcode
+
+GetVideoInfoNV(dpy, screen, VideoDevice, pulCounterOutputPbuffer, pulCounterOutputVideo)
+	return		int
+	param		dpy		Display out reference
+	param		screen		int in value
+	param		VideoDevice	GLXVideoDeviceNV in value
+	param		pulCounterOutputPbuffer ulong out reference
+	param		pulCounterOutputVideo	ulong out reference
+	category	NV_video_output
+	glxflags	client-handcode server-handcode
+
+###############################################################################
+#
+# Extension #350
+# NV_swap_group commands
+#
+###############################################################################
+
+JoinSwapGroupNV(dpy, drawable, group)
+	return		Bool
+	param		dpy		Display out reference
+	param		drawable	GLXDrawable in value
+	param		group		GLuint in value
+	category	NV_swap_group
+	glxflags	client-handcode server-handcode
+
+BindSwapBarrierNV(dpy, group, barrier)
+	return		Bool
+	param		dpy		Display out reference
+	param		group		GLuint in value
+	param		barrier		GLuint in value
+	category	NV_swap_group
+	glxflags	client-handcode server-handcode
+
+QuerySwapGroupNV(dpy, drawable, group, barrier)
+	return		Bool
+	param		dpy		Display out reference
+	param		drawable	GLXDrawable in value
+	param		group		GLuint out reference
+	param		barrier		GLuint out reference
+	category	NV_swap_group
+	glxflags	client-handcode server-handcode
+
+QueryMaxSwapGroupsNV(dpy, screen, maxGroups, maxBarriers)
+	return		Bool
+	param		dpy		Display out reference
+	param		screen		int in value
+	param		maxGroups	GLuint out reference
+	param		maxBarriers	GLuint out reference
+	category	NV_swap_group
+	glxflags	client-handcode server-handcode
+
+QueryFrameCountNV(dpy, screen, count)
+	return		Bool
+	param		dpy		Display out reference
+	param		screen		int in value
+	param		count		GLuint out reference
+	category	NV_swap_group
+	glxflags	client-handcode server-handcode
+
+ResetFrameCountNV(dpy, screen)
+	return		Bool
+	param		dpy		Display out reference
+	param		screen		int in value
+	category	NV_swap_group
+	glxflags	client-handcode server-handcode
+
+###############################################################################
+#
+# Extension #374
+# NV_video_capture commands
+#
+###############################################################################
+
+BindVideoCaptureDeviceNV(dpy, video_capture_slot, device)
+	return		int
+	param		dpy		Display out reference
+	param		video_capture_slot uint in value
+	param		device		GLXVideoCaptureDeviceNV in value
+	category	NV_video_capture
+	glxflags	client-handcode server-handcode
+
+EnumerateVideoCaptureDevicesNV(dpy, screen, nelements)
+	return		GLXVideoCaptureDeviceNVPointer
+	param		dpy		Display out reference
+	param		screen		int in value
+	param		nelements	int out reference
+	category	NV_video_capture
+	glxflags	client-handcode server-handcode
+
+LockVideoCaptureDeviceNV(dpy, device)
+	return		void
+	param		dpy		Display out reference
+	param		device		GLXVideoCaptureDeviceNV in value
+	category	NV_video_capture
+	glxflags	client-handcode server-handcode
+
+QueryVideoCaptureDeviceNV(dpy, device, attribute, value)
+	return		int
+	param		dpy		Display out reference
+	param		device		GLXVideoCaptureDeviceNV in value
+	param		attribute	int in value
+	param		value		int out array [COMPSIZE(attribute)]
+	category	NV_video_capture
+	glxflags	client-handcode server-handcode
+
+ReleaseVideoCaptureDeviceNV(dpy, device)
+	return		void
+	param		dpy		Display out reference
+	param		device		GLXVideoCaptureDeviceNV in value
+	category	NV_video_capture
+	glxflags	client-handcode server-handcode
+
+###############################################################################
+#
+# Extension #375
+# EXT_swap_control commands
+#
+###############################################################################
+
+SwapIntervalEXT(dpy, drawable, interval)
+	return		void
+	param		dpy		Display out reference
+	param		drawable	GLXDrawable in value
+	param		interval	int in value
+	category	EXT_swap_control
+	glxflags	client-handcode server-handcode
+	glxvendorglx	1416
+
+###############################################################################
+#
+# Extension #376
+# NV_copy_image commands
+#
+###############################################################################
+
+CopyImageSubDataNV(dpy, srcCtx, srcName, srcTarget, srcLevel, srcX, srcY, srcZ, dstCtx, dstName, dstTarget, dstLevel, dstX, dstY, dstZ, width, height, depth)
+	return		void
+	param		dpy		Display out reference
+	param		srcCtx		GLXContext in value
+	param		srcName		GLuint in value
+	param		srcTarget	GLenum in value
+	param		srcLevel	GLint in value
+	param		srcX		GLint in value
+	param		srcY		GLint in value
+	param		srcZ		GLint in value
+	param		dstCtx		GLXContext in value
+	param		dstName		GLuint in value
+	param		dstTarget	GLenum in value
+	param		dstLevel	GLint in value
+	param		dstX		GLint in value
+	param		dstY		GLint in value
+	param		dstZ		GLint in value
+	param		width		GLsizei in value
+	param		height		GLsizei in value
+	param		depth		GLsizei in value
+	category	NV_copy_image
+	glxflags	client-handcode server-handcode
+
+###############################################################################
+#
+# Extension #384
+# INTEL_swap_event commands
+#
+###############################################################################
+
+# (none)
+newcategory: INTEL_swap_event
+
+###############################################################################
+#
+# Extension #393
+# NV_multisample_coverage commands
+#
+###############################################################################
+
+# (none)
+newcategory: NV_multisample_coverage
+
+###############################################################################
+#
+# Extension #399
+# AMD_gpu_association commands
+#
+###############################################################################
+
+# These are a weird mishmash of X and Windows types - are they correct?
+# Leave out of glxext.h for the time being.
+
+#@    UINT  glXGetGPUIDsAMD(UINT maxCount, UINT *ids);
+#@    INT   glXGetGPUInfoAMD(UINT id, INT property, GLenum dataType,
+#@			     UINT size, void *data)
+#@    UINT  glXGetContextGPUIDAMD(GLXContext ctx);
+#@    HGLRC glXCreateAssociatedContextAMD(UINT id, GLXContext share_list);
+#@    HGLRC glXCreateAssociatedContextAttribsAMD(UINT id, GLXContext share_context,
+#@						 const int *attribList);
+#@    BOOL  glXDeleteAssociatedContextAMD(GLXContext ctx);
+#@    BOOL  glXMakeAssociatedContextCurrentAMD(GLXContext ctx);
+#@    HGLRC glXGetCurrentAssociatedContextAMD(void);
+#@    VOID  glXBlitContextFramebufferAMD(GLXContext dstCtx, GLint srcX0, GLint srcY0,
+#@					 GLint srcX1, GLint srcY1, GLint dstX0,
+#@					 GLint dstY0, GLint dstX1, GLint dstY1,
+#@					 GLbitfield mask, GLenum filter);
+
+#@ glXGetGPUIDsAMD(maxCount, ids)
+#@	   return	   UINT
+#@	   param	   maxCount	   UINT in value
+#@	   param	   ids		   UINT in array [???]
+#@	   category	   AMD_gpu_association
+#@	   version	   4.1
+#@	   extension
+#@	   glxropcode	   ?
+#@	   glxflags	   ignore
+#@	   offset	   ?
+#@
+#@ glXGetGPUInfoAMD(id, property, dataType, size, data)
+#@	   return	   INT
+#@	   param	   id		   UINT in value
+#@	   param	   property	   INT in value
+#@	   param	   dataType	   GLenum in value
+#@	   param	   size		   UINT in value
+#@	   param	   data		   void in array [???]
+#@	   category	   AMD_gpu_association
+#@	   version	   4.1
+#@	   extension
+#@	   glxropcode	   ?
+#@	   glxflags	   ignore
+#@	   offset	   ?
+#@
+#@ glXGetContextGPUIDAMD(ctx)
+#@	   return	   UINT
+#@	   param	   ctx		   GLXContext in value
+#@	   category	   AMD_gpu_association
+#@	   version	   4.1
+#@	   extension
+#@	   glxropcode	   ?
+#@	   glxflags	   ignore
+#@	   offset	   ?
+#@
+#@ glXCreateAssociatedContextAMD(id, share_list)
+#@	   return	   HGLRC
+#@	   param	   id		   UINT in value
+#@	   param	   share_list	   GLXContext in value
+#@	   category	   AMD_gpu_association
+#@	   version	   4.1
+#@	   extension
+#@	   glxropcode	   ?
+#@	   glxflags	   ignore
+#@	   offset	   ?
+#@
+#@ glXCreateAssociatedContextAttribsAMD(id, share_context, attribList)
+#@	   return	   HGLRC
+#@	   param	   id		   UINT in value
+#@	   param	   share_context   GLXContext in value
+#@	   param	   attribList	   Int32 in array [???]
+#@	   category	   AMD_gpu_association
+#@	   version	   4.1
+#@	   extension
+#@	   glxropcode	   ?
+#@	   glxflags	   ignore
+#@	   offset	   ?
+#@
+#@ glXDeleteAssociatedContextAMD(ctx)
+#@	   return	   BOOL
+#@	   param	   ctx		   GLXContext in value
+#@	   category	   AMD_gpu_association
+#@	   version	   4.1
+#@	   extension
+#@	   glxropcode	   ?
+#@	   glxflags	   ignore
+#@	   offset	   ?
+#@
+#@ glXMakeAssociatedContextCurrentAMD(ctx)
+#@	   return	   BOOL
+#@	   param	   ctx		   GLXContext in value
+#@	   category	   AMD_gpu_association
+#@	   version	   4.1
+#@	   extension
+#@	   glxropcode	   ?
+#@	   glxflags	   ignore
+#@	   offset	   ?
+#@
+#@ glXGetCurrentAssociatedContextAMD()
+#@	   return	   HGLRC
+#@	   category	   AMD_gpu_association
+#@	   version	   4.1
+#@	   extension
+#@	   glxropcode	   ?
+#@	   glxflags	   ignore
+#@	   offset	   ?
+#@
+#@ glXBlitContextFramebufferAMD(dstCtx, srcX0, srcY0, srcX1, srcY1, dstX0, dstY0, dstX1, dstY1, mask, filter)
+#@	   return	   VOID
+#@	   param	   dstCtx	   GLXContext in value
+#@	   param	   srcX0	   GLint in value
+#@	   param	   srcY0	   GLint in value
+#@	   param	   srcX1	   GLint in value
+#@	   param	   srcY1	   GLint in value
+#@	   param	   dstX0	   GLint in value
+#@	   param	   dstY0	   GLint in value
+#@	   param	   dstX1	   GLint in value
+#@	   param	   dstY1	   GLint in value
+#@	   param	   mask		   GLbitfield in value
+#@	   param	   filter	   GLenum in value
+#@	   category	   AMD_gpu_association
+#@	   version	   4.1
+#@	   extension
+#@	   glxropcode	   ?
+#@	   glxflags	   ignore
+#@	   offset	   ?
+
+###############################################################################
+#
+# Extension #414
+# EXT_swap_control_tear commands
+#
+###############################################################################
+
+# (none)
+newcategory: EXT_swap_control_tear
+

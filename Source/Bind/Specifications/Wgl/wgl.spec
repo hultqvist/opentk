@@ -1,29 +1,10 @@
-# License Applicability. Except to the extent portions of this file are
-# made subject to an alternative license as permitted in the SGI Free
-# Software License B, Version 1.1 (the "License"), the contents of this
-# file are subject only to the provisions of the License. You may not use
-# this file except in compliance with the License. You may obtain a copy
-# of the License at Silicon Graphics, Inc., attn: Legal Services, 1600
-# Amphitheatre Parkway, Mountain View, CA 94043-1351, or at:
+# Copyright (c) 1991-2002 Silicon Graphics, Inc. All Rights Reserved.
+# Copyright (c) 2006-2010 The Khronos Group, Inc.
 #
-# http://oss.sgi.com/projects/FreeB
+# This document is licensed under the SGI Free Software B License Version
+# 2.0. For details, see http://oss.sgi.com/projects/FreeB/ .
 #
-# Note that, as provided in the License, the Software is distributed on an
-# "AS IS" basis, with ALL EXPRESS AND IMPLIED WARRANTIES AND CONDITIONS
-# DISCLAIMED, INCLUDING, WITHOUT LIMITATION, ANY IMPLIED WARRANTIES AND
-# CONDITIONS OF MERCHANTABILITY, SATISFACTORY QUALITY, FITNESS FOR A
-# PARTICULAR PURPOSE, AND NON-INFRINGEMENT.
-#
-# Original Code. The Original Code is: OpenGL Sample Implementation,
-# Version 1.2.1, released January 26, 2000, developed by Silicon Graphics,
-# Inc. The Original Code is Copyright (c) 1991-2002 Silicon Graphics, Inc.
-# Copyright in any portions created by third parties is as indicated
-# elsewhere herein. All Rights Reserved.
-#
-# Additional Notice Provisions: This software was created using the
-# OpenGL(R) version 1.2.1 Sample Implementation published by SGI, but has
-# not been independently verified as being compliant with the OpenGL(R)
-# version 1.2.1 Specification.
+# $Revision: 10796 $ on $Date: 2010-03-19 17:31:10 -0700 (Fri, 19 Mar 2010) $
 
 required-props:
 param:		retval retained
@@ -184,54 +165,4 @@ UseFontBitmapsW( hDC, first, count, listBase )
 	param		listBase	DWORD in value
 	category	wgl
 	dlflags		notlistable
-
-# Added by hand. Where can we find an updated spec?
-
-#UseFontBitmaps( hDC, first, count, listBase )
-#	return		BOOL
-#	param		hDC		HDC in value
-#	param		first		DWORD in value
-#	param		count		DWORD in value
-#	param		listBase	DWORD in value
-#	category	wgl
-#	dlflags		notlistable
-
-UseFontOutlinesA( hDC, first, count, listBase )
-	return		BOOL
-	param		hDC		HDC in value
-	param		first		DWORD in value
-	param		count		DWORD in value
-	param		listBase	DWORD in value
-	param		thickness	float in value
-	param		deviation	float in value
-	param		fontMode	DWORD in value
-	param		glyphMetrics	GLYPHMETRICSFLOAT in array
-	category	wgl
-	dlflags		notlistable
-
-UseFontOutlinesW( hDC, first, count, listBase )
-	return		BOOL
-	param		hDC		HDC in value
-	param		first		DWORD in value
-	param		count		DWORD in value
-	param		listBase	DWORD in value
-	param		thickness	float in value
-	param		deviation	float in value
-	param		fontMode	DWORD in value
-	param		glyphMetrics	GLYPHMETRICSFLOAT in array
-	category	wgl
-	dlflags		notlistable
-	
-#UseFontOutlines( hDC, first, count, listBase )
-#	return		BOOL
-#	param		hDC		HDC in value
-#	param		first		DWORD in value
-#	param		count		DWORD in value
-#	param		listBase	DWORD in value
-#	param		thickness	float in value
-#	param		deviation	float in value
-#	param		fontMode	DWORD in value
-#	param		glyphMetrics	GLYPHMETRICSFLOAT in array
-#	category	wgl
-#	dlflags		notlistable
 

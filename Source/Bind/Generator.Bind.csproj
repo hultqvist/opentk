@@ -121,7 +121,6 @@
     <Compile Include="CppSpecWriter.cs" />
     <Compile Include="CSharpSpecWriter.cs" />
     <Compile Include="FuncProcessor.cs" />
-    <Compile Include="GL2\GL4Generator.cs" />
     <Compile Include="IBind.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -154,9 +153,6 @@
     <Compile Include="CL\CLGenerator.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="GL2\Generator.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Structures\Type.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -187,7 +183,6 @@
     </None>
     <None Include="Specifications\cpp.tm" />
     <None Include="Specifications\java.tm" />
-    <None Include="Specifications\GL2\gl.tm" />
     <None Include="Specifications\Glx\glx.spec">
     </None>
     <None Include="Specifications\Glx\glxenum.spec">
@@ -227,8 +222,6 @@
     <None Include="Specifications\ES11\signatures.xml">
     </None>
     <None Include="Specifications\ES11\overrides.xml">
-    </None>
-    <None Include="Specifications\GL2\gloverrides.xml">
     </None>
     <None Include="Specifications\ES20\signatures.xml">
     </None>
@@ -918,6 +911,14 @@
     <None Include="Specifications\GL\enumext.spec" />
     <None Include="Specifications\GL\gl.spec" />
     <None Include="Specifications\GL\gl.tm" />
+    <None Include="Specifications\GL\gloverrides.xml" />
+    <None Include="Specifications\GL\signatures.xml">
+      <SubType>Designer</SubType>
+    </None>
+    <Compile Include="GL\GL4Generator.cs" />
+    <Compile Include="GL\Generator.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Specifications\Docs\glActiveShaderProgram.xml" />
@@ -1036,9 +1037,6 @@
     <None Include="Specifications\Docs\glViewportArray.xml" />
     <None Include="Specifications\Docs\glViewportIndexed.xml" />
     <None Include="Specifications\Docs\glWaitSync.xml" />
-    <None Include="Specifications\GL2\signatures.xml">
-      <SubType>Designer</SubType>
-    </None>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSHARP.Targets" />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

@@ -12,7 +12,7 @@ using System.Reflection;
 using System.Security;
 using Bind.CL;
 using Bind.ES;
-using Bind.GL2;
+using Bind.GL;
 using System.Text.RegularExpressions;
 
 namespace Bind

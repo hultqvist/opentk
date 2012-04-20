@@ -30,21 +30,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Bind.GL2
+namespace Bind.GL
 {
     class GL4Generator : ES.ESGenerator
     {
         public GL4Generator(string name, string dirname)
             : base(name, dirname)
         {
-            glTypemap = "GL2/gl.tm";
+            glTypemap = "GL/gl.tm";
             csTypemap = Settings.LanguageTypeMapFile;
 
-            enumSpec = "GL2/signatures.xml";
+            enumSpec = "GL/signatures.xml";
             enumSpecExt = String.Empty;
-            glSpec = "GL2/signatures.xml";
+            glSpec = "GL/signatures.xml";
             glSpecExt = String.Empty;
-            Settings.OverridesFile = "GL2/gloverrides.xml";
+            Settings.OverridesFile = "GL/gloverrides.xml";
 
             Settings.ImportsFile = "GLCore.cs";
             Settings.DelegatesFile = "GLDelegates.cs";

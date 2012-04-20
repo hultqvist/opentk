@@ -16,17 +16,17 @@ using Delegate=Bind.Structures.Delegate;
 using Enum=Bind.Structures.Enum;
 using Type=Bind.Structures.Type;
 
-namespace Bind.GL2
+namespace Bind.GL
 {
     class Generator : IBind
     {
         #region Fields
 
-        protected static string glTypemap = "GL2/gl.tm";
+        protected static string glTypemap = "GL/gl.tm";
         protected static string csTypemap = Settings.LanguageTypeMapFile;
-        protected static string enumSpec = "GL2/enum.spec";
-        protected static string enumSpecExt = "GL2/enumext.spec";
-        protected static string glSpec = "GL2/gl.spec";
+        protected static string enumSpec = "GL/enum.spec";
+        protected static string enumSpecExt = "GL/enumext.spec";
+        protected static string glSpec = "GL/gl.spec";
         protected static string glSpecExt = "";
 
         protected static string loadAllFuncName = "LoadAll";

@@ -162,7 +162,7 @@ namespace Bind
 
             try
             {
-                long ticks = DateTime.Now.Ticks;
+                DateTime timingStart = DateTime.Now;
 
                 switch (mode)
                 {
@@ -212,10 +212,10 @@ namespace Bind
                 }
                 writer.WriteBindings(Generator);
 
-                ticks = DateTime.Now.Ticks - ticks;
+                TimeSpan generationLength = DateTime.Now - timingStart;
 
                 Console.WriteLine();
-                Console.WriteLine("Bindings generated in {0} seconds.", ticks / (double)10000000.0);
+                Console.WriteLine("Bindings generated in {0} seconds.", generationLength.TotalSeconds);
                 Console.WriteLine();
                 if (Debugger.IsAttached)
                 {

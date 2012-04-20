@@ -79,7 +79,6 @@ namespace Bind
         public static string TrimName(string name, bool keep_extension)
         {
             string trimmed_name = Utilities.StripGL2Extension(name);
-            string extension = Utilities.GetGL2Extension(name);
 
             // Note: some endings should not be trimmed, for example: 'b' from Attrib.
             // Check the endingsNotToTrim regex for details.

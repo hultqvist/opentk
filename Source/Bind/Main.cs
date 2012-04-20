@@ -66,7 +66,11 @@ namespace Bind
                     if (match.Success)
                     {
                         string opt = match.Value.Substring(1).Trim();
-                        string val = a.Substring(match.Value.Length + 1).Trim();
+                        string val = "";
+                        //Only if option has a value
+                        if (a.Length > match.Length)
+                            val = a.Substring(match.Value.Length + 1).Trim();
+
                         switch (opt)
                         {
                             case "?":

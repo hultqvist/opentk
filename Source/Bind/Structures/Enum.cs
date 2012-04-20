@@ -61,38 +61,6 @@ namespace Bind.Structures
                 }
             }
         }
-
-        [Obsolete("This code belongs to the various language-specific ISpecWriter implementations")]
-        public override string ToString()
-        {
-            StringBuilder sb = new StringBuilder();
-            List<Constant> constants = new List<Constant>(ConstantCollection.Values);
-            constants.Sort(delegate(Constant c1, Constant c2) {
-                int ret = String.Compare(c1.Value, c2.Value);
-                if (ret == 0)
-                    return String.Compare(c1.Name, c2.Name);
-                return ret;
-            });
-
-            if (IsFlagCollection)
-                sb.AppendLine("[Flags]");
-            sb.Append("public enum ");
-            sb.Append(Name);
-            sb.Append(" : ");
-            sb.AppendLine(Type);
-            sb.AppendLine("{");
-
-            foreach (Constant c in constants)
-            {
-                sb.Append("    ");
-                sb.Append(c.ToString());
-                if (!String.IsNullOrEmpty(c.ToString()))
-                    sb.AppendLine(",");
-            }
-            sb.Append("}");
-
-            return sb.ToString();
-        }
     }
 
     #endregion

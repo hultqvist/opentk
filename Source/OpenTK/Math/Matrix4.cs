@@ -913,7 +913,7 @@ namespace OpenTK
         public static Matrix4 operator *(Matrix4 left, Matrix4 right)
         {
             Matrix4 m = new Matrix4();
-            Matrix4.Mult(ref left, ref right, out m);
+            Matrix4.Multiply(ref left, ref right, out m);
             return m;
         }
 
@@ -923,7 +923,7 @@ namespace OpenTK
         /// <param name="left">The left operand of the multiplication.</param>
         /// <param name="right">The right operand of the multiplication.</param>
         /// <param name="result">A new instance that is the result of the multiplication</param>
-        public static void Mult(ref Matrix4 left, ref Matrix4 right, out Matrix4 result)
+        public static void Multiply(ref Matrix4 left, ref Matrix4 right, out Matrix4 result)
         {
             //Believe it or not, referencing the same left.Col0.X four times is faster than storing it in a local variable.
             result.Column0.X =

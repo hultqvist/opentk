@@ -141,7 +141,7 @@ namespace OpenTK.Graphics.ES20
         {
             unsafe
             {
-                fixed (float* matrix_ptr = &matrix.Row0.X)
+                fixed (float* matrix_ptr = &matrix.Column0.X)
                 {
                     GL.UniformMatrix4(location, 1, transpose, matrix_ptr);
                 }

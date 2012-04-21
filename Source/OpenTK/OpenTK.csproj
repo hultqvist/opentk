@@ -560,9 +560,6 @@
     <Compile Include="Math\Box2.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Math\Matrix4.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Math\Half.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -666,6 +663,7 @@
     </EmbeddedResource>
     <Compile Include="Platform\MacOS\HIDInput.cs" />
     <Compile Include="IntPtrEqualityComparer.cs" />
+    <Compile Include="Math\Matrix4.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

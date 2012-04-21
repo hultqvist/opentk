@@ -27,226 +27,132 @@ using System.Runtime.InteropServices;
 
 namespace OpenTK
 {
+    
     /// <summary>
-    /// Represents a 4x4 Matrix
+    /// <para>Represents a 4x4 Matrix</para>
+    /// <para>Storage is column-major and vectors are assumed to be column vectors.</para>
     /// </summary>
     [Serializable]
     [StructLayout(LayoutKind.Sequential)]
     public struct Matrix4 : IEquatable<Matrix4>
     {
-        #region Fields
+        /// <summary></summary>
+        public Vector4 Column0;
+        /// <summary></summary>
+        public Vector4 Column1;
+        /// <summary></summary>
+        public Vector4 Column2;
+        /// <summary></summary>
+        public Vector4 Column3;
+
+        #region Rows
+        
+        /// <summary>
+        /// The first column of this matrix
+        /// </summary>
+        public Vector4 Row0
+        {
+            get { return new Vector4(Column0.X, Column1.X, Column2.X, Column3.X); }
+        }
 
         /// <summary>
-        /// Top row of the matrix
+        /// The second column of this matrix
         /// </summary>
-        public Vector4 Row0;
+        public Vector4 Row1
+        {
+            get { return new Vector4(Column0.Y, Column1.Y, Column2.Y, Column3.Y); }
+        }
+
         /// <summary>
-        /// 2nd row of the matrix
+        /// The third column of this matrix
         /// </summary>
-        public Vector4 Row1;
+        public Vector4 Row2
+        {
+            get { return new Vector4(Column0.Z, Column1.Z, Column2.Z, Column3.Z); }
+        }
+
         /// <summary>
-        /// 3rd row of the matrix
+        /// The fourth column of this matrix
         /// </summary>
-        public Vector4 Row2;
-        /// <summary>
-        /// Bottom row of the matrix
-        /// </summary>
-        public Vector4 Row3;
- 
-        /// <summary>
-        /// The identity matrix
-        /// </summary>
-        public static Matrix4 Identity = new Matrix4(Vector4.UnitX, Vector4.UnitY, Vector4.UnitZ, Vector4.UnitW);
+        public Vector4 Row3
+        {
+            get { return new Vector4(Column0.W, Column1.W, Column2.W, Column3.W); }
+        }
 
         #endregion
 
         #region Constructors
 
-        /// <summary>
-        /// Constructs a new instance.
-        /// </summary>
-        /// <param name="row0">Top row of the matrix</param>
-        /// <param name="row1">Second row of the matrix</param>
-        /// <param name="row2">Third row of the matrix</param>
-        /// <param name="row3">Bottom row of the matrix</param>
-        public Matrix4(Vector4 row0, Vector4 row1, Vector4 row2, Vector4 row3)
+        /// <summary></summary>
+        public Matrix4(Vector4 column0, Vector4 column1, Vector4 column2, Vector4 column3)
         {
-            Row0 = row0;
-            Row1 = row1;
-            Row2 = row2;
-            Row3 = row3;
+            Column0 = column0;
+            Column1 = column1;
+            Column2 = column2;
+            Column3 = column3;
         }
 
         /// <summary>
-        /// Constructs a new instance.
+        /// Initializes a matrix, parameters are indexed mRowCol
         /// </summary>
-        /// <param name="m00">First item of the first row of the matrix.</param>
-        /// <param name="m01">Second item of the first row of the matrix.</param>
-        /// <param name="m02">Third item of the first row of the matrix.</param>
-        /// <param name="m03">Fourth item of the first row of the matrix.</param>
-        /// <param name="m10">First item of the second row of the matrix.</param>
-        /// <param name="m11">Second item of the second row of the matrix.</param>
-        /// <param name="m12">Third item of the second row of the matrix.</param>
-        /// <param name="m13">Fourth item of the second row of the matrix.</param>
-        /// <param name="m20">First item of the third row of the matrix.</param>
-        /// <param name="m21">Second item of the third row of the matrix.</param>
-        /// <param name="m22">Third item of the third row of the matrix.</param>
-        /// <param name="m23">First item of the third row of the matrix.</param>
-        /// <param name="m30">Fourth item of the fourth row of the matrix.</param>
-        /// <param name="m31">Second item of the fourth row of the matrix.</param>
-        /// <param name="m32">Third item of the fourth row of the matrix.</param>
-        /// <param name="m33">Fourth item of the fourth row of the matrix.</param>
         public Matrix4(
             float m00, float m01, float m02, float m03,
             float m10, float m11, float m12, float m13,
             float m20, float m21, float m22, float m23,
             float m30, float m31, float m32, float m33)
         {
-            Row0 = new Vector4(m00, m01, m02, m03);
-            Row1 = new Vector4(m10, m11, m12, m13);
-            Row2 = new Vector4(m20, m21, m22, m23);
-            Row3 = new Vector4(m30, m31, m32, m33);
+            Column0 = new Vector4(m00, m10, m20, m30);
+            Column1 = new Vector4(m01, m11, m21, m31);
+            Column2 = new Vector4(m02, m12, m22, m32);
+            Column3 = new Vector4(m03, m13, m23, m33);
         }
+
+#if DEBUG
+        /// <summary>Only for testing against Matrix4</summary>
+        public Matrix4(Matrix4 m)
+        {
+            Column0 = m.Column0;
+            Column1 = m.Column1;
+            Column2 = m.Column2;
+            Column3 = m.Column3;
+        }
+#endif
 
         #endregion
 
-        #region Public Members
-
-        #region Properties
+        #region Instance Operations
 
         /// <summary>
         /// The determinant of this matrix
         /// </summary>
-        public float Determinant
+        public float Determinant()
         {
-            get
-            {
-                return
-                    Row0.X * Row1.Y * Row2.Z * Row3.W - Row0.X * Row1.Y * Row2.W * Row3.Z + Row0.X * Row1.Z * Row2.W * Row3.Y - Row0.X * Row1.Z * Row2.Y * Row3.W
-                    + Row0.X * Row1.W * Row2.Y * Row3.Z - Row0.X * Row1.W * Row2.Z * Row3.Y - Row0.Y * Row1.Z * Row2.W * Row3.X + Row0.Y * Row1.Z * Row2.X * Row3.W
-                    - Row0.Y * Row1.W * Row2.X * Row3.Z + Row0.Y * Row1.W * Row2.Z * Row3.X - Row0.Y * Row1.X * Row2.Z * Row3.W + Row0.Y * Row1.X * Row2.W * Row3.Z
-                    + Row0.Z * Row1.W * Row2.X * Row3.Y - Row0.Z * Row1.W * Row2.Y * Row3.X + Row0.Z * Row1.X * Row2.Y * Row3.W - Row0.Z * Row1.X * Row2.W * Row3.Y
-                    + Row0.Z * Row1.Y * Row2.W * Row3.X - Row0.Z * Row1.Y * Row2.X * Row3.W - Row0.W * Row1.X * Row2.Y * Row3.Z + Row0.W * Row1.X * Row2.Z * Row3.Y
-                    - Row0.W * Row1.Y * Row2.Z * Row3.X + Row0.W * Row1.Y * Row2.X * Row3.Z - Row0.W * Row1.Z * Row2.X * Row3.Y + Row0.W * Row1.Z * Row2.Y * Row3.X;
-            }
+            //Determinant of a 2x2 matrix with rows 2-3 and columns from their index
+            //no 00
+            float d01 = Column0.Z * Column1.W - Column1.Z * Column0.W;
+            float d02 = Column0.Z * Column2.W - Column2.Z * Column0.W;
+            float d03 = Column0.Z * Column3.W - Column3.Z * Column0.W;
+            //     d10 = Col1.Z * Col0.W - Col0.Z * Col1.W;
+            //no 11
+            float d12 = Column1.Z * Column2.W - Column2.Z * Column1.W;
+            float d13 = Column1.Z * Column3.W - Column3.Z * Column1.W;
+            //     d20 = Col2.Z * Col0.W - Col0.Z * Col2.W;
+            //     d21 = Col2.Z * Col1.W - Col1.Z * Col2.W;
+            //no22
+            float d23 = Column2.Z * Column3.W - Column3.Z * Column2.W;
+            //     d30 = Col3.Z * Col0.W - Col0.Z * Col3.W;
+            //     d31 = Col3.Z * Col1.W - Col1.Z * Col3.W;
+            //     d32 = Col3.Z * Col2.W - Col2.Z * Col3.W;
+            //no33
+                            
+            //Determinant of a 3x3 matrix with rows 1-3 and columns form their index
+            float d123 = Column1.Y * d23 - Column2.Y * d13 + Column3.Y * d12;
+            float d023 = Column0.Y * d23 - Column2.Y * d03 + Column3.Y * d02;
+            float d013 = Column0.Y * d13 - Column1.Y * d03 + Column3.Y * d01;
+            float d012 = Column0.Y * d12 - Column1.Y * d02 + Column2.Y * d01;
+            
+            return Column0.X * d123 - Column1.X * d023 + Column2.X * d013 - Column3.X * d012;
         }
-
-        /// <summary>
-        /// The first column of this matrix
-        /// </summary>
-        public Vector4 Column0
-        {
-            get { return new Vector4(Row0.X, Row1.X, Row2.X, Row3.X); }
-        }
-
-        /// <summary>
-        /// The second column of this matrix
-        /// </summary>
-        public Vector4 Column1
-        {
-            get { return new Vector4(Row0.Y, Row1.Y, Row2.Y, Row3.Y); }
-        }
-
-        /// <summary>
-        /// The third column of this matrix
-        /// </summary>
-        public Vector4 Column2
-        {
-            get { return new Vector4(Row0.Z, Row1.Z, Row2.Z, Row3.Z); }
-        }
-
-        /// <summary>
-        /// The fourth column of this matrix
-        /// </summary>
-        public Vector4 Column3
-        {
-            get { return new Vector4(Row0.W, Row1.W, Row2.W, Row3.W); }
-        }
-
-        /// <summary>
-        /// Gets or sets the value at row 1, column 1 of this instance.
-        /// </summary>
-        public float M11 { get { return Row0.X; } set { Row0.X = value; } }
-
-        /// <summary>
-        /// Gets or sets the value at row 1, column 2 of this instance.
-        /// </summary>
-        public float M12 { get { return Row0.Y; } set { Row0.Y = value; } }
-
-        /// <summary>
-        /// Gets or sets the value at row 1, column 3 of this instance.
-        /// </summary>
-        public float M13 { get { return Row0.Z; } set { Row0.Z = value; } }
-
-        /// <summary>
-        /// Gets or sets the value at row 1, column 4 of this instance.
-        /// </summary>
-        public float M14 { get { return Row0.W; } set { Row0.W = value; } }
-
-        /// <summary>
-        /// Gets or sets the value at row 2, column 1 of this instance.
-        /// </summary>
-        public float M21 { get { return Row1.X; } set { Row1.X = value; } }
-
-        /// <summary>
-        /// Gets or sets the value at row 2, column 2 of this instance.
-        /// </summary>
-        public float M22 { get { return Row1.Y; } set { Row1.Y = value; } }
-
-        /// <summary>
-        /// Gets or sets the value at row 2, column 3 of this instance.
-        /// </summary>
-        public float M23 { get { return Row1.Z; } set { Row1.Z = value; } }
-
-        /// <summary>
-        /// Gets or sets the value at row 2, column 4 of this instance.
-        /// </summary>
-        public float M24 { get { return Row1.W; } set { Row1.W = value; } }
-
-        /// <summary>
-        /// Gets or sets the value at row 3, column 1 of this instance.
-        /// </summary>
-        public float M31 { get { return Row2.X; } set { Row2.X = value; } }
-
-        /// <summary>
-        /// Gets or sets the value at row 3, column 2 of this instance.
-        /// </summary>
-        public float M32 { get { return Row2.Y; } set { Row2.Y = value; } }
-
-        /// <summary>
-        /// Gets or sets the value at row 3, column 3 of this instance.
-        /// </summary>
-        public float M33 { get { return Row2.Z; } set { Row2.Z = value; } }
-
-        /// <summary>
-        /// Gets or sets the value at row 3, column 4 of this instance.
-        /// </summary>
-        public float M34 { get { return Row2.W; } set { Row2.W = value; } }
-
-        /// <summary>
-        /// Gets or sets the value at row 4, column 1 of this instance.
-        /// </summary>
-        public float M41 { get { return Row3.X; } set { Row3.X = value; } }
-
-        /// <summary>
-        /// Gets or sets the value at row 4, column 2 of this instance.
-        /// </summary>
-        public float M42 { get { return Row3.Y; } set { Row3.Y = value; } }
-
-        /// <summary>
-        /// Gets or sets the value at row 4, column 3 of this instance.
-        /// </summary>
-        public float M43 { get { return Row3.Z; } set { Row3.Z = value; } }
-
-        /// <summary>
-        /// Gets or sets the value at row 4, column 4 of this instance.
-        /// </summary>
-        public float M44 { get { return Row3.W; } set { Row3.W = value; } }
-
-        #endregion
-
-        #region Instance
-
         #region public void Invert()
 
         /// <summary>
@@ -259,30 +165,31 @@ namespace OpenTK
 
         #endregion
 
-        #region public void Transpose()
-
         /// <summary>
-        /// Converts this instance into its transpose.
+        /// Return the transpose of the matrix
         /// </summary>
-        public void Transpose()
+        public Matrix4 Transpose()
         {
-            this = Matrix4.Transpose(this);
+            return Matrix4.Transpose(this);
         }
 
         #endregion
 
-        #endregion
+        #region Static: Matrix generation
 
-        #region Static
+        /// <summary>
+        /// The identity matrix
+        /// </summary>
+        public static readonly Matrix4 Identity = new Matrix4(Vector4.UnitX, Vector4.UnitY, Vector4.UnitZ, Vector4.UnitW);
 
-        #region CreateFromQuaternion
+        #region RotationQuaternion
         
         /// <summary>
         /// Build a rotation matrix from the specified quaternion.
         /// </summary>
         /// <param name="q">Quaternion to translate.</param>
         /// <param name="m">Matrix result.</param>
-        public static void CreateFromQuaternion(ref Quaternion q, ref Matrix4 m)
+        public static void RotationQuaternion(ref Quaternion q, ref Matrix4 m)
         {
             float X = q.X;
             float Y = q.Y;
@@ -299,20 +206,25 @@ namespace OpenTK
             float zz = Z * Z;
             float zw = Z * W;
 
-            m = new Matrix4();
-            m.Row0.X = 1 - 2 * (yy + zz);
-            m.Row1.X = 2 * (xy - zw);
-            m.Row2.X = 2 * (xz + yw);
-
-            m.Row0.Y = 2 * (xy + zw);
-            m.Row1.Y = 1 - 2 * (xx + zz);
-            m.Row2.Y = 2 * (yz - xw);
-
-            m.Row0.Z = 2 * (xz - yw);
-            m.Row1.Z = 2 * (yz + xw);
-            m.Row2.Z = 1 - 2 * (xx + yy);
-
-            m.Row3.W = 1;
+            m.Column0.X = 1 - 2 * (yy + zz);
+            m.Column0.Y = 2 * (xy + zw);
+            m.Column0.Z = 2 * (xz - yw);
+            m.Column0.W = 0;
+            
+            m.Column1.X = 2 * (xy - zw);
+            m.Column1.Y = 1 - 2 * (xx + zz);
+            m.Column1.Z = 2 * (yz + xw);
+            m.Column1.W = 0;
+            
+            m.Column2.X = 2 * (xz + yw);
+            m.Column2.Y = 2 * (yz - xw);
+            m.Column2.Z = 1 - 2 * (xx + yy);
+            m.Column2.W = 0;
+            
+            m.Column3.X = 0;
+            m.Column3.Y = 0;
+            m.Column3.Z = 0;
+            m.Column3.W = 1;
         }
 
         /// <summary>
@@ -320,44 +232,16 @@ namespace OpenTK
         /// </summary>
         /// <param name="q">Quaternion to translate.</param>
         /// <returns>A matrix instance.</returns>
-        public static Matrix4 CreateFromQuaternion(ref Quaternion q)
+        public static Matrix4 RotationQuaternion(ref Quaternion q)
         {
-            float X = q.X;
-            float Y = q.Y;
-            float Z = q.Z;
-            float W = q.W;
-
-            float xx = X * X;
-            float xy = X * Y;
-            float xz = X * Z;
-            float xw = X * W;
-            float yy = Y * Y;
-            float yz = Y * Z;
-            float yw = Y * W;
-            float zz = Z * Z;
-            float zw = Z * W;
-
             Matrix4 m = new Matrix4();
-            m.Row0.X = 1 - 2 * (yy + zz);
-            m.Row1.X = 2 * (xy - zw);
-            m.Row2.X = 2 * (xz + yw);
-
-            m.Row0.Y = 2 * (xy + zw);
-            m.Row1.Y = 1 - 2 * (xx + zz);
-            m.Row2.Y = 2 * (yz - xw);
-
-            m.Row0.Z = 2 * (xz - yw);
-            m.Row1.Z = 2 * (yz + xw);
-            m.Row2.Z = 1 - 2 * (xx + yy);
-
-            m.Row3.W = 1;
-
+            RotationQuaternion(ref q, ref m);
             return m;
         }
 
         #endregion
 
-        #region CreateFromAxisAngle
+        #region RotationAxisAngle
         
         /// <summary>
         /// Build a rotation matrix from the specified axis/angle rotation.
@@ -365,7 +249,7 @@ namespace OpenTK
         /// <param name="axis">The axis to rotate about.</param>
         /// <param name="angle">Angle in radians to rotate counter-clockwise (looking in the direction of the given axis).</param>
         /// <param name="result">A matrix instance.</param>
-        public static void CreateFromAxisAngle(Vector3 axis, float angle, out Matrix4 result)
+        public static void RotationAxisAngle(Vector3 axis, double angle, out Matrix4 result)
         {
             float cos = (float)System.Math.Cos(-angle);
             float sin = (float)System.Math.Sin(-angle);
@@ -385,104 +269,104 @@ namespace OpenTK
         /// <param name="axis">The axis to rotate about.</param>
         /// <param name="angle">Angle in radians to rotate counter-clockwise (looking in the direction of the given axis).</param>
         /// <returns>A matrix instance.</returns>
-        public static Matrix4 CreateFromAxisAngle(Vector3 axis, float angle)
+        public static Matrix4 RotationAxisAngle(Vector3 axis, double angle)
         {
             Matrix4 result;
-            CreateFromAxisAngle(axis, angle, out result);
+            RotationAxisAngle(axis, angle, out result);
             return result;
         }
         
         #endregion
 
-        #region CreateRotation[XYZ]
+        #region Rotation[XYZ]
 
         /// <summary>
-        /// Builds a rotation matrix for a rotation around the x-axis.
+        /// Builds a rotation matrix for a right-hand rotation around the x-axis.
         /// </summary>
-        /// <param name="angle">The counter-clockwise angle in radians.</param>
-        /// <param name="result">The resulting Matrix4 instance.</param>
-        public static void CreateRotationX(float angle, out Matrix4 result)
+        /// <param name="angle">The right-hand rotation in radians around the x-axis.</param>
+        /// <param name="result">The resulting Mat4 instance.</param>
+        public static void RotationX(double angle, out Matrix4 result)
         {
             float cos = (float)System.Math.Cos(angle);
             float sin = (float)System.Math.Sin(angle);
 
-            result.Row0 = Vector4.UnitX;
-            result.Row1 = new Vector4(0.0f, cos, sin, 0.0f);
-            result.Row2 = new Vector4(0.0f, -sin, cos, 0.0f);
-            result.Row3 = Vector4.UnitW;
+            result.Column0 = Vector4.UnitX;
+            result.Column1 = new Vector4(0.0f, cos, sin, 0.0f);
+            result.Column2 = new Vector4(0.0f, -sin, cos, 0.0f);
+            result.Column3 = Vector4.UnitW;
         }
 
         /// <summary>
-        /// Builds a rotation matrix for a rotation around the x-axis.
+        /// Builds a rotation matrix for a right-hand rotation around the x-axis.
         /// </summary>
-        /// <param name="angle">The counter-clockwise angle in radians.</param>
-        /// <returns>The resulting Matrix4 instance.</returns>
-        public static Matrix4 CreateRotationX(float angle)
+        /// <param name="angle">The right-hand rotation in radians around the x-axis.</param>
+        /// <returns>The resulting Mat4 instance.</returns>
+        public static Matrix4 RotationX(double angle)
         {
             Matrix4 result;
-            CreateRotationX(angle, out result);
+            RotationX(angle, out result);
             return result;
         }
 
         /// <summary>
-        /// Builds a rotation matrix for a rotation around the y-axis.
+        /// Builds a rotation matrix for a right-hand rotation around the y-axis.
         /// </summary>
-        /// <param name="angle">The counter-clockwise angle in radians.</param>
-        /// <param name="result">The resulting Matrix4 instance.</param>
-        public static void CreateRotationY(float angle, out Matrix4 result)
+        /// <param name="angle">The right-hand rotation in radians around the y-axis.</param>
+        /// <param name="result">The resulting Mat4 instance.</param>
+        public static void RotationY(double angle, out Matrix4 result)
         {
             float cos = (float)System.Math.Cos(angle);
             float sin = (float)System.Math.Sin(angle);
 
-            result.Row0 = new Vector4(cos, 0.0f, -sin, 0.0f);
-            result.Row1 = Vector4.UnitY;
-            result.Row2 = new Vector4(sin, 0.0f, cos, 0.0f);
-            result.Row3 = Vector4.UnitW;
+            result.Column0 = new Vector4(cos, 0.0f, -sin, 0.0f);
+            result.Column1 = Vector4.UnitY;
+            result.Column2 = new Vector4(sin, 0.0f, cos, 0.0f);
+            result.Column3 = Vector4.UnitW;
         }
 
         /// <summary>
-        /// Builds a rotation matrix for a rotation around the y-axis.
+        /// Builds a rotation matrix for a right-hand rotation around the y-axis.
         /// </summary>
-        /// <param name="angle">The counter-clockwise angle in radians.</param>
-        /// <returns>The resulting Matrix4 instance.</returns>
-        public static Matrix4 CreateRotationY(float angle)
+        /// <param name="angle">The right-hand rotation in radians around the y-axis.</param>
+        /// <returns>The resulting Mat4 instance.</returns>
+        public static Matrix4 RotationY(double angle)
         {
             Matrix4 result;
-            CreateRotationY(angle, out result);
+            RotationY(angle, out result);
             return result;
         }
 
         /// <summary>
-        /// Builds a rotation matrix for a rotation around the z-axis.
+        /// Builds a rotation matrix for a right-hand rotation around the z-axis.
         /// </summary>
-        /// <param name="angle">The counter-clockwise angle in radians.</param>
-        /// <param name="result">The resulting Matrix4 instance.</param>
-        public static void CreateRotationZ(float angle, out Matrix4 result)
+        /// <param name="angle">The right-hand rotation in radians around the z-axis.</param>
+        /// <param name="result">The resulting Mat4 instance.</param>
+        public static void RotationZ(double angle, out Matrix4 result)
         {
             float cos = (float)System.Math.Cos(angle);
             float sin = (float)System.Math.Sin(angle);
 
-            result.Row0 = new Vector4(cos, sin, 0.0f, 0.0f);
-            result.Row1 = new Vector4(-sin, cos, 0.0f, 0.0f);
-            result.Row2 = Vector4.UnitZ;
-            result.Row3 = Vector4.UnitW;
+            result.Column0 = new Vector4(cos, sin, 0.0f, 0.0f);
+            result.Column1 = new Vector4(-sin, cos, 0.0f, 0.0f);
+            result.Column2 = Vector4.UnitZ;
+            result.Column3 = Vector4.UnitW;
         }
 
         /// <summary>
-        /// Builds a rotation matrix for a rotation around the z-axis.
+        /// Builds a rotation matrix for a right-hand rotation around the z-axis.
         /// </summary>
-        /// <param name="angle">The counter-clockwise angle in radians.</param>
-        /// <returns>The resulting Matrix4 instance.</returns>
-        public static Matrix4 CreateRotationZ(float angle)
+        /// <param name="angle">The right-hand rotation in radians around the z-axis.</param>
+        /// <returns>The resulting Mat4 instance.</returns>
+        public static Matrix4 RotationZ(double angle)
         {
             Matrix4 result;
-            CreateRotationZ(angle, out result);
+            RotationZ(angle, out result);
             return result;
         }
 
         #endregion
 
-        #region CreateTranslation
+        #region Translation
 
         /// <summary>
         /// Creates a translation matrix.
@@ -490,22 +374,22 @@ namespace OpenTK
         /// <param name="x">X translation.</param>
         /// <param name="y">Y translation.</param>
         /// <param name="z">Z translation.</param>
-        /// <param name="result">The resulting Matrix4 instance.</param>
-        public static void CreateTranslation(float x, float y, float z, out Matrix4 result)
+        /// <param name="result">The resulting Mat4 instance.</param>
+        public static void Translation(float x, float y, float z, out Matrix4 result)
         {
             result = Identity;
-            result.Row3 = new Vector4(x, y, z, 1);
+            result.Column3 = new Vector4(x, y, z, 1);
         }
 
         /// <summary>
         /// Creates a translation matrix.
         /// </summary>
         /// <param name="vector">The translation vector.</param>
-        /// <param name="result">The resulting Matrix4 instance.</param>
-        public static void CreateTranslation(ref Vector3 vector, out Matrix4 result)
+        /// <param name="result">The resulting Mat4 instance.</param>
+        public static void Translation(ref Vector3 vector, out Matrix4 result)
         {
             result = Identity;
-            result.Row3 = new Vector4(vector.X, vector.Y, vector.Z, 1);
+            result.Column3 = new Vector4(vector.X, vector.Y, vector.Z, 1);
         }
 
         /// <summary>
@@ -514,11 +398,11 @@ namespace OpenTK
         /// <param name="x">X translation.</param>
         /// <param name="y">Y translation.</param>
         /// <param name="z">Z translation.</param>
-        /// <returns>The resulting Matrix4 instance.</returns>
-        public static Matrix4 CreateTranslation(float x, float y, float z)
+        /// <returns>The resulting Mat4 instance.</returns>
+        public static Matrix4 Translation(float x, float y, float z)
         {
             Matrix4 result;
-            CreateTranslation(x, y, z, out result);
+            Translation(x, y, z, out result);
             return result;
         }
 
@@ -526,17 +410,30 @@ namespace OpenTK
         /// Creates a translation matrix.
         /// </summary>
         /// <param name="vector">The translation vector.</param>
-        /// <returns>The resulting Matrix4 instance.</returns>
-        public static Matrix4 CreateTranslation(Vector3 vector)
+        /// <returns>The resulting Mat4 instance.</returns>
+        public static Matrix4 Translation(Vector3 vector)
         {
             Matrix4 result;
-            CreateTranslation(vector.X, vector.Y, vector.Z, out result);
+            Translation(vector.X, vector.Y, vector.Z, out result);
             return result;
         }
 
         #endregion
 
-        #region CreateOrthographic
+        #region Orthographic
+
+        /// <summary>
+        /// Creates an orthographic projection matrix.
+        /// </summary>
+        /// <param name="xWidth">The width of the projection volume.</param>
+        /// <param name="yHeight">The height of the projection volume.</param>
+        /// <param name="zNear">The near edge of the projection volume.</param>
+        /// <param name="zFar">The far edge of the projection volume.</param>
+        /// <param name="result">The resulting Mat4 instance.</param>
+        public static void Orthographic(float xWidth, float yHeight, float zNear, float zFar, out Matrix4 result)
+        {
+            OrthographicOffCenter(-xWidth / 2, xWidth / 2, -yHeight / 2, yHeight / 2, zNear, zFar, out result);
+        }
 
         /// <summary>
         /// Creates an orthographic projection matrix.
@@ -545,79 +442,68 @@ namespace OpenTK
         /// <param name="height">The height of the projection volume.</param>
         /// <param name="zNear">The near edge of the projection volume.</param>
         /// <param name="zFar">The far edge of the projection volume.</param>
-        /// <param name="result">The resulting Matrix4 instance.</param>
-        public static void CreateOrthographic(float width, float height, float zNear, float zFar, out Matrix4 result)
-        {
-            CreateOrthographicOffCenter(-width / 2, width / 2, -height / 2, height / 2, zNear, zFar, out result);
-        }
-
-        /// <summary>
-        /// Creates an orthographic projection matrix.
-        /// </summary>
-        /// <param name="width">The width of the projection volume.</param>
-        /// <param name="height">The height of the projection volume.</param>
-        /// <param name="zNear">The near edge of the projection volume.</param>
-        /// <param name="zFar">The far edge of the projection volume.</param>
-        /// <rereturns>The resulting Matrix4 instance.</rereturns>
-        public static Matrix4 CreateOrthographic(float width, float height, float zNear, float zFar)
+        /// <rereturns>The resulting Mat4 instance.</rereturns>
+        public static Matrix4 Orthographic(float width, float height, float zNear, float zFar)
         {
             Matrix4 result;
-            CreateOrthographicOffCenter(-width / 2, width / 2, -height / 2, height / 2, zNear, zFar, out result);
+            OrthographicOffCenter(-width / 2, width / 2, -height / 2, height / 2, zNear, zFar, out result);
             return result;
         }
 
         #endregion
 
-        #region CreateOrthographicOffCenter
+        #region OrthographicOffCenter
 
         /// <summary>
         /// Creates an orthographic projection matrix.
+        /// Looking into the direction of negative Z.
         /// </summary>
-        /// <param name="left">The left edge of the projection volume.</param>
-        /// <param name="right">The right edge of the projection volume.</param>
-        /// <param name="bottom">The bottom edge of the projection volume.</param>
-        /// <param name="top">The top edge of the projection volume.</param>
-        /// <param name="zNear">The near edge of the projection volume.</param>
-        /// <param name="zFar">The far edge of the projection volume.</param>
-        /// <param name="result">The resulting Matrix4 instance.</param>
-        public static void CreateOrthographicOffCenter(float left, float right, float bottom, float top, float zNear, float zFar, out Matrix4 result)
+        /// <param name="xMin">The left edge of the projection volume.</param>
+        /// <param name="xMax">The right edge of the projection volume.</param>
+        /// <param name="yMin">The bottom edge of the projection volume.</param>
+        /// <param name="yMax">The top edge of the projection volume.</param>
+        /// <param name="zMin">The near edge of the projection volume.</param>
+        /// <param name="zMax">The far edge of the projection volume.</param>
+        /// <param name="result">The resulting Mat4 instance.</param>
+        public static void OrthographicOffCenter(float xMin, float xMax, float yMin, float yMax, float zMin, float zMax, out Matrix4 result)
         {
             result = new Matrix4();
 
-            float invRL = 1 / (right - left);
-            float invTB = 1 / (top - bottom);
-            float invFN = 1 / (zFar - zNear);
+            float invRL = 1 / (xMax - xMin);
+            float invTB = 1 / (yMax - yMin);
+            float invFN = 1 / (zMax - zMin);
 
-            result.M11 = 2 * invRL;
-            result.M22 = 2 * invTB;
-            result.M33 = -2 * invFN;
+            result.Column0.X = 2 * invRL;
+            result.Column1.Y = 2 * invTB;
+            result.Column2.Z = 2 * invFN;
 
-            result.M41 = -(right + left) * invRL;
-            result.M42 = -(top + bottom) * invTB;
-            result.M43 = -(zFar + zNear) * invFN;
-            result.M44 = 1;
+            result.Column3.X = -(xMax + xMin) * invRL;
+            result.Column3.Y = -(yMax + yMin) * invTB;
+            result.Column3.Z = -(zMax + zMin) * invFN;
+            result.Column3.W = 1;
         }
 
         /// <summary>
         /// Creates an orthographic projection matrix.
+        /// Looking into the direction of negative Z.
         /// </summary>
-        /// <param name="left">The left edge of the projection volume.</param>
-        /// <param name="right">The right edge of the projection volume.</param>
-        /// <param name="bottom">The bottom edge of the projection volume.</param>
-        /// <param name="top">The top edge of the projection volume.</param>
-        /// <param name="zNear">The near edge of the projection volume.</param>
-        /// <param name="zFar">The far edge of the projection volume.</param>
-        /// <returns>The resulting Matrix4 instance.</returns>
-        public static Matrix4 CreateOrthographicOffCenter(float left, float right, float bottom, float top, float zNear, float zFar)
+        /// <param name="xMin">The left edge of the projection volume.</param>
+        /// <param name="xMax">The right edge of the projection volume.</param>
+        /// <param name="yMin">The bottom edge of the projection volume.</param>
+        /// <param name="yMax">The top edge of the projection volume.</param>
+        /// <param name="zMin">The near edge of the projection volume.</param>
+        /// <param name="zMax">The far edge of the projection volume.</param>
+        /// <returns>The resulting Mat4 instance.</returns>
+        public static Matrix4 OrthographicOffCenter(float xMin, float xMax, float yMin, float yMax, float zMin, float zMax)
         {
             Matrix4 result;
-            CreateOrthographicOffCenter(left, right, bottom, top, zNear, zFar, out result);
+            OrthographicOffCenter(xMin, xMax, yMin, yMax, zMin, zMax, out result);
             return result;
         }
 
         #endregion
         
-        #region CreatePerspectiveFieldOfView
+        #region PerspectiveFieldOfView
         
         /// <summary>
         /// Creates a perspective projection matrix.
@@ -637,7 +523,7 @@ namespace OpenTK
         /// <item>zNear is larger than zFar</item>
         /// </list>
         /// </exception>
-        public static void CreatePerspectiveFieldOfView(float fovy, float aspect, float zNear, float zFar, out Matrix4 result)
+        public static void PerspectiveFieldOfView(float fovy, float aspect, float zNear, float zFar, out Matrix4 result)
         {
             if (fovy <= 0 || fovy > Math.PI)
                 throw new ArgumentOutOfRangeException("fovy");
@@ -653,7 +539,7 @@ namespace OpenTK
             float xMin = yMin * aspect;
             float xMax = yMax * aspect;
 
-            CreatePerspectiveOffCenter(xMin, xMax, yMin, yMax, zNear, zFar, out result);
+            PerspectiveOffCenter(xMin, xMax, yMin, yMax, zNear, zFar, out result);
         }
         
         /// <summary>
@@ -674,16 +560,16 @@ namespace OpenTK
         /// <item>zNear is larger than zFar</item>
         /// </list>
         /// </exception>
-        public static Matrix4 CreatePerspectiveFieldOfView(float fovy, float aspect, float zNear, float zFar)
+        public static Matrix4 PerspectiveFieldOfView(float fovy, float aspect, float zNear, float zFar)
         {
             Matrix4 result;
-            CreatePerspectiveFieldOfView(fovy, aspect, zNear, zFar, out result);
+            PerspectiveFieldOfView(fovy, aspect, zNear, zFar, out result);
             return result;
         }
         
         #endregion
         
-        #region CreatePerspectiveOffCenter
+        #region PerspectiveOffCenter
         
         /// <summary>
         /// Creates an perspective projection matrix.
@@ -703,7 +589,7 @@ namespace OpenTK
         /// <item>zNear is larger than zFar</item>
         /// </list>
         /// </exception>
-        public static void CreatePerspectiveOffCenter(float left, float right, float bottom, float top, float zNear, float zFar, out Matrix4 result)
+        public static void PerspectiveOffCenter(float left, float right, float bottom, float top, float zNear, float zFar, out Matrix4 result)
         {
             if (zNear <= 0)
                 throw new ArgumentOutOfRangeException("zNear");
@@ -743,47 +629,13 @@ namespace OpenTK
         /// <item>zNear is larger than zFar</item>
         /// </list>
         /// </exception>
-        public static Matrix4 CreatePerspectiveOffCenter(float left, float right, float bottom, float top, float zNear, float zFar)
+        public static Matrix4 PerspectiveOffCenter(float left, float right, float bottom, float top, float zNear, float zFar)
         {
             Matrix4 result;
-            CreatePerspectiveOffCenter(left, right, bottom, top, zNear, zFar, out result);
+            PerspectiveOffCenter(left, right, bottom, top, zNear, zFar, out result);
             return result;
         }
         
-        #endregion
-
-        #region Obsolete Functions
-
-        #region Translation Functions
-
-        /// <summary>
-        /// Builds a translation matrix.
-        /// </summary>
-        /// <param name="trans">The translation vector.</param>
-        /// <returns>A new Matrix4 instance.</returns>
-        [Obsolete("Use CreateTranslation instead.")]
-        public static Matrix4 Translation(Vector3 trans)
-        {
-            return Translation(trans.X, trans.Y, trans.Z);
-        }
-
-        /// <summary>
-        /// Build a translation matrix with the given translation
-        /// </summary>
-        /// <param name="x">X translation</param>
-        /// <param name="y">Y translation</param>
-        /// <param name="z">Z translation</param>
-        /// <returns>A Translation matrix</returns>
-        [Obsolete("Use CreateTranslation instead.")]
-        public static Matrix4 Translation(float x, float y, float z)
-        {
-            Matrix4 result = Identity;
-            result.Row3 = new Vector4(x, y, z, 1.0f);
-            return result;
-        }
-
-        #endregion
-
         #endregion
 
         #region Scale Functions
@@ -817,109 +669,12 @@ namespace OpenTK
         /// <returns>A scaling matrix</returns>
         public static Matrix4 Scale(float x, float y, float z)
         {
-            Matrix4 result;
-            result.Row0 = Vector4.UnitX * x;
-            result.Row1 = Vector4.UnitY * y;
-            result.Row2 = Vector4.UnitZ * z;
-            result.Row3 = Vector4.UnitW;
+            Matrix4 result = new Matrix4();
+            result.Column0.X = x;
+            result.Column1.Y = y;
+            result.Column2.Z = z;
+            result.Column3.W = 1;
             return result;
-        }
-
-        #endregion
-
-        #region Rotation Functions
-
-        /// <summary>
-        /// Build a rotation matrix that rotates about the x-axis
-        /// </summary>
-        /// <param name="angle">angle in radians to rotate counter-clockwise around the x-axis</param>
-        /// <returns>A rotation matrix</returns>
-        [Obsolete("Use CreateRotationX instead.")]
-        public static Matrix4 RotateX(float angle)
-        {
-            float cos = (float)System.Math.Cos(angle);
-            float sin = (float)System.Math.Sin(angle);
-
-            Matrix4 result;
-            result.Row0 = Vector4.UnitX;
-            result.Row1 = new Vector4(0.0f, cos, sin, 0.0f);
-            result.Row2 = new Vector4(0.0f, -sin, cos, 0.0f);
-            result.Row3 = Vector4.UnitW;
-            return result;
-        }
-
-        /// <summary>
-        /// Build a rotation matrix that rotates about the y-axis
-        /// </summary>
-        /// <param name="angle">angle in radians to rotate counter-clockwise around the y-axis</param>
-        /// <returns>A rotation matrix</returns>
-        [Obsolete("Use CreateRotationY instead.")]
-        public static Matrix4 RotateY(float angle)
-        {
-            float cos = (float)System.Math.Cos(angle);
-            float sin = (float)System.Math.Sin(angle);
-
-            Matrix4 result;
-            result.Row0 = new Vector4(cos, 0.0f, -sin, 0.0f);
-            result.Row1 = Vector4.UnitY;
-            result.Row2 = new Vector4(sin, 0.0f, cos, 0.0f);
-            result.Row3 = Vector4.UnitW;
-            return result;
-        }
-
-        /// <summary>
-        /// Build a rotation matrix that rotates about the z-axis
-        /// </summary>
-        /// <param name="angle">angle in radians to rotate counter-clockwise around the z-axis</param>
-        /// <returns>A rotation matrix</returns>
-        [Obsolete("Use CreateRotationZ instead.")]
-        public static Matrix4 RotateZ(float angle)
-        {
-            float cos = (float)System.Math.Cos(angle);
-            float sin = (float)System.Math.Sin(angle);
-
-            Matrix4 result;
-            result.Row0 = new Vector4(cos, sin, 0.0f, 0.0f);
-            result.Row1 = new Vector4(-sin, cos, 0.0f, 0.0f);
-            result.Row2 = Vector4.UnitZ;
-            result.Row3 = Vector4.UnitW;
-            return result;
-        }
-
-        /// <summary>
-        /// Build a rotation matrix to rotate about the given axis
-        /// </summary>
-        /// <param name="axis">the axis to rotate about</param>
-        /// <param name="angle">angle in radians to rotate counter-clockwise (looking in the direction of the given axis)</param>
-        /// <returns>A rotation matrix</returns>
-        [Obsolete("Use CreateFromAxisAngle instead.")]
-        public static Matrix4 Rotate(Vector3 axis, float angle)
-        {
-            float cos = (float)System.Math.Cos(-angle);
-            float sin = (float)System.Math.Sin(-angle);
-            float t = 1.0f - cos;
-
-            axis.Normalize();
-
-            Matrix4 result;
-            result.Row0 = new Vector4(t * axis.X * axis.X + cos, t * axis.X * axis.Y - sin * axis.Z, t * axis.X * axis.Z + sin * axis.Y, 0.0f);
-            result.Row1 = new Vector4(t * axis.X * axis.Y + sin * axis.Z, t * axis.Y * axis.Y + cos, t * axis.Y * axis.Z - sin * axis.X, 0.0f);
-            result.Row2 = new Vector4(t * axis.X * axis.Z - sin * axis.Y, t * axis.Y * axis.Z + sin * axis.X, t * axis.Z * axis.Z + cos, 0.0f);
-            result.Row3 = Vector4.UnitW;
-            return result;
-        }
-
-        /// <summary>
-        /// Build a rotation matrix from a quaternion
-        /// </summary>
-        /// <param name="q">the quaternion</param>
-        /// <returns>A rotation matrix</returns>
-        public static Matrix4 Rotate(Quaternion q)
-        {
-            Vector3 axis;
-            float angle;
-            q.ToAxisAngle(out axis, out angle);
-            return CreateFromAxisAngle(axis, angle);
         }
 
         #endregion
@@ -932,7 +687,7 @@ namespace OpenTK
         /// <param name="eye">Eye (camera) position in world space</param>
         /// <param name="target">Target position in world space</param>
         /// <param name="up">Up vector in world space (should not be parallel to the camera direction, that is target - eye)</param>
-        /// <returns>A Matrix4 that transforms world space to camera space</returns>
+        /// <returns>A Mat4 that transforms world space to camera space</returns>
         public static Matrix4 LookAt(Vector3 eye, Vector3 target, Vector3 up)
         {
             Vector3 z = Vector3.Normalize(eye - target);
@@ -944,7 +699,7 @@ namespace OpenTK
                                         new Vector4(x.Z, y.Z, z.Z, 0.0f),
                                         Vector4.UnitW);
 
-            Matrix4 trans = Matrix4.CreateTranslation(-eye);
+            Matrix4 trans = Matrix4.Translation(-eye);
 
             return trans * rot;
         }
@@ -961,68 +716,205 @@ namespace OpenTK
         /// <param name="upX">Up vector in world space (should not be parallel to the camera direction, that is target - eye)</param>
         /// <param name="upY">Up vector in world space (should not be parallel to the camera direction, that is target - eye)</param>
         /// <param name="upZ">Up vector in world space (should not be parallel to the camera direction, that is target - eye)</param>
-        /// <returns>A Matrix4 that transforms world space to camera space</returns>
+        /// <returns>A Mat4 that transforms world space to camera space</returns>
         public static Matrix4 LookAt(float eyeX, float eyeY, float eyeZ, float targetX, float targetY, float targetZ, float upX, float upY, float upZ)
         {
             return LookAt(new Vector3(eyeX, eyeY, eyeZ), new Vector3(targetX, targetY, targetZ), new Vector3(upX, upY, upZ));
         }
 
-        /// <summary>
-        /// Build a projection matrix
-        /// </summary>
-        /// <param name="left">Left edge of the view frustum</param>
-        /// <param name="right">Right edge of the view frustum</param>
-        /// <param name="bottom">Bottom edge of the view frustum</param>
-        /// <param name="top">Top edge of the view frustum</param>
-        /// <param name="near">Distance to the near clip plane</param>
-        /// <param name="far">Distance to the far clip plane</param>
-        /// <returns>A projection matrix that transforms camera space to raster space</returns>
-        [Obsolete("Use CreatePerspectiveOffCenter instead.")]
-        public static Matrix4 Frustum(float left, float right, float bottom, float top, float near, float far)
-        {
-            float invRL = 1.0f / (right - left);
-            float invTB = 1.0f / (top - bottom);
-            float invFN = 1.0f / (far - near);
-            return new Matrix4(new Vector4(2.0f * near * invRL, 0.0f, 0.0f, 0.0f),
-                               new Vector4(0.0f, 2.0f * near * invTB, 0.0f, 0.0f),
-                               new Vector4((right + left) * invRL, (top + bottom) * invTB, -(far + near) * invFN, -1.0f),
-                               new Vector4(0.0f, 0.0f, -2.0f * far * near * invFN, 0.0f));
-        }
-
-        /// <summary>
-        /// Build a projection matrix
-        /// </summary>
-        /// <param name="fovy">Angle of the field of view in the y direction (in radians)</param>
-        /// <param name="aspect">Aspect ratio of the view (width / height)</param>
-        /// <param name="near">Distance to the near clip plane</param>
-        /// <param name="far">Distance to the far clip plane</param>
-        /// <returns>A projection matrix that transforms camera space to raster space</returns>
-        [Obsolete("Use CreatePerspectiveFieldOfView instead.")]
-        public static Matrix4 Perspective(float fovy, float aspect, float near, float far)
-        {
-            float yMax = near * (float)System.Math.Tan(0.5f * fovy);
-            float yMin = -yMax;
-            float xMin = yMin * aspect;
-            float xMax = yMax * aspect;
-
-            return Frustum(xMin, xMax, yMin, yMax, near, far);
-        }
-
+        #endregion
+       
         #endregion
 
-        #region Multiply Functions
+        #region Operators between Matrix and Vectors
 
         /// <summary>
-        /// Multiplies two instances.
+        /// Compares two instances for equality.
         /// </summary>
-        /// <param name="left">The left operand of the multiplication.</param>
-        /// <param name="right">The right operand of the multiplication.</param>
-        /// <returns>A new instance that is the result of the multiplication</returns>
-        public static Matrix4 Mult(Matrix4 left, Matrix4 right)
+        /// <param name="left">The first instance.</param>
+        /// <param name="right">The second instance.</param>
+        /// <returns>True, if left equals right; false otherwise.</returns>
+        public static bool operator ==(Matrix4 left, Matrix4 right)
         {
-            Matrix4 result;
-            Mult(ref left, ref right, out result);
+            return left.Equals(right);
+        }
+
+        /// <summary>
+        /// Compares two instances for inequality.
+        /// </summary>
+        /// <param name="left">The first instance.</param>
+        /// <param name="right">The second instance.</param>
+        /// <returns>True, if left does not equal right; false otherwise.</returns>
+        public static bool operator !=(Matrix4 left, Matrix4 right)
+        {
+            return !left.Equals(right);
+        }
+        
+        /// <summary>
+        /// Element-wise addition.
+        /// </summary>
+        public static Matrix4 operator +(float left, Matrix4 right)
+        {
+            Matrix4 m = new Matrix4();
+            m.Column0 = left + right.Column0;
+            m.Column1 = left + right.Column1;
+            m.Column2 = left + right.Column2;
+            m.Column3 = left + right.Column3;
+            return m;
+        }
+
+        /// <summary>
+        /// Element-wise addition.
+        /// </summary>
+        public static Matrix4 operator +(Matrix4 left, float right)
+        {
+            Matrix4 m = new Matrix4();
+            m.Column0 = left.Column0 + right;
+            m.Column1 = left.Column1 + right;
+            m.Column2 = left.Column2 + right;
+            m.Column3 = left.Column3 + right;
+            return m;
+        }
+
+        /// <summary>
+        /// Element-wise addition.
+        /// </summary>
+        public static Matrix4 operator +(Matrix4 left, Matrix4 right)
+        {
+            Matrix4 m = new Matrix4();
+            m.Column0 = left.Column0 + right.Column0;
+            m.Column1 = left.Column1 + right.Column1;
+            m.Column2 = left.Column2 + right.Column2;
+            m.Column3 = left.Column3 + right.Column3;
+            return m;
+        }
+
+        /// <summary>
+        /// Element-wise subtraction.
+        /// </summary>
+        public static Matrix4 operator -(float left, Matrix4 right)
+        {
+            Matrix4 m = new Matrix4();
+            m.Column0 = left - right.Column0;
+            m.Column1 = left - right.Column1;
+            m.Column2 = left - right.Column2;
+            m.Column3 = left - right.Column3;
+            return m;
+        }
+
+        /// <summary>
+        /// Element-wise subtraction.
+        /// </summary>
+        public static Matrix4 operator -(Matrix4 left, float right)
+        {
+            Matrix4 m = new Matrix4();
+            m.Column0 = left.Column0 - right;
+            m.Column1 = left.Column1 - right;
+            m.Column2 = left.Column2 - right;
+            m.Column3 = left.Column3 - right;
+            return m;
+        }
+
+        /// <summary>
+        /// Element-wise subtraction.
+        /// </summary>
+        public static Matrix4 operator -(Matrix4 left, Matrix4 right)
+        {
+            Matrix4 m = new Matrix4();
+            m.Column0 = left.Column0 - right.Column0;
+            m.Column1 = left.Column1 - right.Column1;
+            m.Column2 = left.Column2 - right.Column2;
+            m.Column3 = left.Column3 - right.Column3;
+            return m;
+        }
+
+        /// <summary>
+        /// Element-wise negation.
+        /// </summary>
+        public static Matrix4 operator -(Matrix4 right)
+        {
+            Matrix4 m = new Matrix4();
+            m.Column0 = - right.Column0;
+            m.Column1 = - right.Column1;
+            m.Column2 = - right.Column2;
+            m.Column3 = - right.Column3;
+            return m;
+        }
+
+        /// <summary>
+        /// Element-wise multiplication
+        /// </summary>
+        /// <returns>A new Mat44 which holds the result of the multiplication</returns>
+        public static Matrix4 operator *(float left, Matrix4 right)
+        {
+            Matrix4 m = new Matrix4();
+            m.Column0 = left * right.Column0;
+            m.Column1 = left * right.Column1;
+            m.Column2 = left * right.Column2;
+            m.Column3 = left * right.Column3;
+            return m;
+        }
+
+        /// <summary>
+        /// Element-wise multiplication
+        /// </summary>
+        /// <returns>A new Mat44 which holds the result of the multiplication</returns>
+        public static Matrix4 operator *(Matrix4 left, float right)
+        {
+            Matrix4 m = new Matrix4();
+            m.Column0 = left.Column0 * right;
+            m.Column1 = left.Column1 * right;
+            m.Column2 = left.Column2 * right;
+            m.Column3 = left.Column3 * right;
+            return m;
+        }
+
+        /// <summary>
+        /// Matrix multiplication with a column vector
+        /// </summary>
+        /// <param name='left'>
+        /// Transform Matrix
+        /// </param>
+        /// <param name='right'>
+        /// Column vector
+        /// </param>
+        public static Vector4 operator *(Matrix4 left, Vector4 right)
+        {
+            Vector4 result = new Vector4();
+            result.X =
+                left.Column0.X * right.X + 
+                left.Column1.X * right.Y + 
+                left.Column2.X * right.Z + 
+                left.Column3.X * right.W;
+            result.Y =
+                left.Column0.Y * right.X + 
+                left.Column1.Y * right.Y + 
+                left.Column2.Y * right.Z + 
+                left.Column3.Y * right.W;
+            result.Z =
+                left.Column0.Z * right.X + 
+                left.Column1.Z * right.Y + 
+                left.Column2.Z * right.Z + 
+                left.Column3.Z * right.W;
+            result.W =
+                left.Column0.W * right.X + 
+                left.Column1.W * right.Y + 
+                left.Column2.W * right.Z + 
+                left.Column3.W * right.W;
             return result;
+        }
+
+        /// <summary>
+        /// Matrix multiplication
+        /// </summary>
+        /// <param name="left">left-hand operand</param>
+        /// <param name="right">right-hand operand</param>
+        /// <returns>A new Mat44 which holds the result of the multiplication</returns>
+        public static Matrix4 operator *(Matrix4 left, Matrix4 right)
+        {
+            Matrix4 m = new Matrix4();
+            Matrix4.Mult(ref left, ref right, out m);
+            return m;
         }
 
         /// <summary>
@@ -1033,43 +925,103 @@ namespace OpenTK
         /// <param name="result">A new instance that is the result of the multiplication</param>
         public static void Mult(ref Matrix4 left, ref Matrix4 right, out Matrix4 result)
         {
-            float lM11 = left.Row0.X, lM12 = left.Row0.Y, lM13 = left.Row0.Z, lM14 = left.Row0.W,
-                lM21 = left.Row1.X, lM22 = left.Row1.Y, lM23 = left.Row1.Z, lM24 = left.Row1.W,
-                lM31 = left.Row2.X, lM32 = left.Row2.Y, lM33 = left.Row2.Z, lM34 = left.Row2.W,
-                lM41 = left.Row3.X, lM42 = left.Row3.Y, lM43 = left.Row3.Z, lM44 = left.Row3.W,
-                rM11 = right.Row0.X, rM12 = right.Row0.Y, rM13 = right.Row0.Z, rM14 = right.Row0.W,
-                rM21 = right.Row1.X, rM22 = right.Row1.Y, rM23 = right.Row1.Z, rM24 = right.Row1.W,
-                rM31 = right.Row2.X, rM32 = right.Row2.Y, rM33 = right.Row2.Z, rM34 = right.Row2.W,
-                rM41 = right.Row3.X, rM42 = right.Row3.Y, rM43 = right.Row3.Z, rM44 = right.Row3.W;
+            //Believe it or not, referencing the same left.Col0.X four times is faster than storing it in a local variable.
+            result.Column0.X =
+                left.Column0.X * right.Column0.X + 
+                left.Column1.X * right.Column0.Y + 
+                left.Column2.X * right.Column0.Z + 
+                left.Column3.X * right.Column0.W;
+            result.Column0.Y =
+                left.Column0.Y * right.Column0.X + 
+                left.Column1.Y * right.Column0.Y + 
+                left.Column2.Y * right.Column0.Z + 
+                left.Column3.Y * right.Column0.W;
+            result.Column0.Z =
+                left.Column0.Z * right.Column0.X + 
+                left.Column1.Z * right.Column0.Y + 
+                left.Column2.Z * right.Column0.Z + 
+                left.Column3.Z * right.Column0.W;
+            result.Column0.W =
+                left.Column0.W * right.Column0.X + 
+                left.Column1.W * right.Column0.Y + 
+                left.Column2.W * right.Column0.Z + 
+                left.Column3.W * right.Column0.W;
 
-            result.Row0.X = (((lM11 * rM11) + (lM12 * rM21)) + (lM13 * rM31)) + (lM14 * rM41);
-            result.Row0.Y = (((lM11 * rM12) + (lM12 * rM22)) + (lM13 * rM32)) + (lM14 * rM42);
-            result.Row0.Z = (((lM11 * rM13) + (lM12 * rM23)) + (lM13 * rM33)) + (lM14 * rM43);
-            result.Row0.W = (((lM11 * rM14) + (lM12 * rM24)) + (lM13 * rM34)) + (lM14 * rM44);
-            result.Row1.X = (((lM21 * rM11) + (lM22 * rM21)) + (lM23 * rM31)) + (lM24 * rM41);
-            result.Row1.Y = (((lM21 * rM12) + (lM22 * rM22)) + (lM23 * rM32)) + (lM24 * rM42);
-            result.Row1.Z = (((lM21 * rM13) + (lM22 * rM23)) + (lM23 * rM33)) + (lM24 * rM43);
-            result.Row1.W = (((lM21 * rM14) + (lM22 * rM24)) + (lM23 * rM34)) + (lM24 * rM44);
-            result.Row2.X = (((lM31 * rM11) + (lM32 * rM21)) + (lM33 * rM31)) + (lM34 * rM41);
-            result.Row2.Y = (((lM31 * rM12) + (lM32 * rM22)) + (lM33 * rM32)) + (lM34 * rM42);
-            result.Row2.Z = (((lM31 * rM13) + (lM32 * rM23)) + (lM33 * rM33)) + (lM34 * rM43);
-            result.Row2.W = (((lM31 * rM14) + (lM32 * rM24)) + (lM33 * rM34)) + (lM34 * rM44);
-            result.Row3.X = (((lM41 * rM11) + (lM42 * rM21)) + (lM43 * rM31)) + (lM44 * rM41);
-            result.Row3.Y = (((lM41 * rM12) + (lM42 * rM22)) + (lM43 * rM32)) + (lM44 * rM42);
-            result.Row3.Z = (((lM41 * rM13) + (lM42 * rM23)) + (lM43 * rM33)) + (lM44 * rM43);
-            result.Row3.W = (((lM41 * rM14) + (lM42 * rM24)) + (lM43 * rM34)) + (lM44 * rM44);
+            result.Column1.X =
+                left.Column0.X * right.Column1.X + 
+                left.Column1.X * right.Column1.Y + 
+                left.Column2.X * right.Column1.Z + 
+                left.Column3.X * right.Column1.W;
+            result.Column1.Y =
+                left.Column0.Y * right.Column1.X + 
+                left.Column1.Y * right.Column1.Y + 
+                left.Column2.Y * right.Column1.Z + 
+                left.Column3.Y * right.Column1.W;
+            result.Column1.Z =
+                left.Column0.Z * right.Column1.X + 
+                left.Column1.Z * right.Column1.Y + 
+                left.Column2.Z * right.Column1.Z + 
+                left.Column3.Z * right.Column1.W;
+            result.Column1.W =
+                left.Column0.W * right.Column1.X + 
+                left.Column1.W * right.Column1.Y + 
+                left.Column2.W * right.Column1.Z + 
+                left.Column3.W * right.Column1.W;
+
+            result.Column2.X =
+                left.Column0.X * right.Column2.X + 
+                left.Column1.X * right.Column2.Y + 
+                left.Column2.X * right.Column2.Z + 
+                left.Column3.X * right.Column2.W;
+            result.Column2.Y =
+                left.Column0.Y * right.Column2.X + 
+                left.Column1.Y * right.Column2.Y + 
+                left.Column2.Y * right.Column2.Z + 
+                left.Column3.Y * right.Column2.W;
+            result.Column2.Z =
+                left.Column0.Z * right.Column2.X + 
+                left.Column1.Z * right.Column2.Y + 
+                left.Column2.Z * right.Column2.Z + 
+                left.Column3.Z * right.Column2.W;
+            result.Column2.W =
+                left.Column0.W * right.Column2.X + 
+                left.Column1.W * right.Column2.Y + 
+                left.Column2.W * right.Column2.Z + 
+                left.Column3.W * right.Column2.W;
+
+            result.Column3.X =
+                left.Column0.X * right.Column3.X + 
+                left.Column1.X * right.Column3.Y + 
+                left.Column2.X * right.Column3.Z + 
+                left.Column3.X * right.Column3.W;
+            result.Column3.Y =
+                left.Column0.Y * right.Column3.X + 
+                left.Column1.Y * right.Column3.Y + 
+                left.Column2.Y * right.Column3.Z + 
+                left.Column3.Y * right.Column3.W;
+            result.Column3.Z =
+                left.Column0.Z * right.Column3.X + 
+                left.Column1.Z * right.Column3.Y + 
+                left.Column2.Z * right.Column3.Z + 
+                left.Column3.Z * right.Column3.W;
+            result.Column3.W =
+                left.Column0.W * right.Column3.X + 
+                left.Column1.W * right.Column3.Y + 
+                left.Column2.W * right.Column3.Z + 
+                left.Column3.W * right.Column3.W;
+
         }
 
         #endregion
 
-        #region Invert Functions
-
+        #region Static: Matrix Operations
+        
         /// <summary>
         /// Calculate the inverse of the given matrix
         /// </summary>
         /// <param name="mat">The matrix to invert</param>
         /// <returns>The inverse of the given matrix if it has one, or the input if it is singular</returns>
-        /// <exception cref="InvalidOperationException">Thrown if the Matrix4 is singular.</exception>
+        /// <exception cref="InvalidOperationException">Thrown if the Mat4 is singular.</exception>
         public static Matrix4 Invert(Matrix4 mat)
         {
             int[] colIdx = { 0, 0, 0, 0 };
@@ -1077,10 +1029,10 @@ namespace OpenTK
             int[] pivotIdx = { -1, -1, -1, -1 };
 
             // convert the matrix to an array for easy looping
-            float[,] inverse = {{mat.Row0.X, mat.Row0.Y, mat.Row0.Z, mat.Row0.W}, 
-                                {mat.Row1.X, mat.Row1.Y, mat.Row1.Z, mat.Row1.W}, 
-                                {mat.Row2.X, mat.Row2.Y, mat.Row2.Z, mat.Row2.W}, 
-                                {mat.Row3.X, mat.Row3.Y, mat.Row3.Z, mat.Row3.W} };
+            float[,] inverse = {{mat.Column0.X, mat.Column1.X, mat.Column2.X, mat.Column3.X}, 
+                                {mat.Column0.Y, mat.Column1.Y, mat.Column2.Y, mat.Column3.Y}, 
+                                {mat.Column0.Z, mat.Column1.Z, mat.Column2.Z, mat.Column3.Z}, 
+                                {mat.Column0.W, mat.Column1.W, mat.Column2.W, mat.Column3.W} };
             int icol = 0;
             int irow = 0;
             for (int i = 0; i < 4; i++)
@@ -1167,16 +1119,24 @@ namespace OpenTK
                 }
             }
 
-            mat.Row0 = new Vector4(inverse[0, 0], inverse[0, 1], inverse[0, 2], inverse[0, 3]);
-            mat.Row1 = new Vector4(inverse[1, 0], inverse[1, 1], inverse[1, 2], inverse[1, 3]);
-            mat.Row2 = new Vector4(inverse[2, 0], inverse[2, 1], inverse[2, 2], inverse[2, 3]);
-            mat.Row3 = new Vector4(inverse[3, 0], inverse[3, 1], inverse[3, 2], inverse[3, 3]);
+            mat.Column0.X = inverse[0,0];
+            mat.Column0.Y = inverse[1,0];
+            mat.Column0.Z = inverse[2,0];
+            mat.Column0.W = inverse[3,0];
+            mat.Column1.X = inverse[0,1];
+            mat.Column1.Y = inverse[1,1];
+            mat.Column1.Z = inverse[2,1];
+            mat.Column1.W = inverse[3,1];
+            mat.Column2.X = inverse[0,2];
+            mat.Column2.Y = inverse[1,2];
+            mat.Column2.Z = inverse[2,2];
+            mat.Column2.W = inverse[3,2];
+            mat.Column3.X = inverse[0,3];
+            mat.Column3.Y = inverse[1,3];
+            mat.Column3.Z = inverse[2,3];
+            mat.Column3.W = inverse[3,3];
             return mat;
         }
-
-        #endregion
-
-        #region Transpose
 
         /// <summary>
         /// Calculate the transpose of the given matrix
@@ -1185,7 +1145,7 @@ namespace OpenTK
         /// <returns>The transpose of the given matrix</returns>
         public static Matrix4 Transpose(Matrix4 mat)
         {
-            return new Matrix4(mat.Column0, mat.Column1, mat.Column2, mat.Column3);
+            return new Matrix4(mat.Row0, mat.Row1, mat.Row2, mat.Row3);
         }
 
 
@@ -1196,88 +1156,38 @@ namespace OpenTK
         /// <param name="result">The result of the calculation</param>
         public static void Transpose(ref Matrix4 mat, out Matrix4 result)
         {
-            result.Row0 = mat.Column0;
-            result.Row1 = mat.Column1;
-            result.Row2 = mat.Column2;
-            result.Row3 = mat.Column3;
-        }
-
-        #endregion
-
-        #endregion
-
-        #region Operators
-
-        /// <summary>
-        /// Matrix multiplication
-        /// </summary>
-        /// <param name="left">left-hand operand</param>
-        /// <param name="right">right-hand operand</param>
-        /// <returns>A new Matrix44 which holds the result of the multiplication</returns>
-        public static Matrix4 operator *(Matrix4 left, Matrix4 right)
-        {
-            return Matrix4.Mult(left, right);
-        }
-
-        /// <summary>
-        /// Compares two instances for equality.
-        /// </summary>
-        /// <param name="left">The first instance.</param>
-        /// <param name="right">The second instance.</param>
-        /// <returns>True, if left equals right; false otherwise.</returns>
-        public static bool operator ==(Matrix4 left, Matrix4 right)
-        {
-            return left.Equals(right);
-        }
-
-        /// <summary>
-        /// Compares two instances for inequality.
-        /// </summary>
-        /// <param name="left">The first instance.</param>
-        /// <param name="right">The second instance.</param>
-        /// <returns>True, if left does not equal right; false otherwise.</returns>
-        public static bool operator !=(Matrix4 left, Matrix4 right)
-        {
-            return !left.Equals(right);
+            result.Column0 = mat.Row0;
+            result.Column1 = mat.Row1;
+            result.Column2 = mat.Row2;
+            result.Column3 = mat.Row3;
         }
 
         #endregion
 
         #region Overrides
 
-        #region public override string ToString()
-
-        /// <summary>
-        /// Returns a System.String that represents the current Matrix44.
-        /// </summary>
-        /// <returns></returns>
+        /// <summary></summary>
         public override string ToString()
         {
-            return String.Format("{0}\n{1}\n{2}\n{3}", Row0, Row1, Row2, Row3);
+            return String.Format(
+                "[ {0}   {4}   {8}   {12} ]\n" +
+                "[ {1}   {5}   {9}   {13} ]\n" +
+                "[ {2}   {6}   {10}   {14} ]\n" +
+                "[ {3}   {7}   {11}   {15} ]\n",
+                Column0.X.ToString("0.0"), Column0.Y.ToString("0.0"), Column0.Z.ToString("0.0"), Column0.W.ToString("0.0"),
+                Column1.X.ToString("0.0"), Column1.Y.ToString("0.0"), Column1.Z.ToString("0.0"), Column1.W.ToString("0.0"),
+                Column2.X.ToString("0.0"), Column2.Y.ToString("0.0"), Column2.Z.ToString("0.0"), Column2.W.ToString("0.0"),
+                Column3.X.ToString("0.0"), Column3.Y.ToString("0.0"), Column3.Z.ToString("0.0"), Column3.W.ToString("0.0")
+            );
         }
 
-        #endregion
-
-        #region public override int GetHashCode()
-
-        /// <summary>
-        /// Returns the hashcode for this instance.
-        /// </summary>
-        /// <returns>A System.Int32 containing the unique hashcode for this instance.</returns>
+        /// <summary></summary>
         public override int GetHashCode()
         {
-            return Row0.GetHashCode() ^ Row1.GetHashCode() ^ Row2.GetHashCode() ^ Row3.GetHashCode();
+            return Column0.GetHashCode() ^ Column1.GetHashCode() ^ Column2.GetHashCode() ^ Column3.GetHashCode();
         }
 
-        #endregion
-
-        #region public override bool Equals(object obj)
-
-        /// <summary>
-        /// Indicates whether this instance and a specified object are equal.
-        /// </summary>
-        /// <param name="obj">The object to compare tresult.</param>
-        /// <returns>True if the instances are equal; false otherwise.</returns>
+        /// <summary></summary>
         public override bool Equals(object obj)
         {
             if (!(obj is Matrix4))
@@ -1288,11 +1198,7 @@ namespace OpenTK
 
         #endregion
 
-        #endregion
-
-        #endregion
-
-        #region IEquatable<Matrix4> Members
+        #region IEquatable<Mat4> Members
 
         /// <summary>Indicates whether the current matrix is equal to another matrix.</summary>
         /// <param name="other">An matrix to compare with this matrix.</param>
@@ -1300,10 +1206,10 @@ namespace OpenTK
         public bool Equals(Matrix4 other)
         {
             return
-                Row0 == other.Row0 &&
-                Row1 == other.Row1 &&
-                Row2 == other.Row2 &&
-                Row3 == other.Row3;
+                Column0 == other.Column0 &&
+                Column1 == other.Column1 &&
+                Column2 == other.Column2 &&
+                Column3 == other.Column3;
         }
 
         #endregion

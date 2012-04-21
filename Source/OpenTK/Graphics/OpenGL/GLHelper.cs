@@ -260,7 +260,7 @@ namespace OpenTK.Graphics.OpenGL
         {
             unsafe
             {
-                fixed (Single* m_ptr = &mat.Row0.X)
+                fixed (Single* m_ptr = &mat.Column0.X)
                 {
                     GL.MultMatrix((Single*)m_ptr);
                 }
@@ -271,7 +271,7 @@ namespace OpenTK.Graphics.OpenGL
         {
             unsafe
             {
-                fixed (Single* m_ptr = &mat.Row0.X)
+                fixed (Single* m_ptr = &mat.Column0.X)
                 {
                     GL.LoadMatrix((Single*)m_ptr);
                 }
@@ -282,7 +282,7 @@ namespace OpenTK.Graphics.OpenGL
         {
             unsafe
             {
-                fixed (Single* m_ptr = &mat.Row0.X)
+                fixed (Single* m_ptr = &mat.Column0.X)
                 {
                     GL.LoadTransposeMatrix((Single*)m_ptr);
                 }
@@ -293,7 +293,7 @@ namespace OpenTK.Graphics.OpenGL
         {
             unsafe
             {
-                fixed (Single* m_ptr = &mat.Row0.X)
+                fixed (Single* m_ptr = &mat.Column0.X)
                 {
                     GL.MultTransposeMatrix((Single*)m_ptr);
                 }
@@ -304,7 +304,7 @@ namespace OpenTK.Graphics.OpenGL
         {
             unsafe
             {
-                fixed (float* matrix_ptr = &matrix.Row0.X)
+                fixed (float* matrix_ptr = &matrix.Column0.X)
                 {
                     GL.UniformMatrix4(location, 1, transpose, matrix_ptr);
                 }

@@ -35,8 +35,6 @@ namespace OpenTK
     [StructLayout(LayoutKind.Sequential)]
     public struct Vector4 : IEquatable<Vector4>
     {
-        #region Fields
-
         /// <summary>
         /// The X component of the Vector4.
         /// </summary>
@@ -58,40 +56,42 @@ namespace OpenTK
         public float W;
 
         /// <summary>
+        /// Defines the size of the Vector4 struct in bytes.
+        /// </summary>
+        public static readonly int SizeInBytes = Marshal.SizeOf(new Vector4());
+
+        #region Static: Unit-vectors and other help vectors
+
+        /// <summary>
         /// Defines a unit-length Vector4 that points towards the X-axis.
         /// </summary>
-        public static Vector4 UnitX = new Vector4(1, 0, 0, 0);
+        public static readonly Vector4 UnitX = new Vector4(1, 0, 0, 0);
 
         /// <summary>
         /// Defines a unit-length Vector4 that points towards the Y-axis.
         /// </summary>
-        public static Vector4 UnitY = new Vector4(0, 1, 0, 0);
+        public static readonly Vector4 UnitY = new Vector4(0, 1, 0, 0);
 
         /// <summary>
         /// Defines a unit-length Vector4 that points towards the Z-axis.
         /// </summary>
-        public static Vector4 UnitZ = new Vector4(0, 0, 1, 0);
+        public static readonly Vector4 UnitZ = new Vector4(0, 0, 1, 0);
 
         /// <summary>
         /// Defines a unit-length Vector4 that points towards the W-axis.
         /// </summary>
-        public static Vector4 UnitW = new Vector4(0, 0, 0, 1);
+        public static readonly Vector4 UnitW = new Vector4(0, 0, 0, 1);
 
         /// <summary>
         /// Defines a zero-length Vector4.
         /// </summary>
-        public static Vector4 Zero = new Vector4(0, 0, 0, 0);
+        public static readonly Vector4 Zero = new Vector4(0, 0, 0, 0);
 
         /// <summary>
         /// Defines an instance with all components set to 1.
         /// </summary>
         public static readonly Vector4 One = new Vector4(1, 1, 1, 1);
-
-        /// <summary>
-        /// Defines the size of the Vector4 struct in bytes.
-        /// </summary>
-        public static readonly int SizeInBytes = Marshal.SizeOf(new Vector4());
-
+        
         #endregion
 
         #region Constructors
@@ -175,8 +175,6 @@ namespace OpenTK
         }
 
         #endregion
-
-        #region Public Members
 
         #region Instance
 
@@ -1025,11 +1023,32 @@ namespace OpenTK
         #region Operators
 
         /// <summary>
+        /// Element-wise addition.
+        /// </summary>
+        public static Vector4 operator +(float left, Vector4 right)
+        {
+            right.X += left;
+            right.Y += left;
+            right.Z += left;
+            right.W += left;
+            return right;
+        }
+
+        /// <summary>
+        /// Element-wise addition.
+        /// </summary>
+        public static Vector4 operator +(Vector4 left, float right)
+        {
+            left.X += right;
+            left.Y += right;
+            left.Z += right;
+            left.W += right;
+            return left;
+        }
+
+        /// <summary>
         /// Adds two instances.
         /// </summary>
-        /// <param name="left">The first instance.</param>
-        /// <param name="right">The second instance.</param>
-        /// <returns>The result of the calculation.</returns>
         public static Vector4 operator +(Vector4 left, Vector4 right)
         {
             left.X += right.X;
@@ -1039,6 +1058,30 @@ namespace OpenTK
             return left;
         }
 
+        /// <summary>
+        /// Element-wise subtraction.
+        /// </summary>
+        public static Vector4 operator -(float left, Vector4 right)
+        {
+            right.X = left - right.X;
+            right.Y = left - right.Y;
+            right.Z = left - right.Z;
+            right.W = left - right.W;
+            return right;
+        }
+        
+        /// <summary>
+        /// Element-wise subtraction.
+        /// </summary>
+        public static Vector4 operator -(Vector4 left, float right)
+        {
+            left.X -= right;
+            left.Y -= right;
+            left.Z -= right;
+            left.W -= right;
+            return left;
+        }
+        
         /// <summary>
         /// Subtracts two instances.
         /// </summary>
@@ -1136,30 +1179,6 @@ namespace OpenTK
             return !left.Equals(right);
         }
 
-        /// <summary>
-        /// Returns a pointer to the first element of the specified instance.
-        /// </summary>
-        /// <param name="v">The instance.</param>
-        /// <returns>A pointer to the first element of v.</returns>
-        [CLSCompliant(false)]
-        unsafe public static explicit operator float*(Vector4 v)
-        {
-            return &v.X;
-        }
-
-        /// <summary>
-        /// Returns a pointer to the first element of the specified instance.
-        /// </summary>
-        /// <param name="v">The instance.</param>
-        /// <returns>A pointer to the first element of v.</returns>
-        public static explicit operator IntPtr(Vector4 v)
-        {
-            unsafe
-            {
-                return (IntPtr)(&v.X);
-            }
-        }
-
         #endregion
 
         #region Overrides
@@ -1204,8 +1223,6 @@ namespace OpenTK
 
             return this.Equals((Vector4)obj);
         }
-
-        #endregion
 
         #endregion
 

@@ -463,7 +463,7 @@ namespace OpenTK
         /// <param name="axis">The axis to rotate about</param>
         /// <param name="angle">The rotation angle in radians</param>
         /// <returns></returns>
-        public static Quaternion FromAxisAngle(Vector3 axis, float angle)
+        public static Quaternion FromAxisAngle(Vector3 axis, double angle)
         {
             if (axis.LengthSquared == 0.0f)
                 return Identity;

@@ -191,10 +191,12 @@ namespace OpenTK
         /// <param name="m">Matrix result.</param>
         public static void RotationQuaternion(ref Quaternion q, ref Matrix4 m)
         {
-            float X = q.X;
-            float Y = q.Y;
-            float Z = q.Z;
-            float W = q.W;
+            float scale = 1.0f / q.Length;
+            
+            float X = q.X * scale;
+            float Y = q.Y * scale;
+            float Z = q.Z * scale;
+            float W = q.W * scale;
 
             float xx = X * X;
             float xy = X * Y;

@@ -836,7 +836,12 @@ namespace OpenTK
         /// </summary>
         public override string ToString()
         {
-            return String.Format("({0}, {1}, {2}, {3})'", X, Y, Z, W);
+            return String.Format(
+                "({0}, {1}, {2}, {3})'",
+                X.ToString("0.0"),
+                Y.ToString("0.0"),
+                Z.ToString("0.0"),
+                W.ToString("0.0"));
         }
 
         /// <summary>

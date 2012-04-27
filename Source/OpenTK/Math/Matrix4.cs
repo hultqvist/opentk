@@ -156,11 +156,11 @@ namespace OpenTK
         #region public void Invert()
 
         /// <summary>
-        /// Converts this instance into its inverse.
+        /// Return the inverse of the matrix.
         /// </summary>
-        public void Invert()
+        public Matrix4 Invert()
         {
-            this = Matrix4.Invert(this);
+            return Matrix4.Invert(this);
         }
 
         #endregion
@@ -286,7 +286,7 @@ namespace OpenTK
         /// Builds a rotation matrix for a right-hand rotation around the x-axis.
         /// </summary>
         /// <param name="angle">The right-hand rotation in radians around the x-axis.</param>
-        /// <param name="result">The resulting Mat4 instance.</param>
+        /// <param name="result">The resulting Matrix4 instance.</param>
         public static void RotationX(double angle, out Matrix4 result)
         {
             float cos = (float)System.Math.Cos(angle);
@@ -302,7 +302,7 @@ namespace OpenTK
         /// Builds a rotation matrix for a right-hand rotation around the x-axis.
         /// </summary>
         /// <param name="angle">The right-hand rotation in radians around the x-axis.</param>
-        /// <returns>The resulting Mat4 instance.</returns>
+        /// <returns>The resulting Matrix4 instance.</returns>
         public static Matrix4 RotationX(double angle)
         {
             Matrix4 result;
@@ -314,7 +314,7 @@ namespace OpenTK
         /// Builds a rotation matrix for a right-hand rotation around the y-axis.
         /// </summary>
         /// <param name="angle">The right-hand rotation in radians around the y-axis.</param>
-        /// <param name="result">The resulting Mat4 instance.</param>
+        /// <param name="result">The resulting Matrix4 instance.</param>
         public static void RotationY(double angle, out Matrix4 result)
         {
             float cos = (float)System.Math.Cos(angle);
@@ -330,7 +330,7 @@ namespace OpenTK
         /// Builds a rotation matrix for a right-hand rotation around the y-axis.
         /// </summary>
         /// <param name="angle">The right-hand rotation in radians around the y-axis.</param>
-        /// <returns>The resulting Mat4 instance.</returns>
+        /// <returns>The resulting Matrix4 instance.</returns>
         public static Matrix4 RotationY(double angle)
         {
             Matrix4 result;
@@ -342,7 +342,7 @@ namespace OpenTK
         /// Builds a rotation matrix for a right-hand rotation around the z-axis.
         /// </summary>
         /// <param name="angle">The right-hand rotation in radians around the z-axis.</param>
-        /// <param name="result">The resulting Mat4 instance.</param>
+        /// <param name="result">The resulting Matrix4 instance.</param>
         public static void RotationZ(double angle, out Matrix4 result)
         {
             float cos = (float)System.Math.Cos(angle);
@@ -358,7 +358,7 @@ namespace OpenTK
         /// Builds a rotation matrix for a right-hand rotation around the z-axis.
         /// </summary>
         /// <param name="angle">The right-hand rotation in radians around the z-axis.</param>
-        /// <returns>The resulting Mat4 instance.</returns>
+        /// <returns>The resulting Matrix4 instance.</returns>
         public static Matrix4 RotationZ(double angle)
         {
             Matrix4 result;
@@ -376,7 +376,7 @@ namespace OpenTK
         /// <param name="x">X translation.</param>
         /// <param name="y">Y translation.</param>
         /// <param name="z">Z translation.</param>
-        /// <param name="result">The resulting Mat4 instance.</param>
+        /// <param name="result">The resulting Matrix4 instance.</param>
         public static void Translation(float x, float y, float z, out Matrix4 result)
         {
             result = Identity;
@@ -387,7 +387,7 @@ namespace OpenTK
         /// Creates a translation matrix.
         /// </summary>
         /// <param name="vector">The translation vector.</param>
-        /// <param name="result">The resulting Mat4 instance.</param>
+        /// <param name="result">The resulting Matrix4 instance.</param>
         public static void Translation(ref Vector3 vector, out Matrix4 result)
         {
             result = Identity;
@@ -400,7 +400,7 @@ namespace OpenTK
         /// <param name="x">X translation.</param>
         /// <param name="y">Y translation.</param>
         /// <param name="z">Z translation.</param>
-        /// <returns>The resulting Mat4 instance.</returns>
+        /// <returns>The resulting Matrix4 instance.</returns>
         public static Matrix4 Translation(float x, float y, float z)
         {
             Matrix4 result;
@@ -412,7 +412,7 @@ namespace OpenTK
         /// Creates a translation matrix.
         /// </summary>
         /// <param name="vector">The translation vector.</param>
-        /// <returns>The resulting Mat4 instance.</returns>
+        /// <returns>The resulting Matrix4 instance.</returns>
         public static Matrix4 Translation(Vector3 vector)
         {
             Matrix4 result;
@@ -431,7 +431,7 @@ namespace OpenTK
         /// <param name="yHeight">The height of the projection volume.</param>
         /// <param name="zNear">The near edge of the projection volume.</param>
         /// <param name="zFar">The far edge of the projection volume.</param>
-        /// <param name="result">The resulting Mat4 instance.</param>
+        /// <param name="result">The resulting Matrix4 instance.</param>
         public static void Orthographic(float xWidth, float yHeight, float zNear, float zFar, out Matrix4 result)
         {
             OrthographicOffCenter(-xWidth / 2, xWidth / 2, -yHeight / 2, yHeight / 2, zNear, zFar, out result);
@@ -444,7 +444,7 @@ namespace OpenTK
         /// <param name="height">The height of the projection volume.</param>
         /// <param name="zNear">The near edge of the projection volume.</param>
         /// <param name="zFar">The far edge of the projection volume.</param>
-        /// <rereturns>The resulting Mat4 instance.</rereturns>
+        /// <rereturns>The resulting Matrix4 instance.</rereturns>
         public static Matrix4 Orthographic(float width, float height, float zNear, float zFar)
         {
             Matrix4 result;
@@ -460,28 +460,28 @@ namespace OpenTK
         /// Creates an orthographic projection matrix.
         /// Looking into the direction of negative Z.
         /// </summary>
-        /// <param name="xMin">The left edge of the projection volume.</param>
-        /// <param name="xMax">The right edge of the projection volume.</param>
-        /// <param name="yMin">The bottom edge of the projection volume.</param>
-        /// <param name="yMax">The top edge of the projection volume.</param>
-        /// <param name="zMin">The near edge of the projection volume.</param>
-        /// <param name="zMax">The far edge of the projection volume.</param>
-        /// <param name="result">The resulting Mat4 instance.</param>
-        public static void OrthographicOffCenter(float xMin, float xMax, float yMin, float yMax, float zMin, float zMax, out Matrix4 result)
+        /// <param name="left">The left edge of the projection volume.</param>
+        /// <param name="right">The right edge of the projection volume.</param>
+        /// <param name="bottom">The bottom edge of the projection volume.</param>
+        /// <param name="top">The top edge of the projection volume.</param>
+        /// <param name="zNear">The near edge of the projection volume.</param>
+        /// <param name="zFar">The far edge of the projection volume.</param>
+        /// <param name="result">The resulting Matrix4 instance.</param>
+        public static void OrthographicOffCenter(float left, float right, float bottom, float top, float zNear, float zFar, out Matrix4 result)
         {
             result = new Matrix4();
 
-            float invRL = 1 / (xMax - xMin);
-            float invTB = 1 / (yMax - yMin);
-            float invFN = 1 / (zMax - zMin);
+            float invRL = 1 / (right - left);
+            float invTB = 1 / (top - bottom);
+            float invFN = 1 / (zNear - zFar);
 
             result.Column0.X = 2 * invRL;
             result.Column1.Y = 2 * invTB;
             result.Column2.Z = 2 * invFN;
 
-            result.Column3.X = -(xMax + xMin) * invRL;
-            result.Column3.Y = -(yMax + yMin) * invTB;
-            result.Column3.Z = -(zMax + zMin) * invFN;
+            result.Column3.X = -(right + left) * invRL;
+            result.Column3.Y = -(top + bottom) * invTB;
+            result.Column3.Z = -(zFar + zNear) * invFN;
             result.Column3.W = 1;
         }
 
@@ -489,17 +489,17 @@ namespace OpenTK
         /// Creates an orthographic projection matrix.
         /// Looking into the direction of negative Z.
         /// </summary>
-        /// <param name="xMin">The left edge of the projection volume.</param>
-        /// <param name="xMax">The right edge of the projection volume.</param>
-        /// <param name="yMin">The bottom edge of the projection volume.</param>
-        /// <param name="yMax">The top edge of the projection volume.</param>
-        /// <param name="zMin">The near edge of the projection volume.</param>
-        /// <param name="zMax">The far edge of the projection volume.</param>
-        /// <returns>The resulting Mat4 instance.</returns>
-        public static Matrix4 OrthographicOffCenter(float xMin, float xMax, float yMin, float yMax, float zMin, float zMax)
+        /// <param name="left">The left edge of the projection volume.</param>
+        /// <param name="right">The right edge of the projection volume.</param>
+        /// <param name="bottom">The bottom edge of the projection volume.</param>
+        /// <param name="top">The top edge of the projection volume.</param>
+        /// <param name="zNear">The near edge of the projection volume.</param>
+        /// <param name="zFar">The far edge of the projection volume.</param>
+        /// <returns>The resulting Matrix4 instance.</returns>
+        public static Matrix4 OrthographicOffCenter(float left, float right, float bottom, float top, float zNear, float zFar)
         {
             Matrix4 result;
-            OrthographicOffCenter(xMin, xMax, yMin, yMax, zMin, zMax, out result);
+            OrthographicOffCenter(left, right, bottom, top, zNear, zFar, out result);
             return result;
         }
 
@@ -525,23 +525,21 @@ namespace OpenTK
         /// <item>zNear is larger than zFar</item>
         /// </list>
         /// </exception>
-        public static void PerspectiveFieldOfView(float fovy, float aspect, float zNear, float zFar, out Matrix4 result)
+        public static void PerspectiveFieldOfView(double fovy, float aspect, float zNear, float zFar, out Matrix4 result)
         {
             if (fovy <= 0 || fovy > Math.PI)
                 throw new ArgumentOutOfRangeException("fovy");
             if (aspect <= 0)
                 throw new ArgumentOutOfRangeException("aspect");
-            if (zNear <= 0)
-                throw new ArgumentOutOfRangeException("zNear");
-            if (zFar <= 0)
-                throw new ArgumentOutOfRangeException("zFar");
-            
-            float yMax = zNear * (float)System.Math.Tan(0.5f * fovy);
-            float yMin = -yMax;
-            float xMin = yMin * aspect;
-            float xMax = yMax * aspect;
 
-            PerspectiveOffCenter(xMin, xMax, yMin, yMax, zNear, zFar, out result);
+            float top = (float)(Math.Abs(zNear) * System.Math.Tan(0.5f * fovy));
+            float bottom = -top;
+            if (zNear > 0)
+                aspect *= -1;
+            float left = bottom * aspect;
+            float right = top * aspect;
+
+            PerspectiveOffCenter(left, right, bottom, top, zNear, zFar, out result);
         }
         
         /// <summary>
@@ -562,7 +560,7 @@ namespace OpenTK
         /// <item>zNear is larger than zFar</item>
         /// </list>
         /// </exception>
-        public static Matrix4 PerspectiveFieldOfView(float fovy, float aspect, float zNear, float zFar)
+        public static Matrix4 PerspectiveFieldOfView(double fovy, float aspect, float zNear, float zFar)
         {
             Matrix4 result;
             PerspectiveFieldOfView(fovy, aspect, zNear, zFar, out result);
@@ -587,30 +585,52 @@ namespace OpenTK
         /// Thrown under the following conditions:
         /// <list type="bullet">
         /// <item>zNear is negative or zero</item>
-        /// <item>zFar is negative or zero</item>
-        /// <item>zNear is larger than zFar</item>
         /// </list>
         /// </exception>
         public static void PerspectiveOffCenter(float left, float right, float bottom, float top, float zNear, float zFar, out Matrix4 result)
         {
-            if (zNear <= 0)
-                throw new ArgumentOutOfRangeException("zNear");
-            if (zFar <= 0)
-                throw new ArgumentOutOfRangeException("zFar");
-            if (zNear >= zFar)
-                throw new ArgumentOutOfRangeException("zNear");
-            
-            float x = (2.0f * zNear) / (right - left);
-            float y = (2.0f * zNear) / (top - bottom);
-            float a = (right + left) / (right - left);
-            float b = (top + bottom) / (top - bottom);
-            float c = -(zFar + zNear) / (zFar - zNear);
-            float d = -(2.0f * zFar * zNear) / (zFar - zNear);
-            
-            result = new Matrix4(x, 0, 0, 0,
-                                 0, y, 0, 0,
-                                 a, b, c, -1,
-                                 0, 0, d, 0);
+            float x, y, a, b, c, d;
+            float xSize = right - left;
+            float ySize = top - bottom;
+
+            if (zNear > 0)
+            {
+                if (zFar < zNear)
+                    throw new ArgumentOutOfRangeException(
+                        "zFar",
+                        "Required: abs(zFar) > abs(zNear)"
+                    );
+
+                //Positive Z
+                x = -2.0f * zNear / xSize;
+                y = -2.0f * zNear / ySize;
+                a = (right + left) / xSize;
+                b = (top + bottom) / ySize;
+                c = -(zFar + zNear) / (zFar - zNear);
+                d = -(2.0f * zFar * zNear) / (zFar - zNear);
+                throw new NotImplementedException();
+
+            } else
+            {
+                if (zFar > zNear)
+                    throw new ArgumentOutOfRangeException(
+                        "zFar",
+                        "Required: abs(zFar) > abs(zNear)"
+                    );
+
+                //Negative Z
+                x = -2.0f * zNear / xSize;
+                y = -2.0f * zNear / ySize;
+                a = (right + left) / xSize;
+                b = (top + bottom) / ySize;
+                c = (zFar + zNear) / (zFar - zNear);
+                d = -2.0f * zFar * zNear / (zFar - zNear);
+            }
+
+            result = new Matrix4(x, 0, a, 0,
+                                 0, y, b, 0,
+                                 0, 0, c, d,
+                                 0, 0, -1, 0);
         }
         
         /// <summary>
@@ -689,21 +709,21 @@ namespace OpenTK
         /// <param name="eye">Eye (camera) position in world space</param>
         /// <param name="target">Target position in world space</param>
         /// <param name="up">Up vector in world space (should not be parallel to the camera direction, that is target - eye)</param>
-        /// <returns>A Mat4 that transforms world space to camera space</returns>
+        /// <returns>A Matrix4 that transforms world space to camera space</returns>
         public static Matrix4 LookAt(Vector3 eye, Vector3 target, Vector3 up)
         {
             Vector3 z = Vector3.Normalize(eye - target);
             Vector3 x = Vector3.Normalize(Vector3.Cross(up, z));
             Vector3 y = Vector3.Normalize(Vector3.Cross(z, x));
 
-            Matrix4 rot = new Matrix4(new Vector4(x.X, y.X, z.X, 0.0f),
-                                        new Vector4(x.Y, y.Y, z.Y, 0.0f),
-                                        new Vector4(x.Z, y.Z, z.Z, 0.0f),
-                                        Vector4.UnitW);
+            Matrix4 rot = new Matrix4(x.X,x.Y,x.Z,0,
+                                      y.X,y.Y,y.Z,0,
+                                      z.X,z.Y,z.Z,0,
+                                      0,0,0,1);
 
             Matrix4 trans = Matrix4.Translation(-eye);
 
-            return trans * rot;
+            return rot * trans;
         }
 
         /// <summary>
@@ -718,7 +738,7 @@ namespace OpenTK
         /// <param name="upX">Up vector in world space (should not be parallel to the camera direction, that is target - eye)</param>
         /// <param name="upY">Up vector in world space (should not be parallel to the camera direction, that is target - eye)</param>
         /// <param name="upZ">Up vector in world space (should not be parallel to the camera direction, that is target - eye)</param>
-        /// <returns>A Mat4 that transforms world space to camera space</returns>
+        /// <returns>A Matrix4 that transforms world space to camera space</returns>
         public static Matrix4 LookAt(float eyeX, float eyeY, float eyeZ, float targetX, float targetY, float targetZ, float upX, float upY, float upZ)
         {
             return LookAt(new Vector3(eyeX, eyeY, eyeZ), new Vector3(targetX, targetY, targetZ), new Vector3(upX, upY, upZ));
@@ -846,7 +866,7 @@ namespace OpenTK
         /// <summary>
         /// Element-wise multiplication
         /// </summary>
-        /// <returns>A new Mat44 which holds the result of the multiplication</returns>
+        /// <returns>A new Matrix4 which holds the result of the multiplication</returns>
         public static Matrix4 operator *(float left, Matrix4 right)
         {
             Matrix4 m = new Matrix4();
@@ -860,7 +880,7 @@ namespace OpenTK
         /// <summary>
         /// Element-wise multiplication
         /// </summary>
-        /// <returns>A new Mat44 which holds the result of the multiplication</returns>
+        /// <returns>A new Matrix4 which holds the result of the multiplication</returns>
         public static Matrix4 operator *(Matrix4 left, float right)
         {
             Matrix4 m = new Matrix4();
@@ -911,7 +931,7 @@ namespace OpenTK
         /// </summary>
         /// <param name="left">left-hand operand</param>
         /// <param name="right">right-hand operand</param>
-        /// <returns>A new Mat44 which holds the result of the multiplication</returns>
+        /// <returns>A new Matrix4 which holds the result of the multiplication</returns>
         public static Matrix4 operator *(Matrix4 left, Matrix4 right)
         {
             Matrix4 m = new Matrix4();
@@ -1023,7 +1043,7 @@ namespace OpenTK
         /// </summary>
         /// <param name="mat">The matrix to invert</param>
         /// <returns>The inverse of the given matrix if it has one, or the input if it is singular</returns>
-        /// <exception cref="InvalidOperationException">Thrown if the Mat4 is singular.</exception>
+        /// <exception cref="InvalidOperationException">Thrown if the Matrix4 is singular.</exception>
         public static Matrix4 Invert(Matrix4 mat)
         {
             int[] colIdx = { 0, 0, 0, 0 };
@@ -1200,7 +1220,7 @@ namespace OpenTK
 
         #endregion
 
-        #region IEquatable<Mat4> Members
+        #region IEquatable<Matrix4> Members
 
         /// <summary>Indicates whether the current matrix is equal to another matrix.</summary>
         /// <param name="other">An matrix to compare with this matrix.</param>

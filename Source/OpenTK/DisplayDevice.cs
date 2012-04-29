@@ -285,31 +285,6 @@ namespace OpenTK
 
         #endregion
 
-        #region public static IList<DisplayDevice> AvailableDisplays
-
-        /// <summary>
-        /// Gets the list of available <see cref="DisplayDevice"/> objects.
-        /// This function allocates memory.
-        /// </summary>
-        [Obsolete("Use GetDisplay(DisplayIndex) instead.")]
-        public static IList<DisplayDevice> AvailableDisplays
-        {
-            get
-            {
-                List<DisplayDevice> displays = new List<DisplayDevice>();
-                for (int i = 0; i < 6; i++)
-                {
-                    DisplayDevice dev = GetDisplay(DisplayIndex.First + i);
-                    if (dev != null)
-                        displays.Add(dev);
-                }
-
-                return displays.AsReadOnly();
-            }
-        }
-
-        #endregion
-
         #region public static DisplayDevice Default
 
         /// <summary>Gets the default (primary) display of this system.</summary>

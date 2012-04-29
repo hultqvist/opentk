@@ -71,117 +71,11 @@ namespace OpenTK
             Y = y;
         }
 
-        /// <summary>
-        /// Constructs a new Vector2 from the given Vector2.
-        /// </summary>
-        /// <param name="v">The Vector2 to copy components from.</param>
-        [Obsolete]
-        public Vector2(Vector2 v)
-        {
-            X = v.X;
-            Y = v.Y;
-        }
-
-        /// <summary>
-        /// Constructs a new Vector2 from the given Vector3.
-        /// </summary>
-        /// <param name="v">The Vector3 to copy components from. Z is discarded.</param>
-        [Obsolete]
-        public Vector2(Vector3 v)
-        {
-            X = v.X;
-            Y = v.Y;
-        }
-
-        /// <summary>
-        /// Constructs a new Vector2 from the given Vector4.
-        /// </summary>
-        /// <param name="v">The Vector4 to copy components from. Z and W are discarded.</param>
-        [Obsolete]
-        public Vector2(Vector4 v)
-        {
-            X = v.X;
-            Y = v.Y;
-        }
-
         #endregion
 
         #region Public Members
 
         #region Instance
-
-        #region public void Add()
-
-        /// <summary>Add the Vector passed as parameter to this instance.</summary>
-        /// <param name="right">Right operand. This parameter is only read from.</param>
-        [Obsolete("Use static Add() method instead.")]
-        public void Add(Vector2 right)
-        {
-            this.X += right.X;
-            this.Y += right.Y;
-        }
-
-        /// <summary>Add the Vector passed as parameter to this instance.</summary>
-        /// <param name="right">Right operand. This parameter is only read from.</param>
-        [CLSCompliant(false)]
-        [Obsolete("Use static Add() method instead.")]
-        public void Add(ref Vector2 right)
-        {
-            this.X += right.X;
-            this.Y += right.Y;
-        }
-
-        #endregion public void Add()
-
-        #region public void Sub()
-
-        /// <summary>Subtract the Vector passed as parameter from this instance.</summary>
-        /// <param name="right">Right operand. This parameter is only read from.</param>
-        [Obsolete("Use static Subtract() method instead.")]
-        public void Sub(Vector2 right)
-        {
-            this.X -= right.X;
-            this.Y -= right.Y;
-        }
-
-        /// <summary>Subtract the Vector passed as parameter from this instance.</summary>
-        /// <param name="right">Right operand. This parameter is only read from.</param>
-        [CLSCompliant(false)]
-        [Obsolete("Use static Subtract() method instead.")]
-        public void Sub(ref Vector2 right)
-        {
-            this.X -= right.X;
-            this.Y -= right.Y;
-        }
-
-        #endregion public void Sub()
-
-        #region public void Mult()
-
-        /// <summary>Multiply this instance by a scalar.</summary>
-        /// <param name="f">Scalar operand.</param>
-        [Obsolete("Use static Multiply() method instead.")]
-        public void Mult(float f)
-        {
-            this.X *= f;
-            this.Y *= f;
-        }
-
-        #endregion public void Mult()
-
-        #region public void Div()
-
-        /// <summary>Divide this instance by a scalar.</summary>
-        /// <param name="f">Scalar operand.</param>
-        [Obsolete("Use static Divide() method instead.")]
-        public void Div(float f)
-        {
-            float mult = 1.0f / f;
-            this.X *= mult;
-            this.Y *= mult;
-        }
-
-        #endregion public void Div()
 
         #region public float Length
 
@@ -300,41 +194,6 @@ namespace OpenTK
 
         #endregion
 
-        #region public void Scale()
-
-        /// <summary>
-        /// Scales the current Vector2 by the given amounts.
-        /// </summary>
-        /// <param name="sx">The scale of the X component.</param>
-        /// <param name="sy">The scale of the Y component.</param>
-        [Obsolete("Use static Multiply() method instead.")]
-        public void Scale(float sx, float sy)
-        {
-            this.X = X * sx;
-            this.Y = Y * sy;
-        }
-
-        /// <summary>Scales this instance by the given parameter.</summary>
-        /// <param name="scale">The scaling of the individual components.</param>
-        [Obsolete("Use static Multiply() method instead.")]
-        public void Scale(Vector2 scale)
-        {
-            this.X *= scale.X;
-            this.Y *= scale.Y;
-        }
-
-        /// <summary>Scales this instance by the given parameter.</summary>
-        /// <param name="scale">The scaling of the individual components.</param>
-        [CLSCompliant(false)]
-        [Obsolete("Use static Multiply() method instead.")]
-        public void Scale(ref Vector2 scale)
-        {
-            this.X *= scale.X;
-            this.Y *= scale.Y;
-        }
-
-        #endregion public void Scale()
-
         #endregion
 
         #region Static
@@ -432,54 +291,9 @@ namespace OpenTK
 
         #endregion
 
-        #region Div
-
-        /// <summary>
-        /// Divide a vector by a scalar
-        /// </summary>
-        /// <param name="a">Vector operand</param>
-        /// <param name="f">Scalar operand</param>
-        /// <returns>Result of the division</returns>
-        [Obsolete("Use static Divide() method instead.")]
-        public static Vector2 Div(Vector2 a, float f)
-        {
-            float mult = 1.0f / f;
-            a.X *= mult;
-            a.Y *= mult;
-            return a;
-        }
-
-        /// <summary>
-        /// Divide a vector by a scalar
-        /// </summary>
-        /// <param name="a">Vector operand</param>
-        /// <param name="f">Scalar operand</param>
-        /// <param name="result">Result of the division</param>
-        [Obsolete("Use static Divide() method instead.")]
-        public static void Div(ref Vector2 a, float f, out Vector2 result)
-        {
-            float mult = 1.0f / f;
-            result.X = a.X * mult;
-            result.Y = a.Y * mult;
-        }
-
-        #endregion
-
         #endregion
 
         #region Add
-
-        /// <summary>
-        /// Adds two vectors.
-        /// </summary>
-        /// <param name="a">Left operand.</param>
-        /// <param name="b">Right operand.</param>
-        /// <returns>Result of operation.</returns>
-        public static Vector2 Add(Vector2 a, Vector2 b)
-        {
-            Add(ref a, ref b, out a);
-            return a;
-        }
 
         /// <summary>
         /// Adds two vectors.
@@ -501,18 +315,6 @@ namespace OpenTK
         /// </summary>
         /// <param name="a">First operand</param>
         /// <param name="b">Second operand</param>
-        /// <returns>Result of subtraction</returns>
-        public static Vector2 Subtract(Vector2 a, Vector2 b)
-        {
-            Subtract(ref a, ref b, out a);
-            return a;
-        }
-
-        /// <summary>
-        /// Subtract one Vector from another
-        /// </summary>
-        /// <param name="a">First operand</param>
-        /// <param name="b">Second operand</param>
         /// <param name="result">Result of subtraction</param>
         public static void Subtract(ref Vector2 a, ref Vector2 b, out Vector2 result)
         {
@@ -528,34 +330,10 @@ namespace OpenTK
         /// </summary>
         /// <param name="vector">Left operand.</param>
         /// <param name="scale">Right operand.</param>
-        /// <returns>Result of the operation.</returns>
-        public static Vector2 Multiply(Vector2 vector, float scale)
-        {
-            Multiply(ref vector, scale, out vector);
-            return vector;
-        }
-
-        /// <summary>
-        /// Multiplies a vector by a scalar.
-        /// </summary>
-        /// <param name="vector">Left operand.</param>
-        /// <param name="scale">Right operand.</param>
         /// <param name="result">Result of the operation.</param>
         public static void Multiply(ref Vector2 vector, float scale, out Vector2 result)
         {
             result = new Vector2(vector.X * scale, vector.Y * scale);
-        }
-
-        /// <summary>
-        /// Multiplies a vector by the components a vector (scale).
-        /// </summary>
-        /// <param name="vector">Left operand.</param>
-        /// <param name="scale">Right operand.</param>
-        /// <returns>Result of the operation.</returns>
-        public static Vector2 Multiply(Vector2 vector, Vector2 scale)
-        {
-            Multiply(ref vector, ref scale, out vector);
-            return vector;
         }
 
         /// <summary>
@@ -578,34 +356,10 @@ namespace OpenTK
         /// </summary>
         /// <param name="vector">Left operand.</param>
         /// <param name="scale">Right operand.</param>
-        /// <returns>Result of the operation.</returns>
-        public static Vector2 Divide(Vector2 vector, float scale)
-        {
-            Divide(ref vector, scale, out vector);
-            return vector;
-        }
-
-        /// <summary>
-        /// Divides a vector by a scalar.
-        /// </summary>
-        /// <param name="vector">Left operand.</param>
-        /// <param name="scale">Right operand.</param>
         /// <param name="result">Result of the operation.</param>
         public static void Divide(ref Vector2 vector, float scale, out Vector2 result)
         {
             Multiply(ref vector, 1 / scale, out result);
-        }
-
-        /// <summary>
-        /// Divides a vector by the components of a vector (scale).
-        /// </summary>
-        /// <param name="vector">Left operand.</param>
-        /// <param name="scale">Right operand.</param>
-        /// <returns>Result of the operation.</returns>
-        public static Vector2 Divide(Vector2 vector, Vector2 scale)
-        {
-            Divide(ref vector, ref scale, out vector);
-            return vector;
         }
 
         /// <summary>

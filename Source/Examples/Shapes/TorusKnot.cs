@@ -84,7 +84,7 @@ namespace Examples.Shapes
                     uint index = i * (uint)shapevertices + j;
 
                     // Create a point on the plane and rotate it
-                    Matrix4d RotationMatrix = Matrix4d.Rotate( tangent, -( j * TwoPiThroughVert ) );
+                    Matrix4d RotationMatrix = Matrix4d.RotationAxisAngle( tangent, -( j * TwoPiThroughVert ) );
                     Vector3d point = Vector3d.TransformVector( normal, RotationMatrix );
                     Vector3d.Add( ref PathPositions[i], ref point, out VertexArray[index].Position );
                     // Since the used shape is a circle, the Vertex normal's heading is easy to find

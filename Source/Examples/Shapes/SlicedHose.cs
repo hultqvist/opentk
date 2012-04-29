@@ -184,9 +184,9 @@ namespace Examples.Shapes
         double t2 = System.Math.Sin( ( 1.0 - factor ) * theta ) * temp;
         double t3 = System.Math.Sin( factor * theta ) * temp;
 
-        Vector3d v1 = Vector3d.Multiply( a, t2);
-        Vector3d v2 = Vector3d.Multiply( b, t3 );
-        result = Vector3d.Add( v1, v2 );
+        Vector3d v1 = a * t2;
+        Vector3d v2 = b * t3;
+        result = v1 + v2;
     }
 
 

@@ -37,24 +37,12 @@ namespace OpenTK
     [StructLayout(LayoutKind.Sequential)]
     public struct Vector3 : IEquatable<Vector3>
     {
-        #region Fields
-
-        /// <summary>
-        /// The X component of the Vector3.
-        /// </summary>
+        /// <summary></summary>
         public float X;
-
-        /// <summary>
-        /// The Y component of the Vector3.
-        /// </summary>
+        /// <summary></summary>
         public float Y;
-
-        /// <summary>
-        /// The Z component of the Vector3.
-        /// </summary>
+        /// <summary></summary>
         public float Z;
-
-        #endregion
 
         #region Constructors
 
@@ -117,222 +105,7 @@ namespace OpenTK
 
         #endregion
 
-        #region Public Members
-
-        #region Instance
-
-        #region public void Add()
-
-        /// <summary>Add the Vector passed as parameter to this instance.</summary>
-        /// <param name="right">Right operand. This parameter is only read from.</param>
-        [Obsolete("Use static Add() method instead.")]
-        public void Add(Vector3 right)
-        {
-            this.X += right.X;
-            this.Y += right.Y;
-            this.Z += right.Z;
-        }
-
-        /// <summary>Add the Vector passed as parameter to this instance.</summary>
-        /// <param name="right">Right operand. This parameter is only read from.</param>
-        [CLSCompliant(false)]
-        [Obsolete("Use static Add() method instead.")]
-        public void Add(ref Vector3 right)
-        {
-            this.X += right.X;
-            this.Y += right.Y;
-            this.Z += right.Z;
-        }
-
-        #endregion public void Add()
-
-        #region public void Sub()
-
-        /// <summary>Subtract the Vector passed as parameter from this instance.</summary>
-        /// <param name="right">Right operand. This parameter is only read from.</param>
-        [Obsolete("Use static Subtract() method instead.")]
-        public void Sub(Vector3 right)
-        {
-            this.X -= right.X;
-            this.Y -= right.Y;
-            this.Z -= right.Z;
-        }
-
-        /// <summary>Subtract the Vector passed as parameter from this instance.</summary>
-        /// <param name="right">Right operand. This parameter is only read from.</param>
-        [CLSCompliant(false)]
-        [Obsolete("Use static Subtract() method instead.")]
-        public void Sub(ref Vector3 right)
-        {
-            this.X -= right.X;
-            this.Y -= right.Y;
-            this.Z -= right.Z;
-        }
-
-        #endregion public void Sub()
-
-        #region public void Mult()
-
-        /// <summary>Multiply this instance by a scalar.</summary>
-        /// <param name="f">Scalar operand.</param>
-        [Obsolete("Use static Multiply() method instead.")]
-        public void Mult(float f)
-        {
-            this.X *= f;
-            this.Y *= f;
-            this.Z *= f;
-        }
-
-        #endregion public void Mult()
-
-        #region public void Div()
-
-        /// <summary>Divide this instance by a scalar.</summary>
-        /// <param name="f">Scalar operand.</param>
-        [Obsolete("Use static Divide() method instead.")]
-        public void Div(float f)
-        {
-            float mult = 1.0f / f;
-            this.X *= mult;
-            this.Y *= mult;
-            this.Z *= mult;
-        }
-
-        #endregion public void Div()
-
-        #region public float Length
-
-        /// <summary>
-        /// Gets the length (magnitude) of the vector.
-        /// </summary>
-        /// <see cref="LengthFast"/>
-        /// <seealso cref="LengthSquared"/>
-        public float Length
-        {
-            get
-            {
-                return (float)System.Math.Sqrt(X * X + Y * Y + Z * Z);
-            }
-        }
-
-        #endregion
-
-        #region public float LengthFast
-
-        /// <summary>
-        /// Gets an approximation of the vector length (magnitude).
-        /// </summary>
-        /// <remarks>
-        /// This property uses an approximation of the square root function to calculate vector magnitude, with
-        /// an upper error bound of 0.001.
-        /// </remarks>
-        /// <see cref="Length"/>
-        /// <seealso cref="LengthSquared"/>
-        public float LengthFast
-        {
-            get
-            {
-                return 1.0f / MathHelper.InverseSqrtFast(X * X + Y * Y + Z * Z);
-            }
-        }
-
-        #endregion
-
-        #region public float LengthSquared
-
-        /// <summary>
-        /// Gets the square of the vector length (magnitude).
-        /// </summary>
-        /// <remarks>
-        /// This property avoids the costly square root operation required by the Length property. This makes it more suitable
-        /// for comparisons.
-        /// </remarks>
-        /// <see cref="Length"/>
-        /// <seealso cref="LengthFast"/>
-        public float LengthSquared
-        {
-            get
-            {
-                return X * X + Y * Y + Z * Z;
-            }
-        }
-
-        #endregion
-
-        #region public void Normalize()
-
-        /// <summary>
-        /// Scales the Vector3 to unit length.
-        /// </summary>
-        public void Normalize()
-        {
-            float scale = 1.0f / this.Length;
-            X *= scale;
-            Y *= scale;
-            Z *= scale;
-        }
-
-        #endregion
-
-        #region public void NormalizeFast()
-
-        /// <summary>
-        /// Scales the Vector3 to approximately unit length.
-        /// </summary>
-        public void NormalizeFast()
-        {
-            float scale = MathHelper.InverseSqrtFast(X * X + Y * Y + Z * Z);
-            X *= scale;
-            Y *= scale;
-            Z *= scale;
-        }
-
-        #endregion
-
-        #region public void Scale()
-
-        /// <summary>
-        /// Scales the current Vector3 by the given amounts.
-        /// </summary>
-        /// <param name="sx">The scale of the X component.</param>
-        /// <param name="sy">The scale of the Y component.</param>
-        /// <param name="sz">The scale of the Z component.</param>
-        [Obsolete("Use static Multiply() method instead.")]
-        public void Scale(float sx, float sy, float sz)
-        {
-            this.X = X * sx;
-            this.Y = Y * sy;
-            this.Z = Z * sz;
-        }
-
-        /// <summary>Scales this instance by the given parameter.</summary>
-        /// <param name="scale">The scaling of the individual components.</param>
-        [Obsolete("Use static Multiply() method instead.")]
-        public void Scale(Vector3 scale)
-        {
-            this.X *= scale.X;
-            this.Y *= scale.Y;
-            this.Z *= scale.Z;
-        }
-
-        /// <summary>Scales this instance by the given parameter.</summary>
-        /// <param name="scale">The scaling of the individual components.</param>
-        [CLSCompliant(false)]
-        [Obsolete("Use static Multiply() method instead.")]
-        public void Scale(ref Vector3 scale)
-        {
-            this.X *= scale.X;
-            this.Y *= scale.Y;
-            this.Z *= scale.Z;
-        }
-
-        #endregion public void Scale()
-
-        #endregion
-
-        #region Static
-
-        #region Fields
+        #region Standard vectors
 
         /// <summary>
         /// Defines a unit-length Vector3 that points towards the X-axis.
@@ -366,124 +139,58 @@ namespace OpenTK
 
         #endregion
 
-        #region Obsolete
-
-        #region Sub
+        #region Properties: Length
 
         /// <summary>
-        /// Subtract one Vector from another
+        /// Gets the length (magnitude) of the vector.
         /// </summary>
-        /// <param name="a">First operand</param>
-        /// <param name="b">Second operand</param>
-        /// <returns>Result of subtraction</returns>
-        [Obsolete("Use static Subtract() method instead.")]
-        public static Vector3 Sub(Vector3 a, Vector3 b)
+        /// <see cref="LengthFast"/>
+        /// <seealso cref="LengthSquared"/>
+        public float Length
         {
-            a.X -= b.X;
-            a.Y -= b.Y;
-            a.Z -= b.Z;
-            return a;
+            get
+            {
+                return (float)System.Math.Sqrt(X * X + Y * Y + Z * Z);
+            }
         }
 
         /// <summary>
-        /// Subtract one Vector from another
+        /// Gets an approximation of the vector length (magnitude).
         /// </summary>
-        /// <param name="a">First operand</param>
-        /// <param name="b">Second operand</param>
-        /// <param name="result">Result of subtraction</param>
-        [Obsolete("Use static Subtract() method instead.")]
-        public static void Sub(ref Vector3 a, ref Vector3 b, out Vector3 result)
+        /// <remarks>
+        /// This property uses an approximation of the square root function to calculate vector magnitude, with
+        /// an upper error bound of 0.001.
+        /// </remarks>
+        /// <see cref="Length"/>
+        /// <seealso cref="LengthSquared"/>
+        public float LengthFast
         {
-            result.X = a.X - b.X;
-            result.Y = a.Y - b.Y;
-            result.Z = a.Z - b.Z;
-        }
-
-        #endregion
-
-        #region Mult
-
-        /// <summary>
-        /// Multiply a vector and a scalar
-        /// </summary>
-        /// <param name="a">Vector operand</param>
-        /// <param name="f">Scalar operand</param>
-        /// <returns>Result of the multiplication</returns>
-        [Obsolete("Use static Multiply() method instead.")]
-        public static Vector3 Mult(Vector3 a, float f)
-        {
-            a.X *= f;
-            a.Y *= f;
-            a.Z *= f;
-            return a;
+            get
+            {
+                return 1.0f / MathHelper.InverseSqrtFast(X * X + Y * Y + Z * Z);
+            }
         }
 
         /// <summary>
-        /// Multiply a vector and a scalar
+        /// Gets the square of the vector length (magnitude).
         /// </summary>
-        /// <param name="a">Vector operand</param>
-        /// <param name="f">Scalar operand</param>
-        /// <param name="result">Result of the multiplication</param>
-        [Obsolete("Use static Multiply() method instead.")]
-        public static void Mult(ref Vector3 a, float f, out Vector3 result)
+        /// <remarks>
+        /// This property avoids the costly square root operation required by the Length property. This makes it more suitable
+        /// for comparisons.
+        /// </remarks>
+        /// <see cref="Length"/>
+        /// <seealso cref="LengthFast"/>
+        public float LengthSquared
         {
-            result.X = a.X * f;
-            result.Y = a.Y * f;
-            result.Z = a.Z * f;
+            get
+            {
+                return X * X + Y * Y + Z * Z;
+            }
         }
 
         #endregion
 
-        #region Div
-
-        /// <summary>
-        /// Divide a vector by a scalar
-        /// </summary>
-        /// <param name="a">Vector operand</param>
-        /// <param name="f">Scalar operand</param>
-        /// <returns>Result of the division</returns>
-        [Obsolete("Use static Divide() method instead.")]
-        public static Vector3 Div(Vector3 a, float f)
-        {
-            float mult = 1.0f / f;
-            a.X *= mult;
-            a.Y *= mult;
-            a.Z *= mult;
-            return a;
-        }
-
-        /// <summary>
-        /// Divide a vector by a scalar
-        /// </summary>
-        /// <param name="a">Vector operand</param>
-        /// <param name="f">Scalar operand</param>
-        /// <param name="result">Result of the division</param>
-        [Obsolete("Use static Divide() method instead.")]
-        public static void Div(ref Vector3 a, float f, out Vector3 result)
-        {
-            float mult = 1.0f / f;
-            result.X = a.X * mult;
-            result.Y = a.Y * mult;
-            result.Z = a.Z * mult;
-        }
-
-        #endregion
-
-        #endregion
-
-        #region Add
-
-        /// <summary>
-        /// Adds two vectors.
-        /// </summary>
-        /// <param name="a">Left operand.</param>
-        /// <param name="b">Right operand.</param>
-        /// <returns>Result of operation.</returns>
-        public static Vector3 Add(Vector3 a, Vector3 b)
-        {
-            Add(ref a, ref b, out a);
-            return a;
-        }
+        #region Operations: Instance and Static
 
         /// <summary>
         /// Adds two vectors.
@@ -496,22 +203,6 @@ namespace OpenTK
             result = new Vector3(a.X + b.X, a.Y + b.Y, a.Z + b.Z);
         }
 
-        #endregion
-
-        #region Subtract
-
-        /// <summary>
-        /// Subtract one Vector from another
-        /// </summary>
-        /// <param name="a">First operand</param>
-        /// <param name="b">Second operand</param>
-        /// <returns>Result of subtraction</returns>
-        public static Vector3 Subtract(Vector3 a, Vector3 b)
-        {
-            Subtract(ref a, ref b, out a);
-            return a;
-        }
-
         /// <summary>
         /// Subtract one Vector from another
         /// </summary>
@@ -521,22 +212,6 @@ namespace OpenTK
         public static void Subtract(ref Vector3 a, ref Vector3 b, out Vector3 result)
         {
             result = new Vector3(a.X - b.X, a.Y - b.Y, a.Z - b.Z);
-        }
-
-        #endregion
-
-        #region Multiply
-
-        /// <summary>
-        /// Multiplies a vector by a scalar.
-        /// </summary>
-        /// <param name="vector">Left operand.</param>
-        /// <param name="scale">Right operand.</param>
-        /// <returns>Result of the operation.</returns>
-        public static Vector3 Multiply(Vector3 vector, float scale)
-        {
-            Multiply(ref vector, scale, out vector);
-            return vector;
         }
 
         /// <summary>
@@ -551,18 +226,6 @@ namespace OpenTK
         }
 
         /// <summary>
-        /// Multiplies a vector by the components a vector (scale).
-        /// </summary>
-        /// <param name="vector">Left operand.</param>
-        /// <param name="scale">Right operand.</param>
-        /// <returns>Result of the operation.</returns>
-        public static Vector3 Multiply(Vector3 vector, Vector3 scale)
-        {
-            Multiply(ref vector, ref scale, out vector);
-            return vector;
-        }
-
-        /// <summary>
         /// Multiplies a vector by the components of a vector (scale).
         /// </summary>
         /// <param name="vector">Left operand.</param>
@@ -571,22 +234,6 @@ namespace OpenTK
         public static void Multiply(ref Vector3 vector, ref Vector3 scale, out Vector3 result)
         {
             result = new Vector3(vector.X * scale.X, vector.Y * scale.Y, vector.Z * scale.Z);
-        }
-
-        #endregion
-
-        #region Divide
-
-        /// <summary>
-        /// Divides a vector by a scalar.
-        /// </summary>
-        /// <param name="vector">Left operand.</param>
-        /// <param name="scale">Right operand.</param>
-        /// <returns>Result of the operation.</returns>
-        public static Vector3 Divide(Vector3 vector, float scale)
-        {
-            Divide(ref vector, scale, out vector);
-            return vector;
         }
 
         /// <summary>
@@ -601,18 +248,6 @@ namespace OpenTK
         }
 
         /// <summary>
-        /// Divides a vector by the components of a vector (scale).
-        /// </summary>
-        /// <param name="vector">Left operand.</param>
-        /// <param name="scale">Right operand.</param>
-        /// <returns>Result of the operation.</returns>
-        public static Vector3 Divide(Vector3 vector, Vector3 scale)
-        {
-            Divide(ref vector, ref scale, out vector);
-            return vector;
-        }
-
-        /// <summary>
         /// Divide a vector by the components of a vector (scale).
         /// </summary>
         /// <param name="vector">Left operand.</param>
@@ -623,9 +258,7 @@ namespace OpenTK
             result = new Vector3(vector.X / scale.X, vector.Y / scale.Y, vector.Z / scale.Z);
         }
 
-        #endregion
-
-        #region ComponentMin
+        #region Component-wise operations
 
         /// <summary>
         /// Calculate the component-wise minimum of two vectors
@@ -653,10 +286,6 @@ namespace OpenTK
             result.Y = a.Y < b.Y ? a.Y : b.Y;
             result.Z = a.Z < b.Z ? a.Z : b.Z;
         }
-
-        #endregion
-
-        #region ComponentMax
 
         /// <summary>
         /// Calculate the component-wise maximum of two vectors
@@ -687,7 +316,7 @@ namespace OpenTK
 
         #endregion
 
-        #region Min
+        #region Vector Min/Max
 
         /// <summary>
         /// Returns the Vector3 with the minimum magnitude
@@ -699,10 +328,6 @@ namespace OpenTK
         {
             return left.LengthSquared < right.LengthSquared ? left : right;
         }
-
-        #endregion
-
-        #region Max
 
         /// <summary>
         /// Returns the Vector3 with the minimum magnitude
@@ -717,8 +342,6 @@ namespace OpenTK
 
         #endregion
 
-        #region Clamp
-
         /// <summary>
         /// Clamp a vector to the given minimum and maximum vectors
         /// </summary>
@@ -726,12 +349,12 @@ namespace OpenTK
         /// <param name="min">Minimum vector</param>
         /// <param name="max">Maximum vector</param>
         /// <returns>The clamped vector</returns>
-        public static Vector3 Clamp(Vector3 vec, Vector3 min, Vector3 max)
+        public Vector3 Clamp(Vector3 min, Vector3 max)
         {
-            vec.X = vec.X < min.X ? min.X : vec.X > max.X ? max.X : vec.X;
-            vec.Y = vec.Y < min.Y ? min.Y : vec.Y > max.Y ? max.Y : vec.Y;
-            vec.Z = vec.Z < min.Z ? min.Z : vec.Z > max.Z ? max.Z : vec.Z;
-            return vec;
+            return new Vector3(
+                X < min.X ? min.X : X > max.X ? max.X : X,
+                Y < min.Y ? min.Y : Y > max.Y ? max.Y : Y,
+                Z < min.Z ? min.Z : Z > max.Z ? max.Z : Z);
         }
 
         /// <summary>
@@ -748,22 +371,10 @@ namespace OpenTK
             result.Z = vec.Z < min.Z ? min.Z : vec.Z > max.Z ? max.Z : vec.Z;
         }
 
-        #endregion
-
-        #region Normalize
-
-        /// <summary>
-        /// Scale a vector to unit length
-        /// </summary>
-        /// <param name="vec">The input vector</param>
-        /// <returns>The normalized vector</returns>
-        public static Vector3 Normalize(Vector3 vec)
+        public Vector3 Normalize()
         {
-            float scale = 1.0f / vec.Length;
-            vec.X *= scale;
-            vec.Y *= scale;
-            vec.Z *= scale;
-            return vec;
+            float scale = 1.0f / Length;
+            return new Vector3(X * scale, Y * scale, Z * scale);
         }
 
         /// <summary>
@@ -779,22 +390,13 @@ namespace OpenTK
             result.Z = vec.Z * scale;
         }
 
-        #endregion
-
-        #region NormalizeFast
-
         /// <summary>
-        /// Scale a vector to approximately unit length
+        /// Scales the Vector3 to approximately unit length.
         /// </summary>
-        /// <param name="vec">The input vector</param>
-        /// <returns>The normalized vector</returns>
-        public static Vector3 NormalizeFast(Vector3 vec)
+        public Vector3 NormalizeFast()
         {
-            float scale = MathHelper.InverseSqrtFast(vec.X * vec.X + vec.Y * vec.Y + vec.Z * vec.Z);
-            vec.X *= scale;
-            vec.Y *= scale;
-            vec.Z *= scale;
-            return vec;
+            float scale = MathHelper.InverseSqrtFast(X * X + Y * Y + Z * Z);
+            return new Vector3(X * scale, Y * scale, Z * scale);
         }
 
         /// <summary>
@@ -809,8 +411,6 @@ namespace OpenTK
             result.Y = vec.Y * scale;
             result.Z = vec.Z * scale;
         }
-
-        #endregion
 
         #region Dot
 
@@ -1363,8 +963,6 @@ namespace OpenTK
 
             return this.Equals((Vector3)obj);
         }
-
-        #endregion
 
         #endregion
 

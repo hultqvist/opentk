@@ -21,7 +21,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  */
 #endregion
-
 using System;
 using System.Runtime.InteropServices;
 using System.ComponentModel;
@@ -36,10 +35,32 @@ namespace OpenTK
     [StructLayout(LayoutKind.Sequential)]
     public struct Quaternion : IEquatable<Quaternion>
     {
-        #region Fields
+        /// <summary>
+        /// sin(𝚯/2)µ_x
+        /// </summary>
+        public float X;
+        /// <summary>
+        /// sin(𝚯/2)µ_y
+        /// </summary>
+        public float Y;
+        /// <summary>
+        /// sin(𝚯/2)µ_z
+        /// </summary>
+        public float Z;
+        /// <summary>
+        /// cos(𝚯/2)
+        /// </summary>
+        public float W;
 
-        Vector3 xyz;
-        float w;
+        #region Alternate representations
+
+        /// <summary>
+        /// Gets or sets an OpenTK.Vector3 with the X, Y and Z components of this instance.
+        /// </summary>
+        public Vector3 Xyz
+        {
+            get { return new Vector3(X, Y, Z); }
+        }
 
         #endregion
 
@@ -52,8 +73,10 @@ namespace OpenTK
         /// <param name="w">The w part</param>
         public Quaternion(Vector3 v, float w)
         {
-            this.xyz = v;
-            this.w = w;
+            this.X = v.X;
+            this.Y = v.Y;
+            this.Z = v.Z;
+            this.W = w;
         }
 
         /// <summary>
@@ -70,52 +93,34 @@ namespace OpenTK
 
         #endregion
 
-        #region Public Members
-
         #region Properties
 
         /// <summary>
-        /// Gets or sets an OpenTK.Vector3 with the X, Y and Z components of this instance.
+        /// Gets the length (magnitude) of the quaternion.
         /// </summary>
-        [Obsolete("Use Xyz property instead.")]
-        [CLSCompliant(false)]
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [XmlIgnore]
-        public Vector3 XYZ { get { return Xyz; } set { Xyz = value; } }
+        /// <seealso cref="LengthSquared"/>
+        public float Length
+        {
+            get
+            {
+                return (float)System.Math.Sqrt(W * W + Xyz.LengthSquared);
+            }
+        }
 
         /// <summary>
-        /// Gets or sets an OpenTK.Vector3 with the X, Y and Z components of this instance.
+        /// Gets the square of the quaternion length (magnitude).
         /// </summary>
-        public Vector3 Xyz { get { return xyz; } set { xyz = value; } }
-
-        /// <summary>
-        /// Gets or sets the X component of this instance.
-        /// </summary>
-        [XmlIgnore]
-        public float X { get { return xyz.X; } set { xyz.X = value; } }
-
-        /// <summary>
-        /// Gets or sets the Y component of this instance.
-        /// </summary>
-        [XmlIgnore]
-        public float Y { get { return xyz.Y; } set { xyz.Y = value; } }
-
-        /// <summary>
-        /// Gets or sets the Z component of this instance.
-        /// </summary>
-        [XmlIgnore]
-        public float Z { get { return xyz.Z; } set { xyz.Z = value; } }
-
-        /// <summary>
-        /// Gets or sets the W component of this instance.
-        /// </summary>
-        public float W { get { return w; } set { w = value; } }
+        public float LengthSquared
+        {
+            get
+            {
+                return W * W + Xyz.LengthSquared;
+            }
+        }
 
         #endregion
 
-        #region Instance
-
-        #region ToAxisAngle
+        #region Instance Operations returning a new struct
 
         /// <summary>
         /// Convert the current quaternion to axis angle representation
@@ -146,8 +151,7 @@ namespace OpenTK
             if (den > 0.0001f)
             {
                 result.Xyz = q.Xyz / den;
-            }
-            else
+            } else
             {
                 // This occurs when the angle is zero. 
                 // Not a problem: just set an arbitrary normalized axis.
@@ -157,180 +161,39 @@ namespace OpenTK
             return result;
         }
 
-        #endregion
-
-        #region public float Length
-
         /// <summary>
-        /// Gets the length (magnitude) of the quaternion.
+        /// Return the conjugate of this quaternion
         /// </summary>
-        /// <seealso cref="LengthSquared"/>
-        public float Length
+        public Quaternion Conjugate()
         {
-            get
-            {
-                return (float)System.Math.Sqrt(W * W + Xyz.LengthSquared);
-            }
+            return new Quaternion(-X, -Y, -Z, W);
         }
 
-        #endregion
-
-        #region public float LengthSquared
-
-        /// <summary>
-        /// Gets the square of the quaternion length (magnitude).
-        /// </summary>
-        public float LengthSquared
+        public Quaternion Inverse()
         {
-            get
-            {
-                return W * W + Xyz.LengthSquared;
-            }
+            float div = 1 / (W * W + X * X + Y * Y + Z * Z);
+            return new Quaternion(-X * div, -Y * div, -Z * div, W * div);
         }
 
-        #endregion
-
-        #region public void Normalize()
-
         /// <summary>
-        /// Scales the Quaternion to unit length.
+        /// Scale the given quaternion to unit length
         /// </summary>
-        public void Normalize()
+        /// <param name="q">The quaternion to normalize</param>
+        /// <returns>The normalized quaternion</returns>
+        public Quaternion Normalize()
         {
             float scale = 1.0f / this.Length;
-            Xyz *= scale;
-            W *= scale;
+            return new Quaternion(X * scale, Y * scale, Z * scale, W * scale);
         }
-
-        #endregion
-
-        #region public void Conjugate()
-
-        /// <summary>
-        /// Convert this quaternion to its conjugate
-        /// </summary>
-        public void Conjugate()
-        {
-            Xyz = -Xyz;
-        }
-
-        #endregion
 
         #endregion
 
         #region Static
 
-        #region Fields
-
         /// <summary>
         /// Defines the identity quaternion.
         /// </summary>
         public static Quaternion Identity = new Quaternion(0, 0, 0, 1);
-
-        #endregion
-
-        #region Add
-
-        /// <summary>
-        /// Add two quaternions
-        /// </summary>
-        /// <param name="left">The first operand</param>
-        /// <param name="right">The second operand</param>
-        /// <returns>The result of the addition</returns>
-        public static Quaternion Add(Quaternion left, Quaternion right)
-        {
-            return new Quaternion(
-                left.Xyz + right.Xyz,
-                left.W + right.W);
-        }
-
-        /// <summary>
-        /// Add two quaternions
-        /// </summary>
-        /// <param name="left">The first operand</param>
-        /// <param name="right">The second operand</param>
-        /// <param name="result">The result of the addition</param>
-        public static void Add(ref Quaternion left, ref Quaternion right, out Quaternion result)
-        {
-            result = new Quaternion(
-                left.Xyz + right.Xyz,
-                left.W + right.W);
-        }
-
-        #endregion
-
-        #region Sub
-
-        /// <summary>
-        /// Subtracts two instances.
-        /// </summary>
-        /// <param name="left">The left instance.</param>
-        /// <param name="right">The right instance.</param>
-        /// <returns>The result of the operation.</returns>
-        public static Quaternion Sub(Quaternion left, Quaternion right)
-        {
-            return  new Quaternion(
-                left.Xyz - right.Xyz,
-                left.W - right.W);
-        }
-
-        /// <summary>
-        /// Subtracts two instances.
-        /// </summary>
-        /// <param name="left">The left instance.</param>
-        /// <param name="right">The right instance.</param>
-        /// <param name="result">The result of the operation.</param>
-        public static void Sub(ref Quaternion left, ref Quaternion right, out Quaternion result)
-        {
-            result = new Quaternion(
-                left.Xyz - right.Xyz,
-                left.W - right.W);
-        }
-
-        #endregion
-
-        #region Mult
-
-        /// <summary>
-        /// Multiplies two instances.
-        /// </summary>
-        /// <param name="left">The first instance.</param>
-        /// <param name="right">The second instance.</param>
-        /// <returns>A new instance containing the result of the calculation.</returns>
-        [Obsolete("Use Multiply instead.")]
-        public static Quaternion Mult(Quaternion left, Quaternion right)
-        {
-            return new Quaternion(
-                right.W * left.Xyz + left.W * right.Xyz + Vector3.Cross(left.Xyz, right.Xyz),
-                left.W * right.W - Vector3.Dot(left.Xyz, right.Xyz));
-        }
-
-        /// <summary>
-        /// Multiplies two instances.
-        /// </summary>
-        /// <param name="left">The first instance.</param>
-        /// <param name="right">The second instance.</param>
-        /// <param name="result">A new instance containing the result of the calculation.</param>
-        [Obsolete("Use Multiply instead.")]
-        public static void Mult(ref Quaternion left, ref Quaternion right, out Quaternion result)
-        {
-            result = new Quaternion(
-                right.W * left.Xyz + left.W * right.Xyz + Vector3.Cross(left.Xyz, right.Xyz),
-                left.W * right.W - Vector3.Dot(left.Xyz, right.Xyz));
-        }
-
-        /// <summary>
-        /// Multiplies two instances.
-        /// </summary>
-        /// <param name="left">The first instance.</param>
-        /// <param name="right">The second instance.</param>
-        /// <returns>A new instance containing the result of the calculation.</returns>
-        public static Quaternion Multiply(Quaternion left, Quaternion right)
-        {
-            Quaternion result;
-            Multiply(ref left, ref right, out result);
-            return result;
-        }
 
         /// <summary>
         /// Multiplies two instances.
@@ -341,7 +204,10 @@ namespace OpenTK
         public static void Multiply(ref Quaternion left, ref Quaternion right, out Quaternion result)
         {
             result = new Quaternion(
-                right.W * left.Xyz + left.W * right.Xyz + Vector3.Cross(left.Xyz, right.Xyz),
+                right.W * left.Xyz + left.W * right.Xyz + Vector3.Cross(
+                left.Xyz,
+                right.Xyz
+            ),
                 left.W * right.W - Vector3.Dot(left.Xyz, right.Xyz));
         }
 
@@ -353,32 +219,12 @@ namespace OpenTK
         /// <param name="result">A new instance containing the result of the calculation.</param>
         public static void Multiply(ref Quaternion quaternion, float scale, out Quaternion result)
         {
-            result = new Quaternion(quaternion.X * scale, quaternion.Y * scale, quaternion.Z * scale, quaternion.W * scale);
-        }
-
-        /// <summary>
-        /// Multiplies an instance by a scalar.
-        /// </summary>
-        /// <param name="quaternion">The instance.</param>
-        /// <param name="scale">The scalar.</param>
-        /// <returns>A new instance containing the result of the calculation.</returns>
-        public static Quaternion Multiply(Quaternion quaternion, float scale)
-        {
-            return new Quaternion(quaternion.X * scale, quaternion.Y * scale, quaternion.Z * scale, quaternion.W * scale);
-        }
-
-        #endregion
-
-        #region Conjugate
-
-        /// <summary>
-        /// Get the conjugate of the given quaternion
-        /// </summary>
-        /// <param name="q">The quaternion</param>
-        /// <returns>The conjugate of the given quaternion</returns>
-        public static Quaternion Conjugate(Quaternion q)
-        {
-            return new Quaternion(-q.Xyz, q.W);
+            result = new Quaternion(
+                quaternion.X * scale,
+                quaternion.Y * scale,
+                quaternion.Z * scale,
+                quaternion.W * scale
+            );
         }
 
         /// <summary>
@@ -389,22 +235,6 @@ namespace OpenTK
         public static void Conjugate(ref Quaternion q, out Quaternion result)
         {
             result = new Quaternion(-q.Xyz, q.W);
-        }
-
-        #endregion
-
-        #region Invert
-
-        /// <summary>
-        /// Get the inverse of the given quaternion
-        /// </summary>
-        /// <param name="q">The quaternion to invert</param>
-        /// <returns>The inverse of the given quaternion</returns>
-        public static Quaternion Invert(Quaternion q)
-        {
-            Quaternion result;
-            Invert(ref q, out result);
-            return result;
         }
 
         /// <summary>
@@ -419,27 +249,10 @@ namespace OpenTK
             {
                 float i = 1.0f / lengthSq;
                 result = new Quaternion(q.Xyz * -i, q.W * i);
-            }
-            else
+            } else
             {
                 result = q;
             }
-        }
-
-        #endregion
-
-        #region Normalize
-
-        /// <summary>
-        /// Scale the given quaternion to unit length
-        /// </summary>
-        /// <param name="q">The quaternion to normalize</param>
-        /// <returns>The normalized quaternion</returns>
-        public static Quaternion Normalize(Quaternion q)
-        {
-            Quaternion result;
-            Normalize(ref q, out result);
-            return result;
         }
 
         /// <summary>
@@ -452,8 +265,6 @@ namespace OpenTK
             float scale = 1.0f / q.Length;
             result = new Quaternion(q.Xyz * scale, q.W * scale);
         }
-
-        #endregion
 
         #region FromAxisAngle
 
@@ -468,14 +279,14 @@ namespace OpenTK
             if (axis.LengthSquared == 0.0f)
                 return Identity;
 
-            Quaternion result = Identity;
-
             angle *= 0.5f;
             axis.Normalize();
-            result.Xyz = axis * (float)System.Math.Sin(angle);
-            result.W = (float)System.Math.Cos(angle);
+            Quaternion result = new Quaternion(
+                axis * (float)System.Math.Sin(angle),
+                (float)System.Math.Cos(angle)
+            );
 
-            return Normalize(result);
+            return result.Normalize();
         }
 
         #endregion
@@ -499,8 +310,7 @@ namespace OpenTK
                     return Identity;
                 }
                 return q2;
-            }
-            else if (q2.LengthSquared == 0.0f)
+            } else if (q2.LengthSquared == 0.0f)
             {
                 return q1;
             }
@@ -512,10 +322,11 @@ namespace OpenTK
             {
                 // angle = 0.0f, so just return one input.
                 return q1;
-            }
-            else if (cosHalfAngle < 0.0f)
+            } else if (cosHalfAngle < 0.0f)
             {
-                q2.Xyz = -q2.Xyz;
+                q2.X = -q2.X;
+                q2.Y = -q2.Y;
+                q2.Z = -q2.Z;
                 q2.W = -q2.W;
                 cosHalfAngle = -cosHalfAngle;
             }
@@ -530,17 +341,19 @@ namespace OpenTK
                 float oneOverSinHalfAngle = 1.0f / sinHalfAngle;
                 blendA = (float)System.Math.Sin(halfAngle * (1.0f - blend)) * oneOverSinHalfAngle;
                 blendB = (float)System.Math.Sin(halfAngle * blend) * oneOverSinHalfAngle;
-            }
-            else
+            } else
             {
                 // do lerp if angle is really small.
                 blendA = 1.0f - blend;
                 blendB = blend;
             }
 
-            Quaternion result = new Quaternion(blendA * q1.Xyz + blendB * q2.Xyz, blendA * q1.W + blendB * q2.W);
+            Quaternion result = new Quaternion(
+                blendA * q1.Xyz + blendB * q2.Xyz,
+                blendA * q1.W + blendB * q2.W
+            );
             if (result.LengthSquared > 0.0f)
-                return Normalize(result);
+                return result.Normalize();
             else
                 return Identity;
         }
@@ -559,7 +372,9 @@ namespace OpenTK
         /// <returns>The result of the calculation.</returns>
         public static Quaternion operator +(Quaternion left, Quaternion right)
         {
-            left.Xyz += right.Xyz;
+            left.X += right.X;
+            left.Y += right.Y;
+            left.Z += right.Z;
             left.W += right.W;
             return left;
         }
@@ -572,7 +387,9 @@ namespace OpenTK
         /// <returns>The result of the calculation.</returns>
         public static Quaternion operator -(Quaternion left, Quaternion right)
         {
-            left.Xyz -= right.Xyz;
+            left.X -= right.X;
+            left.Y -= right.Y;
+            left.Z -= right.Z;
             left.W -= right.W;
             return left;
         }
@@ -597,10 +414,14 @@ namespace OpenTK
         /// <returns>A new instance containing the result of the calculation.</returns>
         public static Quaternion operator *(Quaternion quaternion, float scale)
         {
-            Multiply(ref quaternion, scale, out quaternion);
-            return quaternion;
+            return new Quaternion(
+                quaternion.X * scale,
+                quaternion.Y * scale,
+                quaternion.Z * scale,
+                quaternion.W * scale
+            );
         }
-
+            
         /// <summary>
         /// Multiplies an instance by a scalar.
         /// </summary>
@@ -609,7 +430,12 @@ namespace OpenTK
         /// <returns>A new instance containing the result of the calculation.</returns>
         public static Quaternion operator *(float scale, Quaternion quaternion)
         {
-            return new Quaternion(quaternion.X * scale, quaternion.Y * scale, quaternion.Z * scale, quaternion.W * scale);
+            return new Quaternion(
+                quaternion.X * scale,
+                quaternion.Y * scale,
+                quaternion.Z * scale,
+                quaternion.W * scale
+            );
         }
 
         /// <summary>
@@ -638,8 +464,6 @@ namespace OpenTK
 
         #region Overrides
 
-        #region public override string ToString()
-
         /// <summary>
         /// Returns a System.String that represents the current Quaternion.
         /// </summary>
@@ -648,10 +472,6 @@ namespace OpenTK
         {
             return String.Format("V: {0}, W: {1}", Xyz, W);
         }
-
-        #endregion
-
-        #region public override bool Equals (object o)
 
         /// <summary>
         /// Compares this object instance to another object for equality. 
@@ -665,10 +485,6 @@ namespace OpenTK
             return this == (Quaternion)other;
         }
 
-        #endregion
-
-        #region public override int GetHashCode ()
-
         /// <summary>
         /// Provides the hash code for this object. 
         /// </summary>
@@ -677,10 +493,6 @@ namespace OpenTK
         {
             return Xyz.GetHashCode() ^ W.GetHashCode();
         }
-
-        #endregion
-
-        #endregion
 
         #endregion
 

@@ -107,17 +107,6 @@ namespace OpenTK
             Column3 = new Vector4(m03, m13, m23, m33);
         }
 
-#if DEBUG
-        /// <summary>Only for testing against Matrix4</summary>
-        public Matrix4(Matrix4 m)
-        {
-            Column0 = m.Column0;
-            Column1 = m.Column1;
-            Column2 = m.Column2;
-            Column3 = m.Column3;
-        }
-#endif
-
         #endregion
 
         #region Instance Operations
@@ -153,7 +142,6 @@ namespace OpenTK
             
             return Column0.X * d123 - Column1.X * d023 + Column2.X * d013 - Column3.X * d012;
         }
-        #region public void Invert()
 
         /// <summary>
         /// Return the inverse of the matrix.
@@ -162,8 +150,6 @@ namespace OpenTK
         {
             return Matrix4.Invert(this);
         }
-
-        #endregion
 
         /// <summary>
         /// Return the transpose of the matrix
@@ -452,10 +438,6 @@ namespace OpenTK
             return result;
         }
 
-        #endregion
-
-        #region OrthographicOffCenter
-
         /// <summary>
         /// Creates an orthographic projection matrix.
         /// Looking into the direction of negative Z.
@@ -566,10 +548,6 @@ namespace OpenTK
             PerspectiveFieldOfView(fovy, aspect, zNear, zFar, out result);
             return result;
         }
-        
-        #endregion
-        
-        #region PerspectiveOffCenter
         
         /// <summary>
         /// Creates an perspective projection matrix.
@@ -701,7 +679,7 @@ namespace OpenTK
 
         #endregion
 
-        #region Camera Helper Functions
+        #region Camera LookAt Helper Functions
 
         /// <summary>
         /// Build a world space to camera space matrix
@@ -712,9 +690,9 @@ namespace OpenTK
         /// <returns>A Matrix4 that transforms world space to camera space</returns>
         public static Matrix4 LookAt(Vector3 eye, Vector3 target, Vector3 up)
         {
-            Vector3 z = Vector3.Normalize(eye - target);
-            Vector3 x = Vector3.Normalize(Vector3.Cross(up, z));
-            Vector3 y = Vector3.Normalize(Vector3.Cross(z, x));
+            Vector3 z = (eye - target).Normalize();
+            Vector3 x = Vector3.Cross(up, z).Normalize();
+            Vector3 y = Vector3.Cross(z, x).Normalize();
 
             Matrix4 rot = new Matrix4(x.X,x.Y,x.Z,0,
                                       y.X,y.Y,y.Z,0,
@@ -748,7 +726,7 @@ namespace OpenTK
        
         #endregion
 
-        #region Operators between Matrix and Vectors
+        #region Operators
 
         /// <summary>
         /// Compares two instances for equality.

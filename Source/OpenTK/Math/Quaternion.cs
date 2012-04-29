@@ -169,6 +169,9 @@ namespace OpenTK
             return new Quaternion(-X, -Y, -Z, W);
         }
 
+        /// <summary>
+        /// Return the inverse of the instance.
+        /// </summary>
         public Quaternion Inverse()
         {
             float div = 1 / (W * W + X * X + Y * Y + Z * Z);

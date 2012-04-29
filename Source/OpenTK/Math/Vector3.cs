@@ -343,9 +343,8 @@ namespace OpenTK
         #endregion
 
         /// <summary>
-        /// Clamp a vector to the given minimum and maximum vectors
+        /// Return a clamped vector to the given minimum and maximum vectors
         /// </summary>
-        /// <param name="vec">Input vector</param>
         /// <param name="min">Minimum vector</param>
         /// <param name="max">Maximum vector</param>
         /// <returns>The clamped vector</returns>

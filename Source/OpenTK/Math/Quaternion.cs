@@ -176,9 +176,8 @@ namespace OpenTK
         }
 
         /// <summary>
-        /// Scale the given quaternion to unit length
+        /// Scale the quaternion to unit length
         /// </summary>
-        /// <param name="q">The quaternion to normalize</param>
         /// <returns>The normalized quaternion</returns>
         public Quaternion Normalize()
         {

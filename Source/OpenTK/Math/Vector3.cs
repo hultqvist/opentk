@@ -371,6 +371,9 @@ namespace OpenTK
             result.Z = vec.Z < min.Z ? min.Z : vec.Z > max.Z ? max.Z : vec.Z;
         }
 
+        /// <summary>
+        /// Return the instance normalized.
+        /// </summary>
         public Vector3 Normalize()
         {
             float scale = 1.0f / Length;

@@ -24,7 +24,6 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 //
 #endregion
-
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -47,7 +46,11 @@ namespace Bind
 
         public void WriteBindings(IBind generator)
         {
-            WriteBindings(generator.Delegates, generator.Wrappers, generator.Enums);
+            WriteBindings(
+                generator.Delegates,
+                generator.Wrappers,
+                generator.Enums
+            );
         }
 
         void WriteBindings(DelegateCollection delegates, FunctionCollection wrappers, EnumCollection enums)
@@ -74,9 +77,11 @@ namespace Bind
                     sw.WriteLine("namespace {0}", Settings.OutputNamespace);
                     sw.WriteLine("{");
                     sw.Indent();
-                    sw.WriteLine("static partial class {0}", Settings.OutputClass);
-                }
-                else
+                    sw.WriteLine(
+                        "static partial class {0}",
+                        Settings.OutputClass
+                    );
+                } else
                     sw.WriteLine("namespace {0}", Settings.EnumsOutput);
 
                 sw.WriteLine("{");
@@ -149,10 +154,22 @@ namespace Bind
                 sw.WriteLine("}");
             }
 
-            string output_enums = Path.Combine(Settings.OutputPath, Settings.EnumsFile);
-            string output_delegates = Path.Combine(Settings.OutputPath, Settings.DelegatesFile);
-            string output_core = Path.Combine(Settings.OutputPath, Settings.ImportsFile);
-            string output_wrappers = Path.Combine(Settings.OutputPath, Settings.WrappersFile);
+            string output_enums = Path.Combine(
+                Settings.OutputPath,
+                Settings.EnumsFile
+            );
+            string output_delegates = Path.Combine(
+                Settings.OutputPath,
+                Settings.DelegatesFile
+            );
+            string output_core = Path.Combine(
+                Settings.OutputPath,
+                Settings.ImportsFile
+            );
+            string output_wrappers = Path.Combine(
+                Settings.OutputPath,
+                Settings.WrappersFile
+            );
 
             if (File.Exists(output_enums))
                 File.Delete(output_enums);
@@ -175,7 +192,13 @@ namespace Bind
 
         void WriteDelegates(BindStreamWriter sw, DelegateCollection delegates)
         {
-            Trace.WriteLine(String.Format("Writing delegates to:\t{0}.{1}.{2}", Settings.OutputNamespace, Settings.OutputClass, Settings.DelegatesClass));
+            Trace.WriteLine(String.Format(
+                "Writing delegates to:\t{0}.{1}.{2}",
+                Settings.OutputNamespace,
+                Settings.OutputClass,
+                Settings.DelegatesClass
+            )
+            );
 
             sw.WriteLine("#pragma warning disable 3019");   // CLSCompliant attribute
             sw.WriteLine("#pragma warning disable 1591");   // Missing doc comments
@@ -185,7 +208,10 @@ namespace Bind
             sw.WriteLine("{");
             sw.Indent();
 
-            sw.WriteLine("internal static partial class {0}", Settings.DelegatesClass);
+            sw.WriteLine(
+                "internal static partial class {0}",
+                Settings.DelegatesClass
+            );
             sw.WriteLine("{");
             sw.Indent();
 
@@ -212,7 +238,13 @@ namespace Bind
 
         public void WriteImports(BindStreamWriter sw, DelegateCollection delegates)
         {
-            Trace.WriteLine(String.Format("Writing imports to:\t{0}.{1}.{2}", Settings.OutputNamespace, Settings.OutputClass, Settings.ImportsClass));
+            Trace.WriteLine(String.Format(
+                "Writing imports to:\t{0}.{1}.{2}",
+                Settings.OutputNamespace,
+                Settings.OutputClass,
+                Settings.ImportsClass
+            )
+            );
 
             sw.WriteLine("#pragma warning disable 3019");   // CLSCompliant attribute
             sw.WriteLine("#pragma warning disable 1591");   // Missing doc comments
@@ -222,7 +254,10 @@ namespace Bind
             sw.WriteLine("{");
             sw.Indent();
             sw.WriteLine();
-            sw.WriteLine("internal static partial class {0}", Settings.ImportsClass);
+            sw.WriteLine(
+                "internal static partial class {0}",
+                Settings.ImportsClass
+            );
             sw.WriteLine("{");
             sw.Indent();
             //sw.WriteLine("static {0}() {1} {2}", Settings.ImportsClass, "{", "}");    // Disable BeforeFieldInit
@@ -237,7 +272,10 @@ namespace Bind
                     d.Name,
                     d.Name.EndsWith("W") || d.Name.EndsWith("A") ? ", CharSet = CharSet.Auto" : ", ExactSpelling = true"
                 );
-                sw.WriteLine("internal extern static {0};", d.DeclarationString());
+                sw.WriteLine(
+                    "internal extern static {0};",
+                    d.DeclarationString()
+                );
             }
             sw.Unindent();
             sw.WriteLine("}");
@@ -251,8 +289,14 @@ namespace Bind
 
         public void WriteWrappers(BindStreamWriter sw, FunctionCollection wrappers, Dictionary<string, string> CSTypes)
         {
-            Trace.WriteLine(String.Format("Writing wrappers to:\t{0}.{1}", Settings.OutputNamespace, Settings.OutputClass));
+            Trace.WriteLine(String.Format(
+                "Writing wrappers to:\t{0}.{1}",
+                Settings.OutputNamespace,
+                Settings.OutputClass
+            )
+            );
 
+            sw.WriteLine("#pragma warning disable 3006");   // Overloaded method not CLS-Compliant
             sw.WriteLine("#pragma warning disable 3019");   // CLSCompliant attribute
             sw.WriteLine("#pragma warning disable 1591");   // Missing doc comments
             sw.WriteLine("#pragma warning disable 1572");   // Wrong param comments
@@ -271,20 +315,23 @@ namespace Bind
             {
                 if (((Settings.Compatibility & Settings.Legacy.NoSeparateFunctionNamespaces) == Settings.Legacy.None) && key != "Core")
                 {
-                    if (!Char.IsDigit(key[0]))
+                    if (!Char.IsDigit(key [0]))
                     {
                         sw.WriteLine("public static partial class {0}", key);
-                    }
-                    else
+                    } else
                     {
                         // Identifiers cannot start with a number:
-                        sw.WriteLine("public static partial class {0}{1}", Settings.ConstantPrefix, key);
+                        sw.WriteLine(
+                            "public static partial class {0}{1}",
+                            Settings.ConstantPrefix,
+                            key
+                        );
                     }
                     sw.WriteLine("{");
                     sw.Indent();
                 }
 
-                wrappers[key].Sort();
+                wrappers [key].Sort();
                 foreach (Function f in wrappers[key])
                 {
                     current = WriteWrapper(sw, current, f);
@@ -305,7 +352,11 @@ namespace Bind
         {
             if ((Settings.Compatibility & Settings.Legacy.NoDocumentation) == 0)
             {
-                Console.WriteLine("Creating docs for #{0} ({1})", current++, f.Name);
+                Console.WriteLine(
+                    "Creating docs for #{0} ({1})",
+                    current++,
+                    f.Name
+                );
                 WriteDocumentation(sw, f);
             }
             WriteMethod(sw, f);
@@ -316,7 +367,10 @@ namespace Bind
         {
             if (f.Deprecated && Settings.IsEnabled(Settings.Legacy.AddDeprecationWarnings))
             {
-                sw.WriteLine("[Obsolete(\"Deprecated in OpenGL {0}\")]", f.DeprecatedVersion);
+                sw.WriteLine(
+                    "[Obsolete(\"Deprecated in OpenGL {0}\")]",
+                    f.DeprecatedVersion
+                );
             }
 
             if (!f.CLSCompliant)
@@ -324,15 +378,24 @@ namespace Bind
                 sw.WriteLine("[System.CLSCompliant(false)]");
             }
 
-            sw.WriteLine("[AutoGenerated(Category = \"{0}\", Version = \"{1}\", EntryPoint = \"{2}\")]",
-                f.Category, f.Version, Settings.FunctionPrefix + f.WrappedDelegate.Name);
+            sw.WriteLine(
+                "[AutoGenerated(Category = \"{0}\", Version = \"{1}\", EntryPoint = \"{2}\")]",
+                f.Category,
+                f.Version,
+                Settings.FunctionPrefix + f.WrappedDelegate.Name
+            );
             sw.WriteLine("public static ");
             sw.Write(f);
             sw.WriteLine();
         }
 
-        static DocProcessor processor = new DocProcessor(Path.Combine(Settings.DocPath, Settings.DocFile));
+        static DocProcessor processor = new DocProcessor(Path.Combine(
+                Settings.DocPath,
+                Settings.DocFile
+            )
+            );
         static Dictionary<string, string> docfiles;
+
         void WriteDocumentation(BindStreamWriter sw, Function f)
         {
             if (docfiles == null)
@@ -356,7 +419,7 @@ namespace Bind
                 string doc = null;
                 if (docfiles.ContainsKey(docfile))
                 {
-                    doc = processor.ProcessFile(docfiles[docfile]);
+                    doc = processor.ProcessFile(docfiles [docfile]);
                 }
                 if (doc == null)
                 {
@@ -376,21 +439,26 @@ namespace Bind
                 {
                     category = String.Format(category, f.Category);
                     doc = doc.Insert(summary_start, category);
-                }
-                else if (!String.IsNullOrEmpty(f.Version))
+                } else if (!String.IsNullOrEmpty(f.Version))
                 {
                     if (f.Category.StartsWith("VERSION"))
                         category = String.Format(category, "v" + f.Version);
                     else
-                        category = String.Format(category, "v" + f.Version + " and " + f.Category);
+                        category = String.Format(
+                            category,
+                            "v" + f.Version + " and " + f.Category
+                        );
                     doc = doc.Insert(summary_start, category);
                 }
 
                 sw.WriteLine(doc);
-            }
-            catch (Exception e)
+            } catch (Exception e)
             {
-                Console.WriteLine("[Warning] Error processing file {0}: {1}", docfile, e.ToString());
+                Console.WriteLine(
+                    "[Warning] Error processing file {0}: {1}",
+                    docfile,
+                    e.ToString()
+                );
             }
         }
 
@@ -403,7 +471,7 @@ namespace Bind
             sw.WriteLine();
             foreach (string s in CSTypes.Keys)
             {
-                sw.WriteLine("using {0} = System.{1};", s, CSTypes[s]);
+                sw.WriteLine("using {0} = System.{1};", s, CSTypes [s]);
             }
         }
 
@@ -426,8 +494,13 @@ namespace Bind
                     sw.WriteLine("/// </summary>");
                 }
 
-                var str = String.Format("{0} = {1}((int){2}{3})", c.Name, c.Unchecked ? "unchecked" : "",
-                    !String.IsNullOrEmpty(c.Reference) ? c.Reference + Settings.NamespaceSeparator : "", c.Value);
+                var str = String.Format(
+                    "{0} = {1}((int){2}{3})",
+                    c.Name,
+                    c.Unchecked ? "unchecked" : "",
+                    !String.IsNullOrEmpty(c.Reference) ? c.Reference + Settings.NamespaceSeparator : "",
+                    c.Value
+                );
 
                 sw.Write(str);
                 if (!String.IsNullOrEmpty(str))
@@ -446,9 +519,19 @@ namespace Bind
             //sw.WriteLine();
 
             if ((Settings.Compatibility & Settings.Legacy.NestedEnums) != Settings.Legacy.None)
-                Trace.WriteLine(String.Format("Writing enums to:\t{0}.{1}.{2}", Settings.OutputNamespace, Settings.OutputClass, Settings.NestedEnumsClass));
+                Trace.WriteLine(String.Format(
+                    "Writing enums to:\t{0}.{1}.{2}",
+                    Settings.OutputNamespace,
+                    Settings.OutputClass,
+                    Settings.NestedEnumsClass
+                )
+                );
             else
-                Trace.WriteLine(String.Format("Writing enums to:\t{0}", Settings.EnumsOutput));
+                Trace.WriteLine(String.Format(
+                    "Writing enums to:\t{0}",
+                    Settings.EnumsOutput
+                )
+                );
 
             if ((Settings.Compatibility & Settings.Legacy.ConstIntEnums) == Settings.Legacy.None)
             {
@@ -474,8 +557,15 @@ namespace Bind
                             .Distinct();
 
                         sw.WriteLine("/// <summary>");
-                        sw.WriteLine(String.Format("/// {0}", functions.Count() > 0 ?
-                            ("Used in " + String.Join(", ", functions.ToArray())) : "Not used directly."));
+                        sw.WriteLine(String.Format(
+                            "/// {0}",
+                            functions.Count() > 0 ?
+                            ("Used in " + String.Join(
+                            ", ",
+                            functions.ToArray()
+                        )) : "Not used directly."
+                        )
+                        );
                         sw.WriteLine("/// </summary>");
                     }
 
@@ -484,7 +574,7 @@ namespace Bind
                     sw.WriteLine("public enum " + @enum.Name + " : " + @enum.Type);
                     sw.WriteLine("{");
                     sw.Indent();
-                    WriteConstants(sw, @enum.ConstantCollection.Values);
+                    WriteConstants(sw,  @enum.ConstantCollection.Values);
                     sw.Unindent();
                     sw.WriteLine("}");
                     sw.WriteLine();
@@ -496,8 +586,7 @@ namespace Bind
                     sw.Unindent();
                     sw.WriteLine("}");
                 }
-            }
-            else
+            } else
             {
                 // Tao legacy mode: dump all enums as constants in GLClass.
                 foreach (Constant c in enums[Settings.CompleteEnumName].ConstantCollection.Values)
@@ -508,10 +597,10 @@ namespace Bind
                         sw.WriteLine(String.Format(
                             "public const int {0} = {2}((int){1});",
                             c.Name.StartsWith(Settings.ConstantPrefix) ? c.Name : Settings.ConstantPrefix + c.Name,
-                            Char.IsDigit(c.Value[0]) ? c.Value : c.Value.StartsWith(Settings.ConstantPrefix) ? c.Value : Settings.ConstantPrefix + c.Value,
-                            c.Unchecked ? "unchecked" : ""));
-                    }
-                    else
+                            Char.IsDigit(c.Value [0]) ? c.Value : c.Value.StartsWith(Settings.ConstantPrefix) ? c.Value : Settings.ConstantPrefix + c.Value,
+                            c.Unchecked ? "unchecked" : "")
+                        );
+                    } else
                     {
                     }
                 }
@@ -524,7 +613,12 @@ namespace Bind
 
         public void WriteLicense(BindStreamWriter sw)
         {
-            sw.WriteLine(File.ReadAllText(Path.Combine(Settings.InputPath, Settings.LicenseFile)));
+            sw.WriteLine(File.ReadAllText(Path.Combine(
+                Settings.InputPath,
+                Settings.LicenseFile
+            )
+            )
+            );
             sw.WriteLine();
         }
 

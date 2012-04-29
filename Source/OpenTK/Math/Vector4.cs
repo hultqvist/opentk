@@ -536,6 +536,8 @@ namespace OpenTK
         /// <summary>
         /// Returns a new Vector that is the linear blend of the 2 given Vectors
         /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
         /// <param name="blend">The blend factor. a when blend=0, b when blend=1.</param>
         /// <returns>a when blend=0, b when blend=1, and a linear combination otherwise</returns>
         public static Vector4 Lerp(Vector4 a, Vector4 b, float blend)
@@ -550,6 +552,8 @@ namespace OpenTK
         /// <summary>
         /// Returns a new Vector that is the linear blend of the 2 given Vectors
         /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
         /// <param name="blend">The blend factor. a when blend=0, b when blend=1.</param>
         /// <param name="result">a when blend=0, b when blend=1, and a linear combination otherwise</param>
         public static void Lerp(ref Vector4 a, ref Vector4 b, float blend, out Vector4 result)

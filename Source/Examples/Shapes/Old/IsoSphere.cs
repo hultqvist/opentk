@@ -34,8 +34,7 @@ namespace Examples.Shapes
                     Vertices[i].Y = y_scale * (float)(System.Math.Sin(s) * System.Math.Sin(t));
                     Vertices[i].Z = z_scale * (float)System.Math.Cos(t);
                     //vertices[i] = vertices[i].Scale(x_scale, y_scale, z_scale);
-                    Normals[i] = Vector3.Normalize(Vertices[i]);
-
+                    Normals[i] = Vertices[i].Normalize();
                     ++i;
                 }
             }

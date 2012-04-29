@@ -21,7 +21,7 @@ namespace Examples.Tutorial
         {
         }
 
-        Font sans = new Font(System.Drawing.FontFamily.GenericSansSerif, 16.0f);
+        //Font sans = new Font(System.Drawing.FontFamily.GenericSansSerif, 16.0f);
 
         uint ColorTexture;
         uint DepthTexture;
@@ -37,9 +37,11 @@ namespace Examples.Tutorial
 
             if (!GL.GetString(StringName.Extensions).Contains("GL_EXT_framebuffer_object"))
             {
-                throw new NotSupportedException(
-                     "GL_EXT_framebuffer_object extension is required. Please update your drivers.");
-                Exit();
+                try {
+                    throw new NotSupportedException("GL_EXT_framebuffer_object extension is required. Please update your drivers.");
+                } finally {
+                    Exit();
+                }
             }
 
             Object = new Shapes.TorusKnot(256, 16, 0.2, 7,8, 1, true);
@@ -156,7 +158,7 @@ namespace Examples.Tutorial
                 GL.ClearColor(1f, 0f, 0f, 0f);
                 GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
-                OpenTK.Matrix4 perspective = OpenTK.Matrix4.CreatePerspectiveFieldOfView( MathHelper.PiOver4, TextureSize / (float)TextureSize, 2.5f, 6f );
+                OpenTK.Matrix4 perspective = OpenTK.Matrix4.PerspectiveFieldOfView( MathHelper.PiOver4, TextureSize / (float)TextureSize, 2.5f, 6f );
                 GL.MatrixMode( MatrixMode.Projection );
                 GL.LoadMatrix( ref perspective );
 
@@ -206,7 +208,7 @@ namespace Examples.Tutorial
 
             double aspect_ratio = Width / (double)Height;
 
-            OpenTK.Matrix4 perspective = OpenTK.Matrix4.CreatePerspectiveFieldOfView(MathHelper.PiOver4, (float)aspect_ratio, 1, 64);
+            OpenTK.Matrix4 perspective = OpenTK.Matrix4.PerspectiveFieldOfView(MathHelper.PiOver4, (float)aspect_ratio, 1, 64);
             GL.MatrixMode(MatrixMode.Projection);
             GL.LoadMatrix(ref perspective);
 

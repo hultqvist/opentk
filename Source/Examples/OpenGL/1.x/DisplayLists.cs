@@ -100,7 +100,7 @@ namespace Examples.Tutorial
             float aspect = this.ClientSize.Width / (float)this.ClientSize.Height;
 
             Matrix4 projection_matrix;
-            Matrix4.CreatePerspectiveFieldOfView((float)Math.PI / 4, aspect, 1, 64, out projection_matrix);
+            Matrix4.PerspectiveFieldOfView((float)Math.PI / 4, aspect, 1, 64, out projection_matrix);
 
             GL.MatrixMode(MatrixMode.Projection);
             GL.LoadMatrix(ref projection_matrix);

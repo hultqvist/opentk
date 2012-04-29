@@ -453,7 +453,8 @@ namespace Examples
 
                 foreach (XRamExtension.XRamStorage m in storagemodes)
                 {
-                    bool result = XRam.SetBufferMode(1, ref buffer, m);
+                    //bool result = 
+                    XRam.SetBufferMode(1, ref buffer, m);
                     BufferModes.Add(m.ToString(), m == XRam.GetBufferMode(ref buffer));
                 }
 

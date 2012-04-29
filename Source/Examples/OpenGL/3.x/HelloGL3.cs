@@ -142,7 +142,7 @@ void main(void)
             modelviewMatrixLocation = GL.GetUniformLocation(shaderProgramHandle, "modelview_matrix");
 
             float aspectRatio = ClientSize.Width / (float)(ClientSize.Height);
-            Matrix4.CreatePerspectiveFieldOfView((float)Math.PI / 4, aspectRatio, 1, 100, out projectionMatrix);
+            Matrix4.PerspectiveFieldOfView((float)Math.PI / 4, aspectRatio, 1, 100, out projectionMatrix);
             modelviewMatrix = Matrix4.LookAt(new Vector3(0, 3, 5), new Vector3(0, 0, 0), new Vector3(0, 1, 0));
 
             GL.UniformMatrix4(projectionMatrixLocation, false, ref projectionMatrix);
@@ -199,8 +199,8 @@ void main(void)
 
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
-            Matrix4 rotation = Matrix4.CreateRotationY((float)e.Time);
-            Matrix4.Mult(ref rotation, ref modelviewMatrix, out modelviewMatrix);
+            Matrix4 rotation = Matrix4.RotationY((float)e.Time);
+            Matrix4.Multiply(ref rotation, ref modelviewMatrix, out modelviewMatrix);
             GL.UniformMatrix4(modelviewMatrixLocation, false, ref modelviewMatrix);
 
             if (Keyboard[OpenTK.Input.Key.Escape])

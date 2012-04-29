@@ -30,7 +30,7 @@ namespace Examples
                 if (signature != "RIFF")
                     throw new NotSupportedException("Specified stream is not a wave file.");
 
-                int riff_chunck_size = reader.ReadInt32();
+                reader.ReadInt32(); //int riff_chunck_size
 
                 string format = new string(reader.ReadChars(4));
                 if (format != "WAVE")
@@ -41,19 +41,19 @@ namespace Examples
                 if (format_signature != "fmt ")
                     throw new NotSupportedException("Specified wave file is not supported.");
 
-                int format_chunk_size = reader.ReadInt32();
-                int audio_format = reader.ReadInt16();
+                reader.ReadInt32(); //int format_chunk_size = 
+                reader.ReadInt16(); //int audio_format = 
                 int num_channels = reader.ReadInt16();
                 int sample_rate = reader.ReadInt32();
-                int byte_rate = reader.ReadInt32();
-                int block_align = reader.ReadInt16();
+                reader.ReadInt32(); //int byte_rate = 
+                reader.ReadInt16(); //int block_align = 
                 int bits_per_sample = reader.ReadInt16();
 
                 string data_signature = new string(reader.ReadChars(4));
                 if (data_signature != "data")
                     throw new NotSupportedException("Specified wave file is not supported.");
 
-                int data_chunk_size = reader.ReadInt32();
+                reader.ReadInt32(); //int data_chunk_size = 
 
                 channels = num_channels;
                 bits = bits_per_sample;

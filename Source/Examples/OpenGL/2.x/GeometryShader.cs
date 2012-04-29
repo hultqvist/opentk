@@ -13,6 +13,9 @@ using OpenTK.Graphics.OpenGL;
 
 namespace Examples.Tutorial
 {
+//Ignore obsolete warning in old examples
+#pragma warning disable 0618
+
     [Example("Basic Geometry Shader", ExampleCategory.OpenGL, "2.x", Documentation = "Simple usage of EXT_geometry_shader4")]
     public class SimpleGeometryShader : GameWindow
     {
@@ -182,7 +185,7 @@ namespace Examples.Tutorial
 
             // Set projection matrix
             GL.MatrixMode(MatrixMode.Projection);
-            OpenTK.Matrix4 ortho = OpenTK.Matrix4.CreateOrthographicOffCenter(-1, 1, -1, 1, 1, -1);
+            OpenTK.Matrix4 ortho = OpenTK.Matrix4.OrthographicOffCenter(-1, 1, -1, 1, 1, -1);
             GL.LoadMatrix(ref ortho);
 
             // Set selector state back to matrix mode

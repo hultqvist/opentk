@@ -278,7 +278,7 @@ namespace Examples.Tutorial
             }
 
             Matrix4 perspective =
-                Matrix4.CreateOrthographic(2, 2, -1, 1);
+                Matrix4.Orthographic(2, 2, -1, 1);
             GL.MatrixMode(MatrixMode.Projection);
             GL.LoadMatrix(ref perspective);
 

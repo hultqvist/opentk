@@ -161,11 +161,11 @@ namespace Examples.Tutorial
             }
             #endregion Textures
             
-            Keyboard.KeyUp += KeyUp;
+            Keyboard.KeyUp += JuliaKeyUp;
         }
 
         int i = 0;
-        void KeyUp(object sender, KeyboardKeyEventArgs e)
+        void JuliaKeyUp(object sender, KeyboardKeyEventArgs e)
         {
             if (e.Key == Key.F12)
             {

@@ -38,6 +38,9 @@ using OpenTK.Graphics.OpenGL;
  * http://www.opengl.org/registry/specs/EXT/geometry_shader4.txt
  */
 
+//Ignore obsolete warning in old examples
+#pragma warning disable 0618
+
 namespace Examples.Tutorial
 {
     [Example("Advanced Geometry Shader", ExampleCategory.OpenGL, "2.x", Documentation = "Advanced usage of EXT_geometry_shader4")]
@@ -83,7 +86,7 @@ namespace Examples.Tutorial
         int vboSphere;
         int vboSphereStride = BlittableValueType<VertexPositionNormalTexture>.Stride;
         int eboSphere;
-        int sphereElementCount;
+        //int sphereElementCount;
 
         ViewMode mode = ViewMode.Scene;
         Vector3 eyePos = new Vector3(0, -8, 0);
@@ -551,7 +554,7 @@ namespace Examples.Tutorial
         {
             VertexPositionNormalTexture[] sphereVertices = CalculateSphereVertices(1, 1, 16, 16);
             ushort[] sphereElements = CalculateSphereElements(1, 1, 16, 16);
-            sphereElementCount = sphereElements.Length;
+            //sphereElementCount = sphereElements.Length;
 
             GL.GenBuffers(1, out vboSphere);
             GL.BindBuffer(BufferTarget.ArrayBuffer, vboSphere);
@@ -571,14 +574,14 @@ namespace Examples.Tutorial
         void setOrtho()
         {
             OpenTK.Matrix4 proj;
-            proj = OpenTK.Matrix4.CreateOrthographicOffCenter(-1, 1, -1, 1, 1, -1);
+            proj = OpenTK.Matrix4.OrthographicOffCenter(-1, 1, -1, 1, 1, -1);
             GL.LoadMatrix(ref proj);
         }
 
         void setPerspective()
         {
             OpenTK.Matrix4 proj;
-            proj = OpenTK.Matrix4.CreatePerspectiveFieldOfView(MathHelper.PiOver4, Width / (float)Height, 0.1f, 200f);
+            proj = OpenTK.Matrix4.PerspectiveFieldOfView(MathHelper.PiOver4, Width / (float)Height, 0.1f, 200f);
             GL.LoadMatrix(ref proj);
         }
 
@@ -758,8 +761,8 @@ namespace Examples.Tutorial
                 // Create 6 ModelViewProjection matrices, one to look in each direction
                 // proj with 90 degrees (1/2 pi) fov
                 // translate negative to place cam insize sphere
-                Matrix4 model = Matrix4.Scale(-1) * Matrix4.CreateTranslation(spherePos);
-                Matrix4 proj = Matrix4.CreatePerspectiveFieldOfView(MathHelper.PiOver2, 1, 0.1f, 100f);
+                Matrix4 model = Matrix4.Scale(-1) * Matrix4.Translation(spherePos);
+                Matrix4 proj = Matrix4.PerspectiveFieldOfView(MathHelper.PiOver2, 1, 0.1f, 100f);
 
                 Matrix4[] m = new Matrix4[6];
 
@@ -1014,7 +1017,7 @@ namespace Examples.Tutorial
                         (float)(radius * Math.Sin(phi) * Math.Cos(theta)),
                         (float)(height * Math.Cos(phi)),
                         (float)(radius * Math.Sin(phi) * Math.Sin(theta)));
-                    Vector3 n = Vector3.Normalize(v);
+                    Vector3 n = v.Normalize();
                     Vector2 uv = new Vector2(
                         (float)(x / (segments - 1)),
                         (float)(y / (rings - 1)));

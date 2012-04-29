@@ -227,7 +227,7 @@ namespace Examples.Tests
 
                 GL.Viewport(0, 0, Width, Height);
     
-                Matrix4 ortho_projection = Matrix4.CreateOrthographicOffCenter(0, Width, Height, 0, -1, 1);
+                Matrix4 ortho_projection = Matrix4.OrthographicOffCenter(0, Width, Height, 0, -1, 1);
                 GL.MatrixMode(MatrixMode.Projection);
                 GL.LoadMatrix(ref ortho_projection);
             }

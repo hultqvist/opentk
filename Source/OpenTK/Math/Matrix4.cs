@@ -514,14 +514,12 @@ namespace OpenTK
             if (aspect <= 0)
                 throw new ArgumentOutOfRangeException("aspect");
 
-            float top = (float)(Math.Abs(zNear) * System.Math.Tan(0.5f * fovy));
-            float bottom = -top;
-            if (zNear > 0)
-                aspect *= -1;
-            float left = bottom * aspect;
-            float right = top * aspect;
+            float yMax = (float)(Math.Abs(zNear) * System.Math.Tan(0.5f * fovy));
+            float ymin = -yMax;
+            float xMin = ymin * aspect;
+            float xMax = yMax * aspect;
 
-            PerspectiveOffCenter(left, right, bottom, top, zNear, zFar, out result);
+            PerspectiveOffCenter(xMin, xMax, ymin, yMax, zNear, zFar, out result);
         }
         
         /// <summary>
@@ -580,14 +578,12 @@ namespace OpenTK
                     );
 
                 //Positive Z
-                x = -2.0f * zNear / xSize;
-                y = -2.0f * zNear / ySize;
+                x = 2.0f * zNear / xSize;
+                y = 2.0f * zNear / ySize;
                 a = (right + left) / xSize;
                 b = (top + bottom) / ySize;
                 c = -(zFar + zNear) / (zFar - zNear);
                 d = -(2.0f * zFar * zNear) / (zFar - zNear);
-                throw new NotImplementedException();
-
             } else
             {
                 if (zFar > zNear)

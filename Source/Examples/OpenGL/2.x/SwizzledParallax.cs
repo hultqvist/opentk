@@ -215,7 +215,7 @@ namespace Examples.Tutorial
             GL.Viewport( 0, 0, Width, Height );
 
             GL.MatrixMode( MatrixMode.Projection );
-            Matrix4 p = Matrix4.CreatePerspectiveFieldOfView(MathHelper.PiOver4, Width / (float)Height, 0.1f, 100.0f);
+            Matrix4 p = Matrix4.PerspectiveFieldOfView(MathHelper.PiOver4, Width / (float)Height, 0.1f, 100.0f);
             GL.LoadMatrix(ref p);
 
             GL.MatrixMode( MatrixMode.Modelview );

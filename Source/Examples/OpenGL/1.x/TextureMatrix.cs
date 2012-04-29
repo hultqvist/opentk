@@ -25,7 +25,7 @@ namespace Examples.Tutorial
             VSync = VSyncMode.On;
         }
 
-        int Texture;
+        //int Texture;
         int list;
 
         protected override void OnLoad(EventArgs e)
@@ -34,7 +34,8 @@ namespace Examples.Tutorial
             GL.Enable(EnableCap.DepthTest);
             GL.Enable(EnableCap.CullFace);
 
-            Texture = LoadTexture("Data/Textures/logo-dark.jpg");
+            //Texture = 
+            LoadTexture("Data/Textures/logo-dark.jpg");
 
             GL.Enable(EnableCap.Texture2D);
 
@@ -82,7 +83,7 @@ namespace Examples.Tutorial
         {
             GL.Viewport(this.ClientRectangle);
 
-            Matrix4 projection = Matrix4.CreatePerspectiveFieldOfView(MathHelper.PiOver4, Width / (float)Height, 1.0f, 50.0f);
+            Matrix4 projection = Matrix4.PerspectiveFieldOfView(MathHelper.PiOver4, Width / (float)Height, 1.0f, 50.0f);
             GL.MatrixMode(MatrixMode.Projection);
             GL.LoadMatrix(ref projection);
         }

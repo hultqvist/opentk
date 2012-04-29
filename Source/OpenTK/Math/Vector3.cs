@@ -921,11 +921,25 @@ namespace OpenTK
             return !left.Equals(right);
         }
 
+        /// <summary>Converts OpenTK.Vector3 to OpenTK.Vector3d.</summary>
+        /// <param name="v3">The Vector3 to convert.</param>
+        /// <returns>The resulting Vector3d.</returns>
+        public static explicit operator Vector3d(Vector3 v3)
+        {
+            return new Vector3d(v3.X, v3.Y, v3.Z);
+        }
+
+        /// <summary>Converts OpenTK.Vector3d to OpenTK.Vector3.</summary>
+        /// <param name="v3d">The Vector3d to convert.</param>
+        /// <returns>The resulting Vector3.</returns>
+        public static explicit operator Vector3(Vector3d v3d)
+        {
+            return new Vector3((float)v3d.X, (float)v3d.Y, (float)v3d.Z);
+        }
+
         #endregion
 
         #region Overrides
-
-        #region public override string ToString()
 
         /// <summary>
         /// Returns a System.String that represents the current Vector3.
@@ -936,10 +950,6 @@ namespace OpenTK
             return String.Format("({0}, {1}, {2})", X, Y, Z);
         }
 
-        #endregion
-
-        #region public override int GetHashCode()
-
         /// <summary>
         /// Returns the hashcode for this instance.
         /// </summary>
@@ -948,10 +958,6 @@ namespace OpenTK
         {
             return X.GetHashCode() ^ Y.GetHashCode() ^ Z.GetHashCode();
         }
-
-        #endregion
-
-        #region public override bool Equals(object obj)
 
         /// <summary>
         /// Indicates whether this instance and a specified object are equal.
@@ -965,8 +971,6 @@ namespace OpenTK
 
             return this.Equals((Vector3)obj);
         }
-
-        #endregion
 
         #endregion
 

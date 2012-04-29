@@ -1008,6 +1008,30 @@ namespace OpenTK
 
         }
 
+        /// <summary></summary>
+        /// <param name="m4">The Vector4 to convert.</param>
+        /// <returns>The resulting Vector4d.</returns>
+        public static explicit operator Matrix4d(Matrix4 m4)
+        {
+            return new Matrix4d(
+                (Vector4d)m4.Column0,
+                (Vector4d)m4.Column1,
+                (Vector4d)m4.Column2,
+                (Vector4d)m4.Column3);
+        }
+
+        /// <summary></summary>
+        /// <param name="v4d">The Matrix4d to convert.</param>
+        /// <returns>The resulting Matrix4.</returns>
+        public static explicit operator Matrix4(Matrix4d m4d)
+        {
+            return new Matrix4(
+                (Vector4)m4d.Column0,
+                (Vector4)m4d.Column1,
+                (Vector4)m4d.Column2,
+                (Vector4)m4d.Column3);
+        }
+
         #endregion
 
         #region Static: Matrix Operations

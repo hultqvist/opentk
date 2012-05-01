@@ -221,13 +221,10 @@ namespace OpenTK
         /// <summary>
         /// Scales the Vector4 to unit length.
         /// </summary>
-        public void Normalize()
+        public Vector4 Normalize()
         {
             float scale = 1.0f / this.Length;
-            X *= scale;
-            Y *= scale;
-            Z *= scale;
-            W *= scale;
+            return new Vector4(X * scale, Y * scale, Z * scale, W * scale);
         }
 
         
@@ -844,7 +841,12 @@ namespace OpenTK
         /// <returns>The resulting Vector4.</returns>
         public static explicit operator Vector4(Vector4d v4d)
         {
-            return new Vector4((float)v4d.X, (float)v4d.Y, (float)v4d.Z, (float)v4d.W);
+            return new Vector4(
+                (float)v4d.X,
+                (float)v4d.Y,
+                (float)v4d.Z,
+                (float)v4d.W
+            );
         }
 
         #endregion

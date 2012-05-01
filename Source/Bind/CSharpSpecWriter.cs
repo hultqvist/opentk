@@ -303,6 +303,7 @@ namespace Bind
             sw.WriteLine("#pragma warning disable 1573");   // Missing param comments
 
             sw.WriteLine();
+            sw.WriteLine("[System.Diagnostics.DebuggerNonUserCode]");
             sw.WriteLine("partial class {0}", Settings.OutputClass);
             sw.WriteLine("{");
 

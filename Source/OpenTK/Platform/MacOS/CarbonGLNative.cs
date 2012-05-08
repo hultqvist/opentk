@@ -46,9 +46,6 @@ namespace OpenTK.Platform.MacOS
         #region Fields
 
         CarbonWindowInfo window;
-        CarbonInput mInputDriver;
-
-        static MacOSKeyMap Keymap = new MacOSKeyMap();
 
         IntPtr uppHandler;
 
@@ -214,8 +211,6 @@ namespace OpenTK.Platform.MacOS
 
         void ConnectEvents()
         {
-            mInputDriver = new CarbonInput();
-
             EventTypeSpec[] eventTypes = new EventTypeSpec[]
             {
                 new EventTypeSpec(EventClass.Window, WindowEventKind.WindowClose),
@@ -368,39 +363,6 @@ namespace OpenTK.Platform.MacOS
                     break;
             }
 
-            switch (evt.KeyboardEventKind)
-            {
-                case KeyboardEventKind.RawKeyRepeat:
-                    if (InputDriver.Keyboard[0].KeyRepeat)
-                        goto case KeyboardEventKind.RawKeyDown;
-                    break;
-
-                case KeyboardEventKind.RawKeyDown:
-                {
-                    OpenTK.Input.Key key;
-                    if (Keymap.TryGetValue(code, out key))
-                    {
-                        InputDriver.Keyboard[0][key] = true;
-                        OnKeyPress(mKeyPressArgs);
-                    }
-                    return OSStatus.NoError;
-                }
-
-                case KeyboardEventKind.RawKeyUp:
-                {
-                    OpenTK.Input.Key key;
-                    if (Keymap.TryGetValue(code, out key))
-                    {
-                        InputDriver.Keyboard[0][key] = false;
-                    }
-                    return OSStatus.NoError;
-                }
-
-                case KeyboardEventKind.RawKeyModifiersChanged:
-                    ProcessModifierKey(inEvent);
-                    return OSStatus.NoError;
-            }
-
             return OSStatus.EventNotHandled;
         }
 
@@ -482,7 +444,6 @@ namespace OpenTK.Platform.MacOS
                 pt.X += mouse_rel_x;
                 pt.Y += mouse_rel_y;
                 pt = ConfineMouseToWindow(thisEventWindow, pt);
-                ResetMouseToWindowCenter();
                 mouse_rel_x = pt.X;
                 mouse_rel_y = pt.Y;
             }
@@ -496,67 +457,9 @@ namespace OpenTK.Platform.MacOS
             Point mousePosInClient = new Point((int)pt.X, (int)pt.Y);
             CheckEnterLeaveEvents(thisEventWindow, mousePosInClient);
             
-            switch (evt.MouseEventKind)
-            {
-                case MouseEventKind.MouseDown:
-                case MouseEventKind.MouseUp:
-                    button = API.GetEventMouseButton(inEvent);
-                    bool pressed = evt.MouseEventKind == MouseEventKind.MouseDown;
-
-                    switch (button)
-                    {
-                        case MouseButton.Primary:
-                            InputDriver.Mouse[0][OpenTK.Input.MouseButton.Left] = pressed;
-                            break;
-
-                        case MouseButton.Secondary:
-                            InputDriver.Mouse[0][OpenTK.Input.MouseButton.Right] = pressed;
-                            break;
-
-                        case MouseButton.Tertiary:
-                            InputDriver.Mouse[0][OpenTK.Input.MouseButton.Middle] = pressed;
-                            break;
-                    }
-                    return OSStatus.NoError;
-
-                case MouseEventKind.WheelMoved:
-                    float delta = API.GetEventMouseWheelDelta(inEvent);
-                    InputDriver.Mouse[0].WheelPrecise += delta;
-                    return OSStatus.NoError;
-
-                case MouseEventKind.MouseMoved:
-                case MouseEventKind.MouseDragged:
-                    if (this.windowState == WindowState.Fullscreen)
-                    {
-                        if (mousePosInClient.X != InputDriver.Mouse[0].X || mousePosInClient.Y != InputDriver.Mouse[0].Y)
-                        {
-                            InputDriver.Mouse[0].Position = mousePosInClient;
-                        }
-                    }
-                    else
-                    {
-                        // ignore clicks in the title bar
-                        if (pt.Y < 0)
-                            return OSStatus.EventNotHandled;
-
-                        if (mousePosInClient.X != InputDriver.Mouse[0].X || mousePosInClient.Y != InputDriver.Mouse[0].Y)
-                        {
-                            InputDriver.Mouse[0].Position = mousePosInClient;
-                        }
-                    }
+                     Debug.Print("{0}", evt);
                     return OSStatus.EventNotHandled;
-
-                default:
-                    Debug.Print("{0}", evt);
-                    return OSStatus.EventNotHandled;
-            }
-        }
-
-        void ResetMouseToWindowCenter()
-        {
-            OpenTK.Input.Mouse.SetPosition(
-                (Bounds.Left + Bounds.Right) / 2,
-                (Bounds.Top + Bounds.Bottom) / 2);
+           
         }
 
         private void CheckEnterLeaveEvents(IntPtr eventWindowRef, Point pt)
@@ -612,24 +515,6 @@ namespace OpenTK.Platform.MacOS
             bool shift = (modifiers & MacOSKeyModifiers.Shift) != 0 ? true : false;
             
             Debug.Print("Modifiers Changed: {0}", modifiers);
-            
-            Input.KeyboardDevice keyboard = InputDriver.Keyboard[0];
-            
-            if (keyboard[OpenTK.Input.Key.AltLeft] ^ option)
-                keyboard[OpenTK.Input.Key.AltLeft] = option;
-            
-            if (keyboard[OpenTK.Input.Key.ShiftLeft] ^ shift)
-                keyboard[OpenTK.Input.Key.ShiftLeft] = shift;
-            
-            if (keyboard[OpenTK.Input.Key.WinLeft] ^ command)
-                keyboard[OpenTK.Input.Key.WinLeft] = command;
-            
-            if (keyboard[OpenTK.Input.Key.ControlLeft] ^ control)
-                keyboard[OpenTK.Input.Key.ControlLeft] = control;
-            
-            if (keyboard[OpenTK.Input.Key.CapsLock] ^ caps)
-                keyboard[OpenTK.Input.Key.CapsLock] = caps;
-            
         }
 
         Rect GetRegion()
@@ -715,11 +600,6 @@ namespace OpenTK.Platform.MacOS
         public bool IsIdle
         {
             get { return true; }
-        }
-
-        public OpenTK.Input.IInputDriver InputDriver
-        {
-            get { return mInputDriver; }
         }
 
         public Icon Icon
@@ -909,7 +789,6 @@ namespace OpenTK.Platform.MacOS
                 else
                 {
                     CG.DisplayHideCursor(IntPtr.Zero);
-                    ResetMouseToWindowCenter();
                     CG.AssociateMouseAndMouseCursorPosition(false);
                 }
             }
@@ -1039,12 +918,6 @@ namespace OpenTK.Platform.MacOS
 
         #region --- Event wrappers ---
 
-        private void OnKeyPress(KeyPressEventArgs keyPressArgs)
-        {
-            KeyPress(this, keyPressArgs);
-        }
-
-
         private void OnWindowStateChanged()
         {
             WindowStateChanged(this, EventArgs.Empty);
@@ -1095,9 +968,7 @@ namespace OpenTK.Platform.MacOS
         public event EventHandler<EventArgs> FocusedChanged = delegate { };
         public event EventHandler<EventArgs> WindowBorderChanged = delegate { };
         public event EventHandler<EventArgs> WindowStateChanged = delegate { };
-        public event EventHandler<OpenTK.Input.KeyboardKeyEventArgs> KeyDown = delegate { };
         public event EventHandler<KeyPressEventArgs> KeyPress = delegate { };
-        public event EventHandler<OpenTK.Input.KeyboardKeyEventArgs> KeyUp = delegate { }; 
         public event EventHandler<EventArgs> MouseEnter = delegate { };
         public event EventHandler<EventArgs> MouseLeave = delegate { };
         

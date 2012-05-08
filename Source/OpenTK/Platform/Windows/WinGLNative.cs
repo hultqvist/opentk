@@ -30,7 +30,6 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text;
 using OpenTK.Graphics;
-using OpenTK.Input;
 using System.Collections.Generic;
 using System.IO;
 #if !MINIMAL
@@ -44,14 +43,13 @@ namespace OpenTK.Platform.Windows
     /// Drives GameWindow on Windows.
     /// This class supports OpenTK, and is not intended for use by OpenTK programs.
     /// </summary>
-    internal sealed class WinGLNative : INativeWindow, IInputDriver
+    internal sealed class WinGLNative : INativeWindow
     {
         #region Fields
 
         const ExtendedWindowStyle ParentStyleEx = ExtendedWindowStyle.WindowEdge | ExtendedWindowStyle.ApplicationWindow;
         const ExtendedWindowStyle ChildStyleEx = 0;
 
-        static readonly WinKeyMap KeyMap = new WinKeyMap();
         readonly IntPtr Instance = Marshal.GetHINSTANCE(typeof(WinGLNative).Module);
         readonly IntPtr ClassName = Marshal.StringToHGlobalAuto(Guid.NewGuid().ToString());
         readonly WindowProcedure WindowProcedureDelegate;
@@ -81,15 +79,6 @@ namespace OpenTK.Platform.Windows
         Icon icon;
 
         const ClassStyle DefaultClassStyle = ClassStyle.OwnDC;
-
-        // Used for IInputDriver implementation
-        WinMMJoystick joystick_driver = new WinMMJoystick();
-        KeyboardDevice keyboard = new KeyboardDevice();
-        MouseDevice mouse = new MouseDevice();
-        IList<KeyboardDevice> keyboards = new List<KeyboardDevice>(1);
-        IList<MouseDevice> mice = new List<MouseDevice>(1);
-        const long ExtendedBit = 1 << 24;           // Used to distinguish left and right control, alt and enter keys.
-        static readonly uint ShiftRightScanCode = Functions.MapVirtualKey(VirtualKeys.RSHIFT, 0);         // Used to distinguish left and right shift keys.
 
         KeyPressEventArgs key_press = new KeyPressEventArgs((char)0);
 
@@ -125,18 +114,6 @@ namespace OpenTK.Platform.Windows
                     CreateWindow(0, 0, ClientSize.Width, ClientSize.Height, title, options, device, window.WindowHandle), window);
 
                 exists = true;
-
-                keyboard.Description = "Standard Windows keyboard";
-                keyboard.NumberOfFunctionKeys = 12;
-                keyboard.NumberOfKeys = 101;
-                keyboard.NumberOfLeds = 3;
-
-                mouse.Description = "Standard Windows mouse";
-                mouse.NumberOfButtons = 3;
-                mouse.NumberOfWheels = 1;
-
-                keyboards.Add(keyboard);
-                mice.Add(mouse);
             }
         }
 
@@ -265,178 +242,6 @@ namespace OpenTK.Platform.Windows
                     if (!CursorVisible)
                         GrabCursor();
 
-                    break;
-
-                #endregion
-
-                #region Input events
-
-                case WindowMessage.CHAR:
-                    if (IntPtr.Size == 4)
-                        key_press.KeyChar = (char)wParam.ToInt32();
-                    else
-                        key_press.KeyChar = (char)wParam.ToInt64();
-
-                    KeyPress(this, key_press);
-                    break;
-
-                case WindowMessage.MOUSEMOVE:
-                    Point point = new Point(
-                        (short)((uint)lParam.ToInt32() & 0x0000FFFF),
-                        (short)(((uint)lParam.ToInt32() & 0xFFFF0000) >> 16));
-                    mouse.Position = point;
-
-                    if (mouse_outside_window)
-                    {
-                        // Once we receive a mouse move event, it means that the mouse has
-                        // re-entered the window.
-                        mouse_outside_window = false;
-                        EnableMouseTracking();
-
-                        MouseEnter(this, EventArgs.Empty);
-                    }
-                    break;
-
-                case WindowMessage.MOUSELEAVE:
-                    mouse_outside_window = true;
-                    // Mouse tracking is disabled automatically by the OS
-
-                    MouseLeave(this, EventArgs.Empty);
-                    break;
-
-                case WindowMessage.MOUSEWHEEL:
-                    // This is due to inconsistent behavior of the WParam value on 64bit arch, whese
-                    // wparam = 0xffffffffff880000 or wparam = 0x00000000ff100000
-                    mouse.WheelPrecise += ((long)wParam << 32 >> 48) / 120.0f;
-                    break;
-
-                case WindowMessage.LBUTTONDOWN:
-                    Functions.SetCapture(window.WindowHandle);
-                    mouse[MouseButton.Left] = true;
-                    break;
-
-                case WindowMessage.MBUTTONDOWN:
-                    Functions.SetCapture(window.WindowHandle);
-                    mouse[MouseButton.Middle] = true;
-                    break;
-
-                case WindowMessage.RBUTTONDOWN:
-                    Functions.SetCapture(window.WindowHandle);
-                    mouse[MouseButton.Right] = true;
-                    break;
-
-                case WindowMessage.XBUTTONDOWN:
-                    Functions.SetCapture(window.WindowHandle);
-                    mouse[((wParam.ToInt32() & 0xFFFF0000) >> 16) !=
-                        (int)MouseKeys.XButton1 ? MouseButton.Button1 : MouseButton.Button2] = true;
-                    break;
-
-                case WindowMessage.LBUTTONUP:
-                    Functions.ReleaseCapture();
-                    mouse[MouseButton.Left] = false;
-                    break;
-
-                case WindowMessage.MBUTTONUP:
-                    Functions.ReleaseCapture();
-                    mouse[MouseButton.Middle] = false;
-                    break;
-
-                case WindowMessage.RBUTTONUP:
-                    Functions.ReleaseCapture();
-                    mouse[MouseButton.Right] = false;
-                    break;
-
-                case WindowMessage.XBUTTONUP:
-                    Functions.ReleaseCapture();
-                    mouse[((wParam.ToInt32() & 0xFFFF0000) >> 16) !=
-                        (int)MouseKeys.XButton1 ? MouseButton.Button1 : MouseButton.Button2] = false;
-                    break;
-
-                // Keyboard events:
-                case WindowMessage.KEYDOWN:
-                case WindowMessage.KEYUP:
-                case WindowMessage.SYSKEYDOWN:
-                case WindowMessage.SYSKEYUP:
-                    bool pressed =
-                        message == WindowMessage.KEYDOWN ||
-                        message == WindowMessage.SYSKEYDOWN;
-
-                    // Shift/Control/Alt behave strangely when e.g. ShiftRight is held down and ShiftLeft is pressed
-                    // and released. It looks like neither key is released in this case, or that the wrong key is
-                    // released in the case of Control and Alt.
-                    // To combat this, we are going to release both keys when either is released. Hacky, but should work.
-                    // Win95 does not distinguish left/right key constants (GetAsyncKeyState returns 0).
-                    // In this case, both keys will be reported as pressed.
-
-                    bool extended = (lParam.ToInt64() & ExtendedBit) != 0;
-                    switch ((VirtualKeys)wParam)
-                    {
-                        case VirtualKeys.SHIFT:
-                            // The behavior of this key is very strange. Unlike Control and Alt, there is no extended bit
-                            // to distinguish between left and right keys. Moreover, pressing both keys and releasing one
-                            // may result in both keys being held down (but not always).
-                            // The only reliable way to solve this was reported by BlueMonkMN at the forums: we should
-                            // check the scancodes. It looks like GLFW does the same thing, so it should be reliable.
-
-                            // Note: we release both keys when either shift is released.
-                            // Otherwise, the state of one key might be stuck to pressed.
-                            if (ShiftRightScanCode != 0 && pressed)
-                            {
-                                unchecked
-                                {
-                                    if (((lParam.ToInt64() >> 16) & 0xFF) == ShiftRightScanCode)
-                                        keyboard[Input.Key.ShiftRight] = pressed;
-                                    else
-                                        keyboard[Input.Key.ShiftLeft] = pressed;
-                                }
-                            }
-                            else
-                            {
-                                // Windows 9x and NT4.0 or key release event.
-                                keyboard[Input.Key.ShiftLeft] = keyboard[Input.Key.ShiftRight] = pressed;
-                            }
-                            return IntPtr.Zero;
-
-                        case VirtualKeys.CONTROL:
-                            if (extended)
-                                keyboard[Input.Key.ControlRight] = pressed;
-                            else
-                                keyboard[Input.Key.ControlLeft] = pressed;
-                            return IntPtr.Zero;
-
-                        case VirtualKeys.MENU:
-                            if (extended)
-                                keyboard[Input.Key.AltRight] = pressed;
-                            else
-                                keyboard[Input.Key.AltLeft] = pressed;
-                            return IntPtr.Zero;
-
-                        case VirtualKeys.RETURN:
-                            if (extended)
-                                keyboard[Key.KeypadEnter] = pressed;
-                            else
-                                keyboard[Key.Enter] = pressed;
-                            return IntPtr.Zero;
-
-                        default:
-                            if (!KeyMap.ContainsKey((VirtualKeys)wParam))
-                            {
-                                Debug.Print("Virtual key {0} ({1}) not mapped.", (VirtualKeys)wParam, (long)lParam);
-                                break;
-                            }
-                            else
-                            {
-                                keyboard[KeyMap[(VirtualKeys)wParam]] = pressed;
-                            }
-                            return IntPtr.Zero;
-                    }
-                    break;
-
-                case WindowMessage.SYSCHAR:
-                    return IntPtr.Zero;
-
-                case WindowMessage.KILLFOCUS:
-                    keyboard.ClearKeys();
                     break;
 
                 #endregion
@@ -1143,11 +948,6 @@ namespace OpenTK.Platform.Windows
         public event EventHandler<EventArgs> FocusedChanged = delegate { };
         public event EventHandler<EventArgs> WindowBorderChanged = delegate { };
         public event EventHandler<EventArgs> WindowStateChanged = delegate { };
-        public event EventHandler<OpenTK.Input.KeyboardKeyEventArgs> KeyDown = delegate { };
-        public event EventHandler<KeyPressEventArgs> KeyPress = delegate { };
-        public event EventHandler<OpenTK.Input.KeyboardKeyEventArgs> KeyUp = delegate { }; 
-        public event EventHandler<EventArgs> MouseEnter = delegate { };
-        public event EventHandler<EventArgs> MouseLeave = delegate { };
 
         #endregion
 
@@ -1178,15 +978,6 @@ namespace OpenTK.Platform.Windows
 
         #endregion
 
-        #region public IInputDriver InputDriver
-
-        public IInputDriver InputDriver
-        {
-            get { return this; }
-        }
-
-        #endregion
-
         #region public IWindowInfo WindowInfo
 
         public IWindowInfo WindowInfo
@@ -1195,52 +986,6 @@ namespace OpenTK.Platform.Windows
         }
 
         #endregion
-
-        #endregion
-
-        #region IInputDriver Members
-
-        public void Poll()
-        {
-            joystick_driver.Poll();
-        }
-
-        #endregion
-
-        #region IKeyboardDriver Members
-
-        public IList<KeyboardDevice> Keyboard
-        {
-            get { return keyboards; }
-        }
-
-        public KeyboardState GetState()
-        {
-            throw new NotImplementedException();
-        }
-
-        public KeyboardState GetState(int index)
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
-
-        #region IMouseDriver Members
-
-        public IList<MouseDevice> Mouse
-        {
-            get { return mice; }
-        }
-
-        #endregion
-
-        #region IJoystickDriver Members
-
-        public IList<JoystickDevice> Joysticks
-        {
-            get { return joystick_driver.Joysticks; }
-        }
 
         #endregion
 

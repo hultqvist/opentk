@@ -36,7 +36,6 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using OpenTK.Graphics;
-using OpenTK.Input;
 
 namespace OpenTK.Platform.X11
 {
@@ -56,10 +55,6 @@ namespace OpenTK.Platform.X11
         const int _min_width = 30, _min_height = 30;
 
         X11WindowInfo window = new X11WindowInfo();
-
-        // Legacy input support
-        X11Input driver;
-        MouseDevice mouse;
 
         // Window manager hints for fullscreen windows.
         // Not used right now (the code is written, but is not 64bit-correct), but could be useful for older WMs which
@@ -203,9 +198,6 @@ namespace OpenTK.Platform.X11
             e.ConfigureEvent.width = width;
             e.ConfigureEvent.height = height;
             RefreshWindowBounds(ref e);
-
-            driver = new X11Input(window);
-            mouse = driver.Mouse[0];
 
             EmptyCursor = CreateEmptyCursor(window);
 
@@ -702,17 +694,6 @@ namespace OpenTK.Platform.X11
             return cursor;
         }
 
-        static void SetMouseClamped(MouseDevice mouse, int x, int y,
-            int left, int top, int width, int height)
-        {
-            // Clamp mouse to the specified rectangle.
-            x = Math.Max(x, left);
-            x = Math.Min(x, width);
-            y = Math.Max(y, top);
-            y = Math.Min(y, height);
-            mouse.Position = new Point(x, y);
-        }
-
         #endregion
 
         #region INativeWindow Members
@@ -790,75 +771,6 @@ namespace OpenTK.Platform.X11
                         RefreshWindowBounds(ref e);
                         break;
 
-                    case XEventName.KeyPress:
-                        driver.ProcessEvent(ref e);
-                        int status = 0;
-                        status = Functions.XLookupString(ref e.KeyEvent, ascii, ascii.Length, null, IntPtr.Zero);
-                        Encoding.Default.GetChars(ascii, 0, status, chars, 0);
-
-                        EventHandler<KeyPressEventArgs> key_press = KeyPress;
-                        if (key_press != null)
-                        {
-                            for (int i = 0; i < status; i++)
-                            {
-                                KPEventArgs.KeyChar = chars[i];
-                                key_press(this, KPEventArgs);
-                            }
-                        }
-                        break;
-
-                    case XEventName.KeyRelease:
-                        // Todo: raise KeyPress event. Use code from
-                        // http://anonsvn.mono-project.com/viewvc/trunk/mcs/class/Managed.Windows.Forms/System.Windows.Forms/X11Keyboard.cs?view=markup
-                        
-                        driver.ProcessEvent(ref e);
-                        break;
-                        
-                    case XEventName.MotionNotify:
-                    {
-                        // Try to detect and ignore events from XWarpPointer, below.
-                        // This heuristic will fail if the user actually moves the pointer
-                        // to the dead center of the window. Fortunately, this situation
-                        // is very very uncommon. Todo: Can this be remedied?
-                        int x = e.MotionEvent.x;
-                        int y =e.MotionEvent.y;
-                        int middle_x = (Bounds.Left + Bounds.Right) / 2;
-                        int middle_y = (Bounds.Top + Bounds.Bottom) / 2;
-                        Point screen_xy = PointToScreen(new Point(x, y));
-                        if (!CursorVisible && MouseWarpActive &&
-                            screen_xy.X == middle_x && screen_xy.Y == middle_y)
-                        {
-                            MouseWarpActive = false;
-                            mouse_rel_x = x;
-                            mouse_rel_y = y;
-                        }
-                        else if (!CursorVisible)
-                        {
-                            SetMouseClamped(mouse,
-                                mouse.X + x - mouse_rel_x,
-                                mouse.Y + y - mouse_rel_y,
-                                0, 0, Width, Height);
-                            mouse_rel_x = x;
-                            mouse_rel_y = y;
-
-                            // Warp cursor to center of window.
-                            MouseWarpActive = true;
-                            Mouse.SetPosition(middle_x, middle_y);
-                        }
-                        else
-                        {
-                            SetMouseClamped(mouse, x, y, 0, 0, Width, Height);
-                            mouse_rel_x = x;
-                            mouse_rel_y = y;
-                        }
-                        break;
-                    }
-
-                    case XEventName.ButtonPress:
-                    case XEventName.ButtonRelease:
-                        driver.ProcessEvent(ref e);
-                        break;
-
                     case XEventName.FocusIn:
                         {
                             bool previous_focus = has_focus;
@@ -875,17 +787,6 @@ namespace OpenTK.Platform.X11
                             if (has_focus != previous_focus)
                                 FocusedChanged(this, EventArgs.Empty);
                         }
-                        break;
-
-                    case XEventName.LeaveNotify:
-                        if (CursorVisible)
-                        {
-                            MouseLeave(this, EventArgs.Empty);
-                        }
-                        break;
-
-                    case XEventName.EnterNotify:
-                        MouseEnter(this, EventArgs.Empty);
                         break;
 
                     case XEventName.MappingNotify:
@@ -1344,12 +1245,7 @@ namespace OpenTK.Platform.X11
         public event EventHandler<EventArgs> FocusedChanged = delegate { };
         public event EventHandler<EventArgs> WindowBorderChanged = delegate { };
         public event EventHandler<EventArgs> WindowStateChanged = delegate { };
-        public event EventHandler<KeyboardKeyEventArgs> KeyDown = delegate { };
-        public event EventHandler<KeyPressEventArgs> KeyPress = delegate { };
-        public event EventHandler<KeyboardKeyEventArgs> KeyUp = delegate { };
-        public event EventHandler<EventArgs> MouseEnter = delegate { };
-        public event EventHandler<EventArgs> MouseLeave = delegate { };
-        
+
         #endregion
 
         public bool CursorVisible
@@ -1379,18 +1275,6 @@ namespace OpenTK.Platform.X11
         #endregion
 
         #region --- INativeGLWindow Members ---
-
-        #region public IInputDriver InputDriver
-
-        public IInputDriver InputDriver
-        {
-            get
-            {
-                return driver;
-            }
-        }
-
-        #endregion 
 
         #region public bool Exists
 

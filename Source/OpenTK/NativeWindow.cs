@@ -31,7 +31,6 @@ using System.ComponentModel;
 using System.Drawing;
 #endif
 using OpenTK.Graphics;
-using OpenTK.Input;
 using OpenTK.Platform;
 
 namespace OpenTK
@@ -327,23 +326,6 @@ namespace OpenTK
 
         #endregion
 
-        #region InputDriver
-
-        /// <summary>
-        /// This property is deprecated.
-        /// </summary>
-        [Obsolete]
-        public IInputDriver InputDriver
-        {
-            get
-            {
-                EnsureUndisposed();
-                return implementation.InputDriver;
-            }
-        }
-
-        #endregion
-
         #region Location
 
         /// <summary>
@@ -592,19 +574,9 @@ namespace OpenTK
         public event EventHandler<EventArgs> IconChanged = delegate { };
 
         /// <summary>
-        /// Occurs whenever a keybord key is pressed.
-        /// </summary>
-        public event EventHandler<OpenTK.Input.KeyboardKeyEventArgs> KeyDown = delegate { };
-
-        /// <summary>
         /// Occurs whenever a character is typed.
         /// </summary>
         public event EventHandler<KeyPressEventArgs> KeyPress = delegate { };
-
-        /// <summary>
-        /// Occurs whenever a keyboard key is released.
-        /// </summary>
-        public event EventHandler<OpenTK.Input.KeyboardKeyEventArgs> KeyUp = delegate { };
 
         /// <summary>
         /// Occurs whenever the window is moved.
@@ -791,44 +763,6 @@ namespace OpenTK
 
         #endregion
 
-        #region OnKeyDown
-
-        /// <summary>
-        /// Occurs whenever a keybord key is pressed.
-        /// </summary>
-        protected virtual void OnKeyDown(KeyboardKeyEventArgs e)
-        {
-            KeyDown(this, e);
-        }
-
-        #endregion
-
-        #region OnKeyPress
-
-        /// <summary>
-        /// Called when a character is typed.
-        /// </summary>
-        /// <param name="e">The <see cref="OpenTK.KeyPressEventArgs"/> for this event.</param>
-        protected virtual void OnKeyPress(KeyPressEventArgs e)
-        {
-            KeyPress(this, e);
-        }
-
-        #endregion
-
-        #region OnKeyUp
-
-        /// <summary>
-        /// Called when a keybord key is released.
-        /// </summary>
-        /// <param name="e">The <see cref="OpenTK.KeyboardKeyEventArgs"/> for this event.</param>
-        protected virtual void OnKeyUp(KeyboardKeyEventArgs e)
-        {
-            KeyUp(this, e);
-        }
-
-        #endregion
-
         #region OnMove
 
         /// <summary>
@@ -990,24 +924,6 @@ namespace OpenTK
 
         #endregion
 
-        #region OnKeyPressInternal
-
-        private void OnKeyPressInternal(object sender, KeyPressEventArgs e) { OnKeyPress(e); }
-
-        #endregion
-
-        #region OnMouseEnterInternal
-
-        private void OnMouseEnterInternal(object sender, EventArgs e) { OnMouseEnter(e); }
-
-        #endregion
-
-        #region OnMouseLeaveInternal
-
-        private void OnMouseLeaveInternal(object sender, EventArgs e) { OnMouseLeave(e); }
-
-        #endregion
-
         #region OnMoveInternal
 
         private void OnMoveInternal(object sender, EventArgs e) { OnMove(e); }
@@ -1065,9 +981,6 @@ namespace OpenTK
                     implementation.Disposed += OnDisposedInternal;
                     implementation.FocusedChanged += OnFocusedChangedInternal;
                     implementation.IconChanged += OnIconChangedInternal;
-                    implementation.KeyPress += OnKeyPressInternal;
-                    implementation.MouseEnter += OnMouseEnterInternal;
-                    implementation.MouseLeave += OnMouseLeaveInternal;
                     implementation.Move += OnMoveInternal;
                     implementation.Resize += OnResizeInternal;
                     implementation.TitleChanged += OnTitleChangedInternal;
@@ -1083,9 +996,6 @@ namespace OpenTK
                     implementation.Disposed -= OnDisposedInternal;
                     implementation.FocusedChanged -= OnFocusedChangedInternal;
                     implementation.IconChanged -= OnIconChangedInternal;
-                    implementation.KeyPress -= OnKeyPressInternal;
-                    implementation.MouseEnter -= OnMouseEnterInternal;
-                    implementation.MouseLeave -= OnMouseLeaveInternal;
                     implementation.Move -= OnMoveInternal;
                     implementation.Resize -= OnResizeInternal;
                     implementation.TitleChanged -= OnTitleChangedInternal;

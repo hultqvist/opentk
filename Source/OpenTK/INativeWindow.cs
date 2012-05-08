@@ -129,12 +129,6 @@ namespace OpenTK
         Size ClientSize { get; set; }
 
         /// <summary>
-        /// This property is deprecated and should not be used.
-        /// </summary>
-        [Obsolete]
-        OpenTK.Input.IInputDriver InputDriver { get; }
-
-        /// <summary>
         /// Gets or sets a value, indicating whether the mouse cursor is visible.
         /// </summary>
         bool CursorVisible { get; set; }
@@ -230,42 +224,5 @@ namespace OpenTK
         /// Occurs when the <see cref="WindowState"/> property of the window changes.
         /// </summary>
         event EventHandler<EventArgs> WindowStateChanged;
-
-        /// <summary>
-        /// Occurs whenever a keybord key is pressed.
-        /// </summary>
-        event EventHandler<OpenTK.Input.KeyboardKeyEventArgs> KeyDown;
-
-        /// <summary>
-        /// Occurs whenever a character is typed.
-        /// </summary>
-        event EventHandler<KeyPressEventArgs> KeyPress;
-        
-        /// <summary>
-        /// Occurs whenever a keyboard key is released.
-        /// </summary>
-        event EventHandler<OpenTK.Input.KeyboardKeyEventArgs> KeyUp;
-
-        /// <summary>
-        /// Occurs whenever the mouse cursor leaves the window <see cref="Bounds"/>.
-        /// </summary>
-        event EventHandler<EventArgs> MouseLeave;
-
-        /// <summary>
-        /// Occurs whenever the mouse cursor enters the window <see cref="Bounds"/>.
-        /// </summary>
-        event EventHandler<EventArgs> MouseEnter;
-
-        //event EventHandler<MouseEventArgs> MouseMove;
-        //event EventHandler<MouseEventArgs> MouseWheel; 
-        //event EventHandler<MouseEventArgs> MouseDown;
-        //event EventHandler<MouseEventArgs> MouseUp;
-        //event EventHandler<MouseEventArgs> MouseClick;
-        //event EventHandler<MouseEventArgs> MouseDoubleClick;
-
-        //event EventHandler<DragEventArgs> DragDrop;
-        //event EventHandler<DragEventArgs> DragEnter;
-        //event EventHandler<DragEventArgs> DragOver;
-        //event EventHandler<EventArgs> DragLeave;
     }
 }

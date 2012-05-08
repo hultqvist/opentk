@@ -34,7 +34,6 @@ using System.Drawing;
 #endif
 using System.Threading;
 using OpenTK.Graphics;
-using OpenTK.Input;
 using OpenTK.Platform;
 
 namespace OpenTK
@@ -594,42 +593,6 @@ namespace OpenTK
                 EnsureUndisposed();
                 return isExiting;
             }
-        }
-
-        #endregion
-
-        #region Joysticks
-
-        /// <summary>
-        /// Gets a readonly IList containing all available OpenTK.Input.JoystickDevices.
-        /// </summary>
-        public IList<JoystickDevice> Joysticks
-        {
-            get { return InputDriver.Joysticks; }
-        }
-
-        #endregion
-
-        #region Keyboard
-
-        /// <summary>
-        /// Gets the primary Keyboard device, or null if no Keyboard exists.
-        /// </summary>
-        public KeyboardDevice Keyboard
-        {
-            get { return InputDriver.Keyboard.Count > 0 ? InputDriver.Keyboard[0] : null; }
-        }
-
-        #endregion
-
-        #region Mouse
-
-        /// <summary>
-        /// Gets the primary Mouse device, or null if no Mouse exists.
-        /// </summary>
-        public MouseDevice Mouse
-        {
-            get { return InputDriver.Mouse.Count > 0 ? InputDriver.Mouse[0] : null; }
         }
 
         #endregion

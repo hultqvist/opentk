@@ -28,7 +28,6 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using OpenTK.Input;
 
 namespace OpenTK.Platform.MacOS
 {
@@ -36,12 +35,6 @@ namespace OpenTK.Platform.MacOS
 
     class MacOSFactory : IPlatformFactory
     {
-        #region Fields
-
-        readonly IInputDriver2 InputDriver = new HIDInput();
-
-        #endregion
-
         #region IPlatformFactory Members
 
         public virtual INativeWindow CreateNativeWindow(int x, int y, int width, int height, string title, GraphicsMode mode, GameWindowFlags options, DisplayDevice device)
@@ -77,16 +70,6 @@ namespace OpenTK.Platform.MacOS
             return new MacOSGraphicsMode();
         }
 
-        public virtual OpenTK.Input.IKeyboardDriver2 CreateKeyboardDriver()
-        {
-           return InputDriver.KeyboardDriver;
-        }
-
-        public virtual OpenTK.Input.IMouseDriver2 CreateMouseDriver()
-        {
-            return InputDriver.MouseDriver;
-        }
-        
         #endregion
     }
 }

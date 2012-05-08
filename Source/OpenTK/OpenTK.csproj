@@ -128,12 +128,7 @@
     </Compile>
     <Compile Include="DisplayIndex.cs" />
     <Compile Include="Graphics\GraphicsModeComparer.cs" />
-    <Compile Include="Input\IGamePadDriver.cs" />
-    <Compile Include="Input\IInputDriver2.cs" />
-    <Compile Include="Input\IKeyboardDriver2.cs" />
-    <Compile Include="Input\IMouseDriver2.cs" />
     <Compile Include="Platform\DisplayDeviceBase.cs" />
-    <Compile Include="Platform\Windows\WinInputBase.cs" />
     <Compile Include="WindowBorder.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -171,9 +166,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="BlittableValueType.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="GameWindow.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Minimal.cs">
@@ -257,9 +249,6 @@
     <Compile Include="Platform\MacOS\MacOSException.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Platform\MacOS\MacOSKeyMap.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Platform\MacOS\CarbonGLNative.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -270,9 +259,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Platform\MacOS\QuartzDisplayDeviceDriver.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Platform\MacOS\CarbonInput.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Platform\MacOS\CarbonWindowInfo.cs">
@@ -296,28 +282,13 @@
     <Compile Include="Platform\MacOS\CarbonBindings\CoreFoundation.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Platform\Windows\WinRawKeyboard.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Platform\Windows\WinFactory.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Platform\Windows\WinRawInput.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Platform\Windows\WinRawMouse.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Platform\Windows\WinDisplayDevice.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Platform\Windows\API.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Platform\Windows\WinKeyMap.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Platform\Windows\WMInput.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Platform\Windows\WinGLNative.cs">
@@ -327,9 +298,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Platform\Windows\WinGLContext.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Platform\Windows\WinMMJoystick.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Platform\Windows\WglHelper.cs">
@@ -353,9 +321,6 @@
     <Compile Include="Platform\X11\X11WindowInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Platform\X11\X11Joystick.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Platform\X11\Functions.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -374,16 +339,10 @@
     <Compile Include="Platform\X11\X11GLNative.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Platform\X11\X11KeyMap.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Platform\X11\X11GLContext.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Platform\X11\Structs.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Platform\X11\X11Input.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Platform\X11\X11Factory.cs">
@@ -471,57 +430,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Graphics\ES20\Core.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Input\Keyboard.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Input\GamePad.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Input\MouseDevice.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Input\Key.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Input\IJoystickDriver.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Input\IMouseDriver.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Input\IInputDriver.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Input\KeyboardDevice.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Input\KeyboardState.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Input\MouseButton.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Input\JoystickDevice.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Input\IKeyboardDriver.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Input\KeyboardKeyEventArgs.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Input\Mouse.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Input\MouseState.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Input\GamePadState.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Input\IInputDevice.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Math\Quaternion.cs">
@@ -651,16 +559,12 @@
     <None Include="..\..\OpenTK.snk">
       <Link>OpenTK.snk</Link>
     </None>
-    <Compile Include="Platform\X11\X11Keyboard.cs" />
-    <Compile Include="Platform\X11\X11Mouse.cs" />
-    <Compile Include="Input\ButtonState.cs" />
-    <Compile Include="Platform\X11\XI2Mouse.cs" />
     <EmbeddedResource Include="OpenTK.dll.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
-    <Compile Include="Platform\MacOS\HIDInput.cs" />
     <Compile Include="IntPtrEqualityComparer.cs" />
     <Compile Include="Math\Matrix4.cs" />
+    <Compile Include="GameWindow.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

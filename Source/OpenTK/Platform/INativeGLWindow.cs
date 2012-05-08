@@ -12,8 +12,6 @@ using System.Collections.Generic;
 using System.Drawing;
 #endif
 using System.Text;
-
-using OpenTK.Input;
 using OpenTK.Graphics;
 
 namespace OpenTK.Platform
@@ -33,7 +31,6 @@ namespace OpenTK.Platform
         string Title { get; set; }
         bool Visible { get; set; }
         bool IsIdle { get; }
-        IInputDriver InputDriver { get; }
         WindowState WindowState { get; set; }
         WindowBorder WindowBorder { get; set; }
 

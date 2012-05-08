@@ -32,12 +32,10 @@ using System.Text;
 namespace OpenTK.Platform.Windows
 {
     using Graphics;
-    using OpenTK.Input;
 
     class WinFactory : IPlatformFactory 
     {
         readonly object SyncRoot = new object();
-        IInputDriver2 inputDriver;
 
         #region IPlatformFactory Members
 
@@ -74,37 +72,7 @@ namespace OpenTK.Platform.Windows
             return new WinGraphicsMode();
         }
 
-        public virtual OpenTK.Input.IKeyboardDriver2 CreateKeyboardDriver()
-        {
-            return InputDriver.KeyboardDriver;
-        }
-
-        public virtual OpenTK.Input.IMouseDriver2 CreateMouseDriver()
-        {
-            return InputDriver.MouseDriver;
-        }
-        
         #endregion
 
-        IInputDriver2 InputDriver
-        {
-            get
-            {
-                lock (SyncRoot)
-                {
-                    if (inputDriver == null)
-                    {
-                        // If Windows version is NT5 or higher, we are able to use raw input.
-                        if (System.Environment.OSVersion.Version.Major > 5 ||
-                            (System.Environment.OSVersion.Version.Major == 5 && 
-                            System.Environment.OSVersion.Version.Minor > 0))
-                            inputDriver = new WinRawInput();
-                        else
-                            inputDriver = new WMInput();
-                    }
-                    return inputDriver;
-                }
-            }
-        }
     }
 }

@@ -351,13 +351,12 @@ namespace Bind
 
         int WriteWrapper(BindStreamWriter sw, int current, Function f)
         {
+            if (f.Deprecated && Settings.IsEnabled(Settings.Legacy.RemoveDeprecated))
+                return current;
+
             if ((Settings.Compatibility & Settings.Legacy.NoDocumentation) == 0)
             {
-                Console.WriteLine(
-                    "Creating docs for #{0} ({1})",
-                    current++,
-                    f.Name
-                );
+                Console.WriteLine("Creating docs for #{0} ({1})", current++, f.Name);
                 WriteDocumentation(sw, f);
             }
             WriteMethod(sw, f);

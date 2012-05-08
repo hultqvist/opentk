@@ -143,6 +143,8 @@ namespace Bind
             KeepUntypedEnums = 0x1000,
             /// <summary>Marks deprecated functions as [Obsolete]</summary>
             AddDeprecationWarnings = 0x2000,
+            RemoveDeprecated = 0x4000,
+
             Tao = ConstIntEnums |
                   NoAdvancedEnumProcessing |
                   NoPublicUnsafeFunctions |

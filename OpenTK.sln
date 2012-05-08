@@ -86,7 +86,7 @@ Global
 		{62C0DB35-0000-0000-0000-000000000000}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = Source\OpenTK\OpenTK.csproj
+		StartupItem = Source\Bind\Generator.Bind.csproj
 		Policies = $0
 		$0.TextStylePolicy = $1
 		$1.inheritsSet = VisualStudio

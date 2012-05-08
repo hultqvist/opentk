@@ -136,6 +136,7 @@ namespace Bind
                                 Settings.Compatibility |= val.ToLower() == "enums_in_class" ? Settings.Legacy.NestedEnums : Settings.Legacy.None;
                                 Settings.Compatibility |= val.ToLower() == "nodocs" ? Settings.Legacy.NoDocumentation : Settings.Legacy.None;
                                 Settings.Compatibility |= val.ToLower() == "keep_untyped_enums" ? Settings.Legacy.KeepUntypedEnums : Settings.Legacy.None;
+                                Settings.Compatibility |= val.ToLower() == "remove_deprecated" ? Settings.Legacy.RemoveDeprecated : Settings.Legacy.None;
                                 break;
                             default:
                                 throw new ArgumentException(
@@ -252,7 +253,7 @@ Available switches:
 -namespace:  Same as -ns
 -class:      Output class (e.g. -class:GL3).
              Default: GL/Wgl/Glu/Glx (depends on -mode)
--mode:       GL/ES20/CL
+-mode:       GL/ES20
 -o/-option:  Set advanced option. Available options:
     -o:tao   Tao compatibility mode.
     -o:enums Follow OpenGL instead .Net naming conventions.
@@ -260,6 +261,8 @@ Available switches:
     -o:enums_in_class
              Place enums in a nested class (i.e. GL.Enums)
              instead of a namespace (i.e. OpenTK.Graphics.OpenGL.Enums)
+    -o:remove_deprecated
+             Do not generate wrapper for deprecated functions.
 ");
         }
     }

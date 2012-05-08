@@ -138,12 +138,6 @@
     <Compile Include="WindowState.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="IGameWindow.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="GameWindowFlags.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="KeyPressEventArgs.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -564,7 +558,6 @@
     </EmbeddedResource>
     <Compile Include="IntPtrEqualityComparer.cs" />
     <Compile Include="Math\Matrix4.cs" />
-    <Compile Include="GameWindow.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

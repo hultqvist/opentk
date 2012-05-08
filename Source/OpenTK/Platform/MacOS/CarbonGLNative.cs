@@ -56,8 +56,10 @@ namespace OpenTK.Platform.MacOS
         bool mExists = true;
         DisplayDevice mDisplayDevice;
 
+        #pragma warning disable 414
         WindowAttributes mWindowAttrib;
         WindowClass mWindowClass;
+        #pragma warning restore 414
         WindowPositionMethod mPositionMethod = WindowPositionMethod.CenterOnMainScreen;
         int mTitlebarHeight;
         private WindowBorder windowBorder = WindowBorder.Resizable;
@@ -112,7 +114,7 @@ namespace OpenTK.Platform.MacOS
         }
 
         public CarbonGLNative(int x, int y, int width, int height, string title,
-            GraphicsMode mode, GameWindowFlags options, DisplayDevice device)
+            GraphicsMode mode, DisplayDevice device)
         {
             CreateNativeWindow(WindowClass.Document,
                 WindowAttributes.StandardDocument | WindowAttributes.StandardHandler |
@@ -475,11 +477,6 @@ namespace OpenTK.Platform.MacOS
             if (thisIn != mMouseIn)
             {
                 mMouseIn = thisIn;
-
-                if (mMouseIn)
-                    OnMouseEnter();
-                else
-                    OnMouseLeave();
             }
         }
 
@@ -502,19 +499,6 @@ namespace OpenTK.Platform.MacOS
         {
             code = API.GetEventKeyboardKeyCode(inEvent);
             charCode = API.GetEventKeyboardChar(inEvent);
-        }
-
-        private void ProcessModifierKey(IntPtr inEvent)
-        {
-            MacOSKeyModifiers modifiers = API.GetEventKeyModifiers(inEvent);
-            
-            bool caps = (modifiers & MacOSKeyModifiers.CapsLock) != 0 ? true : false;
-            bool control = (modifiers & MacOSKeyModifiers.Control) != 0 ? true : false;
-            bool command = (modifiers & MacOSKeyModifiers.Command) != 0 ? true : false;
-            bool option = (modifiers & MacOSKeyModifiers.Option) != 0 ? true : false;
-            bool shift = (modifiers & MacOSKeyModifiers.Shift) != 0 ? true : false;
-            
-            Debug.Print("Modifiers Changed: {0}", modifiers);
         }
 
         Rect GetRegion()
@@ -933,17 +917,6 @@ namespace OpenTK.Platform.MacOS
             Closed(this, EventArgs.Empty);
         }
 
-
-        private void OnMouseLeave()
-        {
-            MouseLeave(this, EventArgs.Empty);
-        }
-
-        private void OnMouseEnter()
-        {
-            MouseEnter(this, EventArgs.Empty);
-        }
-
         private void OnActivate()
         {
             mIsActive = true;
@@ -968,10 +941,7 @@ namespace OpenTK.Platform.MacOS
         public event EventHandler<EventArgs> FocusedChanged = delegate { };
         public event EventHandler<EventArgs> WindowBorderChanged = delegate { };
         public event EventHandler<EventArgs> WindowStateChanged = delegate { };
-        public event EventHandler<KeyPressEventArgs> KeyPress = delegate { };
-        public event EventHandler<EventArgs> MouseEnter = delegate { };
-        public event EventHandler<EventArgs> MouseLeave = delegate { };
-        
+
         #endregion
     }
 }

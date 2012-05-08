@@ -202,34 +202,6 @@ namespace OpenTK
             W = new Half(v.W, throwOnError);
         }
 
-        /// <summary>
-        /// The new Half4 instance will convert the Vector4d into 16-bit half-precision floating-point.
-        /// This is the faster constructor.
-        /// </summary>
-        /// <param name="v">OpenTK.Vector4d</param>
-        [CLSCompliant(false)]
-        public Vector4h(ref Vector4d v)
-        {
-            X = new Half(v.X);
-            Y = new Half(v.Y);
-            Z = new Half(v.Z);
-            W = new Half(v.W);
-        }
-
-        /// <summary>
-        /// The new Half4 instance will convert the Vector4d into 16-bit half-precision floating-point.
-        /// </summary>
-        /// <param name="v">OpenTK.Vector4d</param>
-        /// <param name="throwOnError">Enable checks that will throw if the conversion result is not meaningful.</param>
-        [CLSCompliant(false)]
-        public Vector4h(ref Vector4d v, bool throwOnError)
-        {
-            X = new Half(v.X, throwOnError);
-            Y = new Half(v.Y, throwOnError);
-            Z = new Half(v.Z, throwOnError);
-            W = new Half(v.W, throwOnError);
-        }
-
         #endregion Constructors
 
         #region Swizzle

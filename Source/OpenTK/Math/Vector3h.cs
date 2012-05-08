@@ -185,32 +185,6 @@ namespace OpenTK
             Z = new Half(v.Z, throwOnError);
         }
 
-        /// <summary>
-        /// The new Half3 instance will convert the Vector3d into 16-bit half-precision floating-point.
-        /// This is the faster constructor.
-        /// </summary>
-        /// <param name="v">OpenTK.Vector3d</param>
-        [CLSCompliant(false)]
-        public Vector3h(ref Vector3d v)
-        {
-            X = new Half(v.X);
-            Y = new Half(v.Y);
-            Z = new Half(v.Z);
-        }
-
-        /// <summary>
-        /// The new Half3 instance will convert the Vector3d into 16-bit half-precision floating-point.
-        /// </summary>
-        /// <param name="v">OpenTK.Vector3d</param>
-        /// <param name="throwOnError">Enable checks that will throw if the conversion result is not meaningful.</param>
-        [CLSCompliant(false)]
-        public Vector3h(ref Vector3d v, bool throwOnError)
-        {
-            X = new Half(v.X, throwOnError);
-            Y = new Half(v.Y, throwOnError);
-            Z = new Half(v.Z, throwOnError);
-        }
-
         #endregion Constructors
 
         #region Swizzle

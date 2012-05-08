@@ -24,7 +24,6 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 //
 #endregion
-
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -48,7 +47,6 @@ namespace OpenTK.Graphics
         // context - we'll not destroy it manually.
         readonly bool IsExternal;
         bool check_errors = true;
-
         static bool share_contexts = true;
         static bool direct_rendering = true;
         readonly static object SyncRoot = new object();        
@@ -66,7 +64,10 @@ namespace OpenTK.Graphics
 
             lock (SyncRoot)
             {
-                available_contexts.Add((implementation as IGraphicsContextInternal).Context, new WeakReference(this));
+                available_contexts.Add(
+                    (implementation as IGraphicsContextInternal).Context,
+                    new WeakReference(this)
+                );
             }
         }
         
@@ -99,9 +100,15 @@ namespace OpenTK.Graphics
                 if (mode == null && window == null)
                     designMode = true;
                 else if (mode == null)
-                    throw new ArgumentNullException("mode", "Must be a valid GraphicsMode.");
+                    throw new ArgumentNullException(
+                        "mode",
+                        "Must be a valid GraphicsMode."
+                    );
                 else if (window == null)
-                    throw new ArgumentNullException("window", "Must point to a valid window.");
+                    throw new ArgumentNullException(
+                        "window",
+                        "Must point to a valid window."
+                    );
 
                 // Silently ignore invalid major and minor versions.
                 if (major <= 0)
@@ -124,8 +131,7 @@ namespace OpenTK.Graphics
                     if (designMode)
                     {
                         implementation = new Platform.Dummy.DummyGLContext();
-                    }
-                    else
+                    } else
                     {
                         IPlatformFactory factory = null;
                         switch ((flags & GraphicsContextFlags.Embedded) == GraphicsContextFlags.Embedded)
@@ -138,7 +144,15 @@ namespace OpenTK.Graphics
                                 break;
                         }
 
-                        implementation = factory.CreateGLContext(mode, window, shareContext, direct_rendering, major, minor, flags);
+                        implementation = factory.CreateGLContext(
+                            mode,
+                            window,
+                            shareContext,
+                            direct_rendering,
+                            major,
+                            minor,
+                            flags
+                        );
                         // Note: this approach does not allow us to mix native and EGL contexts in the same process.
                         // This should not be a problem, as this use-case is not interesting for regular applications.
                         // Note 2: some platforms may not support a direct way of getting the current context
@@ -155,9 +169,11 @@ namespace OpenTK.Graphics
                         }
                     }
 
-                    available_contexts.Add((this as IGraphicsContextInternal).Context, new WeakReference(this));
-                }
-                finally
+                    available_contexts.Add(
+                        (this as IGraphicsContextInternal).Context,
+                        new WeakReference(this)
+                    );
+                } finally
                 {
                     Debug.Unindent();
                 }
@@ -195,25 +211,42 @@ namespace OpenTK.Graphics
                 if (handle == ContextHandle.Zero)
                 {
                     implementation = new OpenTK.Platform.Dummy.DummyGLContext(handle);
-                }
-                else if (available_contexts.ContainsKey(handle))
+                } else if (available_contexts.ContainsKey(handle))
                 {
                     throw new GraphicsContextException("Context already exists.");
-                }
-                else
+                } else
                 {
                     switch ((flags & GraphicsContextFlags.Embedded) == GraphicsContextFlags.Embedded)
                     {
                         case false:
-                            implementation = Factory.Default.CreateGLContext(handle, window, shareContext, direct_rendering, major, minor, flags);
+                            implementation = Factory.Default.CreateGLContext(
+                                handle,
+                                window,
+                                shareContext,
+                                direct_rendering,
+                                major,
+                                minor,
+                                flags
+                            );
                             break;
                         case true:
-                            implementation = Factory.Embedded.CreateGLContext(handle, window, shareContext, direct_rendering, major, minor, flags);
+                            implementation = Factory.Embedded.CreateGLContext(
+                                handle,
+                                window,
+                                shareContext,
+                                direct_rendering,
+                                major,
+                                minor,
+                                flags
+                            );
                             break;
                     }
                 }
 
-                available_contexts.Add((implementation as IGraphicsContextInternal).Context, new WeakReference(this));
+                available_contexts.Add(
+                    (implementation as IGraphicsContextInternal).Context,
+                    new WeakReference(this)
+                );
 
                 (this as IGraphicsContextInternal).LoadAll();
             }
@@ -333,6 +366,7 @@ namespace OpenTK.Graphics
         #region public static IGraphicsContext CurrentContext
 
         internal delegate ContextHandle GetCurrentContextDelegate();
+
         internal static GetCurrentContextDelegate GetCurrentContext =
             Platform.Factory.Default.CreateGetCurrentGraphicsContext();
 
@@ -353,7 +387,7 @@ namespace OpenTK.Graphics
                     {
                         ContextHandle handle = GetCurrentContext();
                         if (handle.Handle != IntPtr.Zero)
-                            return (GraphicsContext)available_contexts[handle].Target;
+                            return (GraphicsContext)available_contexts [handle].Target;
                     }
                     return null;
                 }
@@ -430,7 +464,10 @@ namespace OpenTK.Graphics
         {
             lock (SyncRoot)
             {
-                available_contexts.Add((this as IGraphicsContextInternal).Context, new WeakReference(this));
+                available_contexts.Add(
+                    (this as IGraphicsContextInternal).Context,
+                    new WeakReference(this)
+                );
             }
         }
 
@@ -485,8 +522,8 @@ namespace OpenTK.Graphics
         [Obsolete("Use SwapInterval property instead.")]
         public bool VSync
         {
-            get { return implementation.VSync; }
-            set { implementation.VSync = value;  }
+            get { return implementation.SwapInterval > 0; }
+            set { implementation.SwapInterval = value ? 1 : 0;  }
         }
 
         /// <summary>
@@ -585,7 +622,10 @@ namespace OpenTK.Graphics
         {
             if (!IsDisposed)
             {
-                Debug.Print("Disposing context {0}.", (this as IGraphicsContextInternal).Context.ToString());
+                Debug.Print(
+                    "Disposing context {0}.",
+                    (this as IGraphicsContextInternal).Context.ToString()
+                );
                 lock (SyncRoot)
                 {
                     available_contexts.Remove((this as IGraphicsContextInternal).Context);

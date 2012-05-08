@@ -55,7 +55,7 @@ namespace OpenTK.Graphics.OpenGL
 
         internal const string Library = "opengl32.dll";
 
-        static SortedList<string, bool> AvailableExtensions = new SortedList<string, bool>();
+        //static SortedList<string, bool> AvailableExtensions = new SortedList<string, bool>();
         static readonly object sync_root = new object();
 
         #endregion
@@ -733,18 +733,6 @@ namespace OpenTK.Graphics.OpenGL
             GL.Rect(rect.Left, rect.Top, rect.Right, rect.Bottom);
         }
 
-        [CLSCompliant(false)]
-        public static void Rect(ref RectangleF rect)
-        {
-            GL.Rect(rect.Left, rect.Top, rect.Right, rect.Bottom);
-        }
-
-        [CLSCompliant(false)]
-        public static void Rect(ref Rectangle rect)
-        {
-            GL.Rect(rect.Left, rect.Top, rect.Right, rect.Bottom);
-        }
-
         #endregion
 
         #region GenBuffer
@@ -1376,10 +1364,12 @@ namespace OpenTK.Graphics.OpenGL
         #endregion
     }
 
+    /// <summary></summary>
     public delegate void DebugProcAmd(int id,
         AmdDebugOutput category, AmdDebugOutput severity,
         IntPtr length, string message, IntPtr userParam);
 
+    /// <summary></summary>
     public delegate void DebugProcArb(int id,
         ArbDebugOutput category, ArbDebugOutput severity,
         IntPtr length, string message, IntPtr userParam);

@@ -24,7 +24,6 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 //
 #endregion
-
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -33,15 +32,17 @@ namespace OpenTK.Platform.Windows
 {
     using Graphics;
 
-    class WinFactory : IPlatformFactory 
+    class WinFactory : IPlatformFactory
     {
+        #pragma warning disable 414
         readonly object SyncRoot = new object();
+        #pragma warning restore 414
 
         #region IPlatformFactory Members
 
-        public virtual INativeWindow CreateNativeWindow(int x, int y, int width, int height, string title, GraphicsMode mode, GameWindowFlags options, DisplayDevice device)
+        public virtual INativeWindow CreateNativeWindow(int x, int y, int width, int height, string title, GraphicsMode mode, DisplayDevice device)
         {
-            return new WinGLNative(x, y, width, height, title, options, device);
+            return new WinGLNative(x, y, width, height, title, device);
         }
 
         public virtual IDisplayDeviceDriver CreateDisplayDeviceDriver()
@@ -51,12 +52,26 @@ namespace OpenTK.Platform.Windows
 
         public virtual IGraphicsContext CreateGLContext(GraphicsMode mode, IWindowInfo window, IGraphicsContext shareContext, bool directRendering, int major, int minor, GraphicsContextFlags flags)
         {
-            return new WinGLContext(mode, (WinWindowInfo)window, shareContext, major, minor, flags);
+            return new WinGLContext(
+                mode,
+                (WinWindowInfo)window,
+                shareContext,
+                major,
+                minor,
+                flags
+            );
         }
 
         public virtual IGraphicsContext CreateGLContext(ContextHandle handle, IWindowInfo window, IGraphicsContext shareContext, bool directRendering, int major, int minor, GraphicsContextFlags flags)
         {
-            return new WinGLContext(handle, (WinWindowInfo)window, shareContext, major, minor, flags);
+            return new WinGLContext(
+                handle,
+                (WinWindowInfo)window,
+                shareContext,
+                major,
+                minor,
+                flags
+            );
         }
 
         public virtual GraphicsContext.GetCurrentContextDelegate CreateGetCurrentGraphicsContext()

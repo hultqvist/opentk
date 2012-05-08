@@ -35,10 +35,12 @@ namespace OpenTK.Platform.Windows
 
         internal const string Library = "OPENGL32.DLL";
 
+        #pragma warning disable 414
         private static Assembly assembly;
         private static Type wglClass;
         private static Type delegatesClass;
         private static Type importsClass;
+        #pragma warning restore 414
 
         private static bool rebuildExtensionList = true;
 

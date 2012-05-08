@@ -166,30 +166,6 @@ namespace OpenTK
             Y = new Half(v.Y, throwOnError);
         }
 
-        /// <summary>
-        /// The new Half2 instance will convert the Vector2d into 16-bit half-precision floating-point.
-        /// This is the faster constructor.
-        /// </summary>
-        /// <param name="v">OpenTK.Vector2d</param>
-        [CLSCompliant(false)]
-        public Vector2h(ref Vector2d v)
-        {
-            X = new Half(v.X);
-            Y = new Half(v.Y);
-        }
-
-        /// <summary>
-        /// The new Half2 instance will convert the Vector2d into 16-bit half-precision floating-point.
-        /// </summary>
-        /// <param name="v">OpenTK.Vector2d</param>
-        /// <param name="throwOnError">Enable checks that will throw if the conversion result is not meaningful.</param>
-        [CLSCompliant(false)]
-        public Vector2h(ref Vector2d v, bool throwOnError)
-        {
-            X = new Half(v.X, throwOnError);
-            Y = new Half(v.Y, throwOnError);
-        }
-
         #endregion Constructors
 
         #region Half -> Single

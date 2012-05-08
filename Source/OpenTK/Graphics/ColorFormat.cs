@@ -130,6 +130,7 @@ namespace OpenTK.Graphics
         /// <summary>Gets the sum of Red, Green, Blue and Alpha bits per pixel.</summary>
         public int BitsPerPixel { get { return bitsPerPixel; } private set { bitsPerPixel = value; } }
 
+        /// <summary></summary>
         public static readonly ColorFormat Empty = new ColorFormat(0);
 
         #endregion

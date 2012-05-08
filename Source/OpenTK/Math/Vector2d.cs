@@ -86,8 +86,6 @@ namespace OpenTK
         /// </summary>
         /// <param name="x">The x component of the Vector2d.</param>
         /// <param name="y">The y component of the Vector2d.</param>
-        /// <param name="z">The z component of the Vector2d.</param>
-        /// <param name="w">The w component of the Vector2d.</param>
         public Vector2d(double x, double y)
         {
             X = x;

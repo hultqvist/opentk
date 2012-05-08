@@ -56,7 +56,9 @@ namespace OpenTK.Platform.Windows
 
         readonly uint ModalLoopTimerPeriod = 1;
         UIntPtr timer_handle;
+        #pragma warning disable 414
         readonly Functions.TimerProc ModalLoopCallback;
+        #pragma warning restore 414
 
         bool class_registered;
         bool disposed;
@@ -68,7 +70,6 @@ namespace OpenTK.Platform.Windows
         WindowState windowState = WindowState.Normal;
         bool borderless_maximized_window_state = false; // Hack to get maximized mode with hidden border (not normally possible).
         bool focused;
-        bool mouse_outside_window = true;
         bool invisible_since_creation; // Set by WindowsMessage.CREATE and consumed by Visible = true (calls BringWindowToFront).
         int suppress_resize; // Used in WindowBorder and WindowState in order to avoid rapid, consecutive resize events.
 
@@ -80,8 +81,6 @@ namespace OpenTK.Platform.Windows
 
         const ClassStyle DefaultClassStyle = ClassStyle.OwnDC;
 
-        KeyPressEventArgs key_press = new KeyPressEventArgs((char)0);
-
         int cursor_visible_count = 0;
 
         static readonly object SyncRoot = new object();
@@ -90,7 +89,7 @@ namespace OpenTK.Platform.Windows
 
         #region Contructors
 
-        public WinGLNative(int x, int y, int width, int height, string title, GameWindowFlags options, DisplayDevice device)
+        public WinGLNative(int x, int y, int width, int height, string title, DisplayDevice device)
         {
             lock (SyncRoot)
             {
@@ -109,9 +108,9 @@ namespace OpenTK.Platform.Windows
                 // To avoid issues with Ati drivers on Windows 6+ with compositing enabled, the context will not be
                 // bound to the top-level window, but rather to a child window docked in the parent.
                 window = new WinWindowInfo(
-                    CreateWindow(x, y, width, height, title, options, device, IntPtr.Zero), null);
+                    CreateWindow(x, y, width, height, title, device, IntPtr.Zero), null);
                 child_window = new WinWindowInfo(
-                    CreateWindow(0, 0, ClientSize.Width, ClientSize.Height, title, options, device, window.WindowHandle), window);
+                    CreateWindow(0, 0, ClientSize.Width, ClientSize.Height, title, device, window.WindowHandle), window);
 
                 exists = true;
             }
@@ -346,7 +345,7 @@ namespace OpenTK.Platform.Windows
 
         #region CreateWindow
 
-        IntPtr CreateWindow(int x, int y, int width, int height, string title, GameWindowFlags options, DisplayDevice device, IntPtr parentHandle)
+        IntPtr CreateWindow(int x, int y, int width, int height, string title, DisplayDevice device, IntPtr parentHandle)
         {
             // Use win32 to create the native window.
             // Keep in mind that some construction code runs in the WM_CREATE message handler.

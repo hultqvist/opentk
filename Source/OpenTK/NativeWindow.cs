@@ -43,15 +43,11 @@ namespace OpenTK
     {
         #region --- Fields ---
 
-        private readonly GameWindowFlags options;
-
         private readonly DisplayDevice device;
 
         private readonly INativeWindow implementation;
 
         private bool disposed, events;
-        private bool cursor_visible = true;
-        private bool previous_cursor_visible = true;
 
         #endregion
 
@@ -59,7 +55,7 @@ namespace OpenTK
 
         /// <summary>Constructs a new NativeWindow with default attributes without enabling events.</summary>
         public NativeWindow()
-            : this(640, 480, "OpenTK Native Window", GameWindowFlags.Default, GraphicsMode.Default, DisplayDevice.Default) { }
+            : this(640, 480, "OpenTK Native Window", GraphicsMode.Default, DisplayDevice.Default) { }
 
         // TODO: Remaining constructors.
 
@@ -67,15 +63,14 @@ namespace OpenTK
         /// <param name="width">The width of the NativeWindow in pixels.</param>
         /// <param name="height">The height of the NativeWindow in pixels.</param>
         /// <param name="title">The title of the NativeWindow.</param>
-        /// <param name="options">GameWindow options specifying window appearance and behavior.</param>
         /// <param name="mode">The OpenTK.Graphics.GraphicsMode of the NativeWindow.</param>
         /// <param name="device">The OpenTK.Graphics.DisplayDevice to construct the NativeWindow in.</param>
         /// <exception cref="System.ArgumentOutOfRangeException">If width or height is less than 1.</exception>
         /// <exception cref="System.ArgumentNullException">If mode or device is null.</exception>
-        public NativeWindow(int width, int height, string title, GameWindowFlags options, GraphicsMode mode, DisplayDevice device)
+        public NativeWindow(int width, int height, string title, GraphicsMode mode, DisplayDevice device)
             : this(device.Bounds.Left + (device.Bounds.Width - width) / 2,
                    device.Bounds.Top + (device.Bounds.Height - height) / 2,
-                   width, height, title, options, mode, device) { }
+                   width, height, title, mode, device) { }
 
         /// <summary>Constructs a new NativeWindow with the specified attributes.</summary>
         /// <param name="x">Horizontal screen space coordinate of the NativeWindow's origin.</param>
@@ -83,12 +78,11 @@ namespace OpenTK
         /// <param name="width">The width of the NativeWindow in pixels.</param>
         /// <param name="height">The height of the NativeWindow in pixels.</param>
         /// <param name="title">The title of the NativeWindow.</param>
-        /// <param name="options">GameWindow options specifying window appearance and behavior.</param>
         /// <param name="mode">The OpenTK.Graphics.GraphicsMode of the NativeWindow.</param>
         /// <param name="device">The OpenTK.Graphics.DisplayDevice to construct the NativeWindow in.</param>
         /// <exception cref="System.ArgumentOutOfRangeException">If width or height is less than 1.</exception>
         /// <exception cref="System.ArgumentNullException">If mode or device is null.</exception>
-        public NativeWindow(int x, int y, int width, int height, string title, GameWindowFlags options, GraphicsMode mode, DisplayDevice device)
+        public NativeWindow(int x, int y, int width, int height, string title, GraphicsMode mode, DisplayDevice device)
         {
             // TODO: Should a constraint be added for the position?
             if (width < 1)
@@ -100,16 +94,9 @@ namespace OpenTK
             if (device == null)
                 throw new ArgumentNullException("device");
 
-            this.options = options;
             this.device = device;
 
-            implementation = Factory.Default.CreateNativeWindow(x, y, width, height, title, mode, options, this.device);
-
-            if ((options & GameWindowFlags.Fullscreen) != 0)
-            {
-                this.device.ChangeResolution(width, height, mode.ColorFormat.BitsPerPixel, 0);
-                WindowState = WindowState.Fullscreen;
-            }
+            implementation = Factory.Default.CreateNativeWindow(x, y, width, height, title, mode, this.device);
         }
 
         #endregion
@@ -127,47 +114,6 @@ namespace OpenTK
         {
             EnsureUndisposed();
             implementation.Close();
-        }
-
-        #endregion
-
-        #region PointToClient
-
-        /// <summary>
-        /// Transforms the specified point from screen to client coordinates. 
-        /// </summary>
-        /// <param name="point">
-        /// A <see cref="System.Drawing.Point"/> to transform.
-        /// </param>
-        /// <returns>
-        /// The point transformed to client coordinates.
-        /// </returns>
-        public Point PointToClient(Point point)
-        {
-            return implementation.PointToClient(point);
-        }
-
-        #endregion
-
-        #region PointToScreen
-
-        /// <summary>
-        /// Transforms the specified point from client to screen coordinates.
-        /// </summary>
-        /// <param name="point">
-        /// A <see cref="System.Drawing.Point"/> to transform.
-        /// </param>
-        /// <returns>
-        /// The point transformed to screen coordinates.
-        /// </returns>
-        public Point PointToScreen(Point point)
-        {
-            // Here we use the fact that PointToClient just translates the point, and PointToScreen
-            // should perform the inverse operation.
-            Point trans = PointToClient(Point.Empty);
-            point.X -= trans.X;
-            point.Y -= trans.Y;
-            return point;
         }
 
         #endregion
@@ -268,22 +214,6 @@ namespace OpenTK
 
         #endregion
 
-        #region Focused
-
-        /// <summary>
-        /// Gets a System.Boolean that indicates whether this NativeWindow has input focus.
-        /// </summary>
-        public bool Focused
-        {
-            get
-            {
-                EnsureUndisposed();
-                return implementation.Focused;
-            }
-        }
-
-        #endregion
-
         #region Height
 
         /// <summary>
@@ -304,25 +234,6 @@ namespace OpenTK
         }
 
         #endregion
-
-        #region Icon
-
-        /// <summary>
-        /// Gets or sets the System.Drawing.Icon for this GameWindow.
-        /// </summary>
-        public Icon Icon
-        {
-            get
-            {
-                EnsureUndisposed();
-                return implementation.Icon;
-            }
-            set
-            {
-                EnsureUndisposed();
-                implementation.Icon = value;
-            }
-        }
 
         #endregion
 
@@ -363,27 +274,6 @@ namespace OpenTK
             {
                 EnsureUndisposed();
                 implementation.Size = value;
-            }
-        }
-
-        #endregion
-
-        #region Title
-
-        /// <summary>
-        /// Gets or sets the NativeWindow title.
-        /// </summary>
-        public string Title
-        {
-            get
-            {
-                EnsureUndisposed();
-                return implementation.Title;
-            }
-            set
-            {
-                EnsureUndisposed();
-                implementation.Title = value;
             }
         }
 
@@ -527,23 +417,6 @@ namespace OpenTK
 
         #endregion
 
-        #region CursorVisible
-
-        /// <summary>
-        /// Gets or sets a value indicating whether the mouse cursor is visible.
-        /// </summary>
-        public bool CursorVisible
-        {
-            get { return cursor_visible; }
-            set
-            {
-                cursor_visible = value;
-                implementation.CursorVisible = value;
-            }
-        }
-
-        #endregion
-
         #endregion
 
         #region Events
@@ -562,21 +435,6 @@ namespace OpenTK
         /// Occurs when the window is disposed.
         /// </summary>
         public event EventHandler<EventArgs> Disposed = delegate { };
-
-        /// <summary>
-        /// Occurs when the <see cref="Focused"/> property of the window changes.
-        /// </summary>
-        public event EventHandler<EventArgs> FocusedChanged = delegate { };
-
-        /// <summary>
-        /// Occurs when the <see cref="Icon"/> property of the window changes. 
-        /// </summary>
-        public event EventHandler<EventArgs> IconChanged = delegate { };
-
-        /// <summary>
-        /// Occurs whenever a character is typed.
-        /// </summary>
-        public event EventHandler<KeyPressEventArgs> KeyPress = delegate { };
 
         /// <summary>
         /// Occurs whenever the window is moved.
@@ -599,11 +457,6 @@ namespace OpenTK
         public event EventHandler<EventArgs> Resize = delegate { };
 
         /// <summary>
-        /// Occurs when the <see cref="Title"/> property of the window changes.
-        /// </summary>
-        public event EventHandler<EventArgs> TitleChanged = delegate { };
-
-        /// <summary>
         /// Occurs when the <see cref="Visible"/> property of the window changes.
         /// </summary>
         public event EventHandler<EventArgs> VisibleChanged = delegate { };
@@ -620,11 +473,7 @@ namespace OpenTK
 
         #endregion
 
-        #endregion
-
         #region --- IDisposable Members ---
-
-        #region Dispose
 
         /// <summary>
         /// Releases all non-managed resources belonging to this NativeWindow.
@@ -633,19 +482,12 @@ namespace OpenTK
         {
             if (!IsDisposed)
             {
-                if ((options & GameWindowFlags.Fullscreen) != 0)
-                {
-                    //if (WindowState == WindowState.Fullscreen) WindowState = WindowState.Normal; // TODO: Revise.
-                    device.RestoreResolution();
-                }
                 implementation.Dispose();
                 GC.SuppressFinalize(this);
 
                 IsDisposed = true;
             }
         }
-
-        #endregion
 
         #endregion
 
@@ -723,46 +565,6 @@ namespace OpenTK
 
         #endregion
 
-        #region OnFocusedChanged
-
-        /// <summary>
-        /// Called when the <see cref="OpenTK.INativeWindow.Focused"/> property of the NativeWindow has changed.
-        /// </summary>
-        /// <param name="e">Not used.</param>
-        protected virtual void OnFocusedChanged(EventArgs e)
-        {
-            if (!Focused)
-            {
-                // Release cursor when losing focus, to ensure
-                // IDEs continue working as expected.
-                previous_cursor_visible = CursorVisible;
-                CursorVisible = true;
-            }
-            else if (!previous_cursor_visible)
-            {
-                // Make cursor invisible when focus is regained
-                // if cursor was invisible on previous focus loss.
-                previous_cursor_visible = true;
-                CursorVisible = false;
-            }
-            FocusedChanged(this, e);
-        }
-
-        #endregion
-
-        #region OnIconChanged
-
-        /// <summary>
-        /// Called when the <see cref="OpenTK.INativeWindow.Icon"/> property of the NativeWindow has changed.
-        /// </summary>
-        /// <param name="e">Not used.</param>
-        protected virtual void OnIconChanged(EventArgs e)
-        {
-            IconChanged(this, e);
-        }
-
-        #endregion
-
         #region OnMove
 
         /// <summary>
@@ -811,19 +613,6 @@ namespace OpenTK
         protected virtual void OnResize(EventArgs e)
         {
             Resize(this, e);
-        }
-
-        #endregion
-
-        #region OnTitleChanged
-
-        /// <summary>
-        /// Called when the <see cref="OpenTK.INativeWindow.Title"/> property of the NativeWindow has changed.
-        /// </summary>
-        /// <param name="e">Not used.</param>
-        protected virtual void OnTitleChanged(EventArgs e)
-        {
-            TitleChanged(this, e);
         }
 
         #endregion
@@ -912,18 +701,6 @@ namespace OpenTK
 
         #endregion
 
-        #region OnFocusedChangedInternal
-
-        private void OnFocusedChangedInternal(object sender, EventArgs e) { OnFocusedChanged(e); }
-
-        #endregion
-
-        #region OnIconChangedInternal
-
-        private void OnIconChangedInternal(object sender, EventArgs e) { OnIconChanged(e); }
-
-        #endregion
-
         #region OnMoveInternal
 
         private void OnMoveInternal(object sender, EventArgs e) { OnMove(e); }
@@ -933,12 +710,6 @@ namespace OpenTK
         #region OnResizeInternal
 
         private void OnResizeInternal(object sender, EventArgs e) { OnResize(e); }
-
-        #endregion
-
-        #region OnTitleChangedInternal
-
-        private void OnTitleChangedInternal(object sender, EventArgs e) { OnTitleChanged(e); }
 
         #endregion
 
@@ -979,11 +750,8 @@ namespace OpenTK
                     implementation.Closed += OnClosedInternal;
                     implementation.Closing += OnClosingInternal;
                     implementation.Disposed += OnDisposedInternal;
-                    implementation.FocusedChanged += OnFocusedChangedInternal;
-                    implementation.IconChanged += OnIconChangedInternal;
                     implementation.Move += OnMoveInternal;
                     implementation.Resize += OnResizeInternal;
-                    implementation.TitleChanged += OnTitleChangedInternal;
                     implementation.VisibleChanged += OnVisibleChangedInternal;
                     implementation.WindowBorderChanged += OnWindowBorderChangedInternal;
                     implementation.WindowStateChanged += OnWindowStateChangedInternal;
@@ -994,11 +762,8 @@ namespace OpenTK
                     implementation.Closed -= OnClosedInternal;
                     implementation.Closing -= OnClosingInternal;
                     implementation.Disposed -= OnDisposedInternal;
-                    implementation.FocusedChanged -= OnFocusedChangedInternal;
-                    implementation.IconChanged -= OnIconChangedInternal;
                     implementation.Move -= OnMoveInternal;
                     implementation.Resize -= OnResizeInternal;
-                    implementation.TitleChanged -= OnTitleChangedInternal;
                     implementation.VisibleChanged -= OnVisibleChangedInternal;
                     implementation.WindowBorderChanged -= OnWindowBorderChangedInternal;
                     implementation.WindowStateChanged -= OnWindowStateChangedInternal;

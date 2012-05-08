@@ -66,6 +66,8 @@ typedef void ALCvoid;
  * IntPtr
 */
 
+#pragma warning disable 3006
+
 namespace OpenTK.Audio.OpenAL
 {
 

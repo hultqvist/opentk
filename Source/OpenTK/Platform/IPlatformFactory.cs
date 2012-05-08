@@ -35,7 +35,7 @@ namespace OpenTK.Platform
 {
     interface IPlatformFactory
     {
-        INativeWindow CreateNativeWindow(int x, int y, int width, int height, string title, GraphicsMode mode, GameWindowFlags options, DisplayDevice device);
+        INativeWindow CreateNativeWindow(int x, int y, int width, int height, string title, GraphicsMode mode, DisplayDevice device);
 
         IDisplayDeviceDriver CreateDisplayDeviceDriver();
 

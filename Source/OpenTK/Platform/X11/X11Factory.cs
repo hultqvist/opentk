@@ -45,9 +45,9 @@ namespace OpenTK.Platform.X11
 
         #region IPlatformFactory Members
 
-        public virtual INativeWindow CreateNativeWindow(int x, int y, int width, int height, string title, GraphicsMode mode, GameWindowFlags options, DisplayDevice device)
+        public virtual INativeWindow CreateNativeWindow(int x, int y, int width, int height, string title, GraphicsMode mode, DisplayDevice device)
         {
-            return new X11GLNative(x, y, width, height, title, mode, options, device);
+            return new X11GLNative(x, y, width, height, title, mode, device);
         }
 
         public virtual IDisplayDeviceDriver CreateDisplayDeviceDriver()

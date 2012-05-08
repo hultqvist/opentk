@@ -193,27 +193,6 @@ namespace OpenTK
             return BlittableValueType<T>.Check();
         }
 
-        /// <summary>
-        /// Checks whether type is a blittable value type.
-        /// </summary>
-        /// <param name="type">An instance of the type to check.</param>
-        /// <returns>True if T is blittable; false otherwise.</returns>
-        public static bool Check<T>(T[, ,] type)
-        {
-            return BlittableValueType<T>.Check();
-        }
-
-        /// <summary>
-        /// Checks whether type is a blittable value type.
-        /// </summary>
-        /// <param name="type">An instance of the type to check.</param>
-        /// <returns>True if T is blittable; false otherwise.</returns>
-        [CLSCompliant(false)]
-        public static bool Check<T>(T[][] type)
-        {
-            return BlittableValueType<T>.Check();
-        }
-
         #endregion
 
         #region StrideOf
@@ -256,21 +235,6 @@ namespace OpenTK
         /// <returns>An integer, specifying the size of the type in bytes.</returns>
         /// <exception cref="System.ArgumentException">Occurs when type is not blittable.</exception>
         public static int StrideOf<T>(T[,] type)
-        {
-            if (!Check(type))
-                throw new ArgumentException("type");
-
-            return BlittableValueType<T>.Stride;
-        }
-
-        /// <summary>
-        /// Returns the size of a single array element in bytes or 0 if the element is not blittable.
-        /// </summary>
-        /// <typeparam name="T">The value type.</typeparam>
-        /// <param name="type">An instance of the value type.</param>
-        /// <returns>An integer, specifying the size of the type in bytes.</returns>
-        /// <exception cref="System.ArgumentException">Occurs when type is not blittable.</exception>
-        public static int StrideOf<T>(T[, ,] type)
         {
             if (!Check(type))
                 throw new ArgumentException("type");

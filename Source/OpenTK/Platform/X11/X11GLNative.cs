@@ -76,8 +76,6 @@ namespace OpenTK.Platform.X11
         
         IntPtr _atom_net_wm_allowed_actions;
         IntPtr _atom_net_wm_action_resize;
-        IntPtr _atom_net_wm_action_maximize_horizontally;
-        IntPtr _atom_net_wm_action_maximize_vertically;
 
         IntPtr _atom_net_wm_icon;
 
@@ -108,12 +106,6 @@ namespace OpenTK.Platform.X11
 
         bool _decorations_hidden = false;
         bool cursor_visible = true;
-        int mouse_rel_x, mouse_rel_y;
-
-         // Keyboard input
-        readonly byte[] ascii = new byte[16];
-        readonly char[] chars = new char[16];
-        readonly KeyPressEventArgs KPEventArgs = new KeyPressEventArgs('\0');
 
         readonly IntPtr EmptyCursor;
 
@@ -124,7 +116,7 @@ namespace OpenTK.Platform.X11
         #region Constructors
 
         public X11GLNative(int x, int y, int width, int height, string title,
-            GraphicsMode mode,GameWindowFlags options, DisplayDevice device)
+            GraphicsMode mode, DisplayDevice device)
             : this()
         {
             if (width <= 0)
@@ -270,10 +262,6 @@ namespace OpenTK.Platform.X11
                     Functions.XInternAtom(window.Display, "_NET_WM_ALLOWED_ACTIONS", false);
                 _atom_net_wm_action_resize =
                     Functions.XInternAtom(window.Display, "_NET_WM_ACTION_RESIZE", false);
-                _atom_net_wm_action_maximize_horizontally =
-                    Functions.XInternAtom(window.Display, "_NET_WM_ACTION_MAXIMIZE_HORZ", false);
-                _atom_net_wm_action_maximize_vertically =
-                    Functions.XInternAtom(window.Display, "_NET_WM_ACTION_MAXIMIZE_VERT", false);
 
                 _atom_net_wm_icon =
                     Functions.XInternAtom(window.Display, "_NEW_WM_ICON", false);

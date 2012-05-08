@@ -24,7 +24,6 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 //
 #endregion
-
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -68,7 +67,8 @@ namespace OpenTK
         /// </summary>
         public GLControl()
             : this(GraphicsMode.Default)
-        { }
+        {
+        }
 
         /// <summary>
         /// Constructs a new GLControl with the specified GraphicsMode.
@@ -76,7 +76,8 @@ namespace OpenTK
         /// <param name="mode">The OpenTK.Graphics.GraphicsMode of the control.</param>
         public GLControl(GraphicsMode mode)
             : this(mode, 1, 0, GraphicsContextFlags.Default)
-        { }
+        {
+        }
 
         /// <summary>
         /// Constructs a new GLControl with the specified GraphicsMode.
@@ -153,7 +154,10 @@ namespace OpenTK
             if (design_mode)
                 implementation = new DummyGLControl();
             else
-                implementation = new GLControlFactory().CreateGLControl(format, this);
+                implementation = new GLControlFactory().CreateGLControl(
+                    format,
+                    this
+                );
 
             context = implementation.CreateContext(major, minor, flags);
             MakeCurrent();
@@ -340,7 +344,7 @@ namespace OpenTK
                     return false;
 
                 ValidateState();
-                return Context.VSync;
+                return Context.SwapInterval > 0;
             }
             set
             {
@@ -355,7 +359,7 @@ namespace OpenTK
                 }
 
                 ValidateState();
-                Context.VSync = value;
+                Context.SwapInterval = value ? 1 : 0;
             }
         }
 
@@ -404,7 +408,10 @@ namespace OpenTK
         {
             ValidateState();
 
-            Bitmap bmp = new Bitmap(this.ClientSize.Width, this.ClientSize.Height);
+            Bitmap bmp = new Bitmap(
+                this.ClientSize.Width,
+                this.ClientSize.Height
+            );
             System.Drawing.Imaging.BitmapData data =
                 bmp.LockBits(this.ClientRectangle, System.Drawing.Imaging.ImageLockMode.WriteOnly,
                              System.Drawing.Imaging.PixelFormat.Format24bppRgb);

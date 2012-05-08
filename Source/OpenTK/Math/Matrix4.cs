@@ -1055,7 +1055,7 @@ namespace OpenTK
         }
 
         /// <summary></summary>
-        /// <param name="v4d">The Matrix4d to convert.</param>
+        /// <param name="m4d">The Matrix4d to convert.</param>
         /// <returns>The resulting Matrix4.</returns>
         public static explicit operator Matrix4(Matrix4d m4d)
         {

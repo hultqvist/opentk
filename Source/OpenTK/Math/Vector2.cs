@@ -86,8 +86,6 @@ namespace OpenTK
         /// </summary>
         /// <param name="x">The x component of the Vector2.</param>
         /// <param name="y">The y component of the Vector2.</param>
-        /// <param name="z">The z component of the Vector2.</param>
-        /// <param name="w">The w component of the Vector2.</param>
         public Vector2(float x, float y)
         {
             X = x;
@@ -645,7 +643,7 @@ namespace OpenTK
         }
 
         /// <summary>Converts OpenTK.Vector2 to OpenTK.Vector4d.</summary>
-        /// <param name="v4">The Vector2 to convert.</param>
+        /// <param name="v2">The Vector2 to convert.</param>
         /// <returns>The resulting Vector2d.</returns>
         public static explicit operator Vector2d(Vector2 v2)
         {
@@ -653,7 +651,7 @@ namespace OpenTK
         }
 
         /// <summary>Converts Vector2d to Vector2.</summary>
-        /// <param name="v4d">The Vector2d to convert.</param>
+        /// <param name="v2d">The Vector2d to convert.</param>
         /// <returns>The resulting Vector2.</returns>
         public static explicit operator Vector2(Vector2d v2d)
         {

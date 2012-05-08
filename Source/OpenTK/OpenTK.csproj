@@ -557,9 +557,6 @@
     <Compile Include="Math\Point.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Math\Box2.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Math\Half.cs">
       <SubType>Code</SubType>
     </Compile>

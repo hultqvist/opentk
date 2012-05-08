@@ -521,7 +521,41 @@ namespace OpenTK
 
             PerspectiveOffCenter(xMin, xMax, ymin, yMax, zNear, zFar, out result);
         }
-        
+
+        /// <summary>
+        /// Creates a perspective projection matrix.
+        /// </summary>
+        /// <param name="fovy">Angle of the field of view in the y direction (in radians)</param>
+        /// <param name="aspect">Aspect ratio of the view (width / height)</param>
+        /// <param name="zNear">Distance to the near clip plane</param>
+        /// <param name="zFar">Distance to the far clip plane</param>
+        /// <param name="result">A projection matrix that transforms camera space to raster space</param>
+        /// <exception cref="System.ArgumentOutOfRangeException">
+        /// Thrown under the following conditions:
+        /// <list type="bullet">
+        /// <item>fovy is zero, less than zero or larger than Math.PI</item>
+        /// <item>aspect is negative or zero</item>
+        /// <item>zNear is negative or zero</item>
+        /// <item>zFar is negative or zero</item>
+        /// <item>zNear is larger than zFar</item>
+        /// </list>
+        /// </exception>
+        public static void PerspectiveHorizontalFieldOfView(double fovy, float aspect, float zNear, float zFar, out Matrix4 result)
+        {
+            if (fovy <= 0 || fovy > Math.PI)
+                throw new ArgumentOutOfRangeException("fovy");
+            if (aspect <= 0)
+                throw new ArgumentOutOfRangeException("aspect");
+
+            float xMax = (float)(Math.Abs(zNear) * System.Math.Tan(0.5f * fovy));
+            float xMin = -xMax;
+            float yMin = xMin / aspect;
+            float yMax = xMax / aspect;
+
+            PerspectiveOffCenter(xMin, xMax, yMin, yMax, zNear, zFar, out result);
+        }
+
+
         /// <summary>
         /// Creates a perspective projection matrix.
         /// </summary>

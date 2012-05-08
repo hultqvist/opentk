@@ -599,64 +599,6 @@ namespace OpenTK
 
         #endregion
 
-        #region Transform
-
-        /// <summary>Transform a Vector by the given Matrix</summary>
-        /// <param name="vec">The vector to transform</param>
-        /// <param name="mat">The desired transformation</param>
-        /// <returns>The transformed vector</returns>
-        public static Vector4d Transform(Vector4d vec, Matrix4d mat)
-        {
-            Vector4d result;
-            Transform(ref vec, ref mat, out result);
-            return result;
-        }
-
-        /// <summary>Transform a Vector by the given Matrix</summary>
-        /// <param name="vec">The vector to transform</param>
-        /// <param name="mat">The desired transformation</param>
-        /// <param name="result">The transformed vector</param>
-        public static void Transform(ref Vector4d vec, ref Matrix4d mat, out Vector4d result)
-        {
-            result = new Vector4d(
-                vec.X * mat.Row0.X + vec.Y * mat.Row1.X + vec.Z * mat.Row2.X + vec.W * mat.Row3.X,
-                vec.X * mat.Row0.Y + vec.Y * mat.Row1.Y + vec.Z * mat.Row2.Y + vec.W * mat.Row3.Y,
-                vec.X * mat.Row0.Z + vec.Y * mat.Row1.Z + vec.Z * mat.Row2.Z + vec.W * mat.Row3.Z,
-                vec.X * mat.Row0.W + vec.Y * mat.Row1.W + vec.Z * mat.Row2.W + vec.W * mat.Row3.W
-            );
-        }
-
-        /// <summary>
-        /// Transforms a vector by a quaternion rotation.
-        /// </summary>
-        /// <param name="vec">The vector to transform.</param>
-        /// <param name="quat">The quaternion to rotate the vector by.</param>
-        /// <returns>The result of the operation.</returns>
-        public static Vector4d Transform(Vector4d vec, Quaterniond quat)
-        {
-            Vector4d result;
-            Transform(ref vec, ref quat, out result);
-            return result;
-        }
-
-        /// <summary>
-        /// Transforms a vector by a quaternion rotation.
-        /// </summary>
-        /// <param name="vec">The vector to transform.</param>
-        /// <param name="quat">The quaternion to rotate the vector by.</param>
-        /// <param name="result">The result of the operation.</param>
-        public static void Transform(ref Vector4d vec, ref Quaterniond quat, out Vector4d result)
-        {
-            Quaterniond v = new Quaterniond(vec.X, vec.Y, vec.Z, vec.W), i, t;
-            Quaterniond.Invert(ref quat, out i);
-            Quaterniond.Multiply(ref quat, ref v, out t);
-            Quaterniond.Multiply(ref t, ref i, out v);
-
-            result = new Vector4d(v.X, v.Y, v.Z, v.W);
-        }
-
-        #endregion
-
         #region Swizzle
 
         /// <summary>

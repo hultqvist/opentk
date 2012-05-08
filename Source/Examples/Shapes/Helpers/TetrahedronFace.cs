@@ -105,8 +105,8 @@ namespace Examples.Shapes
             Vector2d.Lerp( ref this.BTexCoord, ref this.CTexCoord, 0.5, out TexCoordBC );
             Vector2d.Lerp( ref this.CTexCoord, ref this.ATexCoord, 0.5, out TexCoordCA );
             TexCoordD = TexCoordAB;
-            Vector2d.Add(ref TexCoordD, ref TexCoordBC, out TexCoordD);
-            Vector2d.Add(ref TexCoordD, ref TexCoordCA, out TexCoordD);
+            TexCoordD = TexCoordD + TexCoordBC;
+            TexCoordD = TexCoordD + TexCoordCA;
             TexCoordD /= 3.0;
             #region 1
             first.APosition = this.APosition;

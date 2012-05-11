@@ -77,7 +77,6 @@ namespace OpenTK.Graphics
 
     // Functions for internal use by OpenTK.
     // TODO: RegisterForDisposal/DisposeResources for 0.3.15 (GC & OpenGL)
-    // TODO: Remove or move GetDisplayModes to another class.
     /// <summary>
     /// Provides methods to create new GraphicsContexts. Should only be used for extending OpenTK.
     /// </summary>

@@ -3,11 +3,17 @@
 
 The Open Toolkit is a low-level .NET library written in C# that wraps OpenGL and OpenAL.
 
-The official project website is at http://www.opentk.com
+This is a fork of the official project at http://www.opentk.com
 
-# Branches
+# The Column branch
 
-The *trunk* branch is a clone of the original svn repo.
-If any future commits are made there this is where they would be cloned.
+This brach contain major differces to the original OpenTK project.
 
-Any other branch is up to the respective repo owner to maintain.
+ * Matrices are stored column-major
+ * Generated Matrix transforms assume column vectors
+ * Generated perspective projection look down the -z axis
+ * Deprecated OpenGL (since 3.1) functions are removed
+ * GameWindow removed, instead we use separate GLControl(Windows) and GLWidget(GTK) for graphics only
+ * Obsolete OpenTK Methods removed
+ * Major overhaul of Matrix and Vector methods
+

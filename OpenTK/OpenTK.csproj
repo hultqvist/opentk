@@ -525,6 +525,8 @@
     <Compile Include="..\Common.Source\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Platform\Windows\WinGLNative.cs" />
+    <Compile Include="Platform\X11\X11GLNative.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

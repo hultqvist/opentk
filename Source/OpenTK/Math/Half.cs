@@ -55,7 +55,6 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #endregion --- License ---
-
 using System;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -329,60 +328,64 @@ namespace OpenTK
 
         #region Conversions
 
-        /// <summary>
-        /// Converts a System.Single to a OpenTK.Half.
-        /// </summary>
-        /// <param name="f">The value to convert.
-        /// A <see cref="System.Single"/>
-        /// </param>
-        /// <returns>The result of the conversion.
-        /// A <see cref="Half"/>
-        /// </returns>
-        public static explicit operator Half(float f)
+        /// <summary></summary>
+/*        public static explicit operator Half(float f)
         {
             return new Half(f);
         }
 
-        /// <summary>
-        /// Converts a System.Double to a OpenTK.Half.
-        /// </summary>
-        /// <param name="d">The value to convert.
-        /// A <see cref="System.Double"/>
-        /// </param>
-        /// <returns>The result of the conversion.
-        /// A <see cref="Half"/>
-        /// </returns>
+        /// <summary></summary>
         public static explicit operator Half(double d)
         {
             return new Half(d);
         }
+*/
+        /// <summary></summary>
+        public static implicit operator Half(int i)
+        {
+            return new Half((float)i);
+        }
 
-        /// <summary>
-        /// Converts a OpenTK.Half to a System.Single.
-        /// </summary>
-        /// <param name="h">The value to convert.
-        /// A <see cref="Half"/>
-        /// </param>
-        /// <returns>The result of the conversion.
-        /// A <see cref="System.Single"/>
-        /// </returns>
+        /// <summary></summary>
+        public static implicit operator Half(float f)
+        {
+            return new Half(f);
+        }
+
+        /// <summary></summary>
+        public static implicit operator Half(double d)
+        {
+            return new Half(d);
+        }
+
+        /// <summary></summary>
         public static implicit operator float(Half h)
         {
             return h.ToSingle();
         }
 
-        /// <summary>
-        /// Converts a OpenTK.Half to a System.Double.
-        /// </summary>
-        /// <param name="h">The value to convert.
-        /// A <see cref="Half"/>
-        /// </param>
-        /// <returns>The result of the conversion.
-        /// A <see cref="System.Double"/>
-        /// </returns>
+        /// <summary></summary>
         public static implicit operator double(Half h)
         {
             return (double)h.ToSingle();
+        }
+
+        /// <summary></summary>
+        public static Half operator -(Half v)
+        {
+            return new Half(- v.ToSingle());
+        }
+
+        /// <summary></summary>
+        public static Half operator -(Half l, Half r)
+        {
+            return new Half(l.ToSingle() - r.ToSingle());
+        }
+
+        /// <summary></summary>
+        public static Half operator +(Half l, Half r)
+        {
+            return new Half(l.ToSingle() + r.ToSingle());
         }
 
         #endregion Conversions
@@ -429,7 +432,6 @@ namespace OpenTK
         #region Binary dump
 
         /// <summary>Updates the Half by reading from a Stream.</summary>
-        /// <param name="bin">A BinaryReader instance associated with an open Stream.</param>
         public void FromBinaryStream(BinaryReader bin)
         {
             this.bits = bin.ReadUInt16();
@@ -437,7 +439,6 @@ namespace OpenTK
         }
 
         /// <summary>Writes the Half into a Stream.</summary>
-        /// <param name="bin">A BinaryWriter instance associated with an open Stream.</param>
         public void ToBinaryStream(BinaryWriter bin)
         {
             bin.Write(this.bits);
@@ -452,13 +453,17 @@ namespace OpenTK
         /// <summary>
         /// Returns a value indicating whether this instance is equal to a specified OpenTK.Half value.
         /// </summary>
-        /// <param name="other">OpenTK.Half object to compare to this instance..</param>
-        /// <returns>True, if other is equal to this instance; false otherwise.</returns>
         public bool Equals(Half other)
         {
             short aInt, bInt;
-            unchecked { aInt = (short)other.bits; }
-            unchecked { bInt = (short)this.bits; }
+            unchecked
+            {
+                aInt = (short)other.bits;
+            }
+            unchecked
+            {
+                bInt = (short)this.bits;
+            }
 
             // Make aInt lexicographically ordered as a twos-complement int
             if (aInt < 0)
@@ -486,17 +491,6 @@ namespace OpenTK
         /// is less than, equal to, or greater than the value of the specified half-precision
         /// floating-point number. 
         /// </summary>
-        /// <param name="other">A half-precision floating-point number to compare.</param>
-        /// <returns>
-        /// A signed number indicating the relative values of this instance and value. If the number is:
-        /// <para>Less than zero, then this instance is less than other, or this instance is not a number
-        /// (OpenTK.Half.NaN) and other is a number.</para>
-        /// <para>Zero: this instance is equal to value, or both this instance and other
-        /// are not a number (OpenTK.Half.NaN), OpenTK.Half.PositiveInfinity, or
-        /// OpenTK.Half.NegativeInfinity.</para>
-        /// <para>Greater than zero: this instance is greater than othrs, or this instance is a number
-        /// and other is not a number (OpenTK.Half.NaN).</para>
-        /// </returns>
         public int CompareTo(Half other)
         {
             return ((float)this).CompareTo((float)other);
@@ -506,17 +500,21 @@ namespace OpenTK
 
         #region IFormattable Members
 
-        /// <summary>Converts this Half into a human-legible string representation.</summary>
-        /// <returns>The string representation of this instance.</returns>
+        /// <summary></summary>
         public override string ToString()
         {
             return this.ToSingle().ToString();
         }
 
+        /// <summary></summary>
+        public string ToString(string format)
+        {
+            return this.ToSingle().ToString(format);
+        }
+
         /// <summary>Converts this Half into a human-legible string representation.</summary>
         /// <param name="format">Formatting for the output string.</param>
         /// <param name="formatProvider">Culture-specific formatting information.</param>
-        /// <returns>The string representation of this instance.</returns>
         public string ToString(string format, IFormatProvider formatProvider)
         {
             return this.ToSingle().ToString(format, formatProvider);

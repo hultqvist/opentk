@@ -106,7 +106,8 @@ namespace OpenTK
             else
                 perpendicular = r - CalculatePointOfDerivative(t);
 
-            return r + Vector2.Normalize(perpendicular).PerpendicularRight * Parallel;
+            Vector2.Normalize(ref perpendicular, out perpendicular);
+            return r + perpendicular.PerpendicularRight * Parallel;
         }
 
         /// <summary>
@@ -133,7 +134,7 @@ namespace OpenTK
         /// value gets smaller.</remarks>
         public float CalculateLength(float precision)
         {
-            float length = 0.0f;
+            double length = 0.0f;
             Vector2 old = CalculatePoint(0.0f);
 
             for (float i = precision; i < (1.0f + precision); i += precision)
@@ -143,7 +144,7 @@ namespace OpenTK
                 old = n;
             }
 
-            return length;
+            return (float)length;
         }
 
         #endregion

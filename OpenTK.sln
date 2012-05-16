@@ -23,6 +23,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Generator.Convert", "Source
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenTK.GLWidget", "Source\GLWidget\OpenTK.GLWidget.csproj", "{F6E5AC35-2F3A-4EC8-A144-CC275F2A64F4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Generator.Template", "Source\Generator.Template\Generator.Template.csproj", "{F8986161-7A55-4C0F-9B4D-B12CD4A3B1B1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -67,6 +69,14 @@ Global
 		{F6E5AC35-2F3A-4EC8-A144-CC275F2A64F4}.Nsis|Any CPU.Build.0 = Debug|Any CPU
 		{F6E5AC35-2F3A-4EC8-A144-CC275F2A64F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F6E5AC35-2F3A-4EC8-A144-CC275F2A64F4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F8986161-7A55-4C0F-9B4D-B12CD4A3B1B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F8986161-7A55-4C0F-9B4D-B12CD4A3B1B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F8986161-7A55-4C0F-9B4D-B12CD4A3B1B1}.Documentation|Any CPU.ActiveCfg = Debug|Any CPU
+		{F8986161-7A55-4C0F-9B4D-B12CD4A3B1B1}.Documentation|Any CPU.Build.0 = Debug|Any CPU
+		{F8986161-7A55-4C0F-9B4D-B12CD4A3B1B1}.Nsis|Any CPU.ActiveCfg = Debug|Any CPU
+		{F8986161-7A55-4C0F-9B4D-B12CD4A3B1B1}.Nsis|Any CPU.Build.0 = Debug|Any CPU
+		{F8986161-7A55-4C0F-9B4D-B12CD4A3B1B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F8986161-7A55-4C0F-9B4D-B12CD4A3B1B1}.Release|Any CPU.Build.0 = Release|Any CPU
 		{62C0DB35-0000-0000-0000-000000000000}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{62C0DB35-0000-0000-0000-000000000000}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{62C0DB35-0000-0000-0000-000000000000}.Documentation|Any CPU.ActiveCfg = Documentation|Any CPU
@@ -76,7 +86,7 @@ Global
 		{62C0DB35-0000-0000-0000-000000000000}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = Source\Bind\Generator.Bind.csproj
+		StartupItem = Source\Generator.Template\Generator.Template.csproj
 		Policies = $0
 		$0.TextStylePolicy = $1
 		$1.inheritsSet = VisualStudio

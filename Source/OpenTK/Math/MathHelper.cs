@@ -7,7 +7,6 @@
  * Contributions by Andy Gill, James Talton and Georg Wächter.
  */
 #endregion
-
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -178,14 +177,10 @@ namespace OpenTK
             unsafe
             {
                 float xhalf = 0.5f * x;
-                int i = *(int*)&x;
-                // Read bits as integer.
-                i = 0x5f375a86 - (i >> 1);
-                // Make an initial guess for Newton-Raphson approximation
-                x = *(float*)&i;
-                // Convert bits back to float
-                x = x * (1.5f - xhalf * x * x);
-                // Perform left single Newton-Raphson step.
+                int i = *(int*)&x; // Read bits as integer.
+                i = 0x5f375a86 - (i >> 1); // Make an initial guess for Newton-Raphson approximation
+                x = *(float*)&i; // Convert bits back to float
+                x = x * (1.5f - xhalf * x * x); // Perform left single Newton-Raphson step.
                 return x;
             }
         }

@@ -163,7 +163,7 @@ namespace OpenTK
         /// of 5.0f to the orignal curve.</para></remarks>
         public static float CalculateLength(IList<Vector2> points, float precision, float parallel)
         {
-            float length = 0.0f;
+            double length = 0.0f;
             Vector2 old = BezierCurve.CalculatePoint(points, 0.0f, parallel);
 
             for (float i = precision; i < (1.0f + precision); i += precision)
@@ -173,7 +173,7 @@ namespace OpenTK
                 old = n;
             }
 
-            return length;
+            return (float)length;
         }
 
         /// <summary>
@@ -225,7 +225,8 @@ namespace OpenTK
             else
                 perpendicular = points[1] - points[0];
 
-            return r + Vector2.Normalize(perpendicular).PerpendicularRight * parallel;
+            Vector2.Normalize(ref perpendicular, out perpendicular);
+            return r + perpendicular.PerpendicularRight * parallel;
         }
 
         /// <summary>

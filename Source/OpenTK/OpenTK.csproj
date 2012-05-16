@@ -405,16 +405,7 @@
     <Compile Include="Math\Quaternion.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Math\Matrix3d.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Math\Vector4.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Math\BezierCurve.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Math\Vector3.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Math\Functions.cs">
@@ -423,28 +414,13 @@
     <Compile Include="Math\Matrix4d.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Math\Vector2d.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Math\Vector2h.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Math\Vector3h.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Math\Point.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Math\Half.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Math\Vector4d.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Math\Rectangle.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Math\Vector2.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Math\BezierCurveQuadric.cs">
@@ -456,13 +432,7 @@
     <Compile Include="Math\Quaterniond.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Math\Vector4h.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Math\Size.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Math\Vector3d.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Math\BezierCurveCubic.cs">
@@ -534,6 +504,23 @@
     </EmbeddedResource>
     <Compile Include="IntPtrEqualityComparer.cs" />
     <Compile Include="Math\Matrix4.cs" />
+    <Compile Include="Math\VectorOperators.cs" />
+    <Compile Include="Math\MatrixOperators.cs" />
+    <Compile Include="Math\Vector3Cross.cs" />
+    <Compile Include="Math\Vector2Extra.cs" />
+    <Compile Include="Math\Vector2.cs" />
+    <Compile Include="Math\Vector2d.cs" />
+    <Compile Include="Math\Vector2h.cs" />
+    <Compile Include="Math\Vector2i.cs" />
+    <Compile Include="Math\Vector3.cs" />
+    <Compile Include="Math\Vector3d.cs" />
+    <Compile Include="Math\Vector3h.cs" />
+    <Compile Include="Math\Vector3i.cs" />
+    <Compile Include="Math\Vector4.cs" />
+    <Compile Include="Math\Vector4d.cs" />
+    <Compile Include="Math\Vector4h.cs" />
+    <Compile Include="Math\Vector4i.cs" />
+    <None Include="Math\VectorTemplate.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
@@ -546,9 +533,9 @@
     <MonoDevelop>
       <Properties>
         <Policies>
-          <TextStylePolicy inheritsSet="VisualStudio" inheritsScope="text/plain" scope="text/x-csharp" />
-          <TextStylePolicy FileWidth="120" TabWidth="4" EolMarker="Unix" inheritsSet="Mono" inheritsScope="text/plain" scope="text/plain" />
-          <CSharpFormattingPolicy IndentSwitchBody="True" AnonymousMethodBraceStyle="NextLine" PropertyBraceStyle="NextLine" PropertyGetBraceStyle="NextLine" PropertySetBraceStyle="NextLine" EventBraceStyle="NextLine" EventAddBraceStyle="NextLine" EventRemoveBraceStyle="NextLine" StatementBraceStyle="NextLine" ArrayInitializerBraceStyle="NextLine" BeforeMethodDeclarationParentheses="False" BeforeMethodCallParentheses="False" BeforeConstructorDeclarationParentheses="False" BeforeDelegateDeclarationParentheses="False" NewParentheses="False" inheritsSet="Mono" inheritsScope="text/x-csharp" scope="text/x-csharp" />
+          <TextStylePolicy FileWidth="1000" inheritsSet="VisualStudio" inheritsScope="text/plain" scope="text/x-csharp" />
+          <TextStylePolicy FileWidth="1000" inheritsSet="VisualStudio" inheritsScope="text/plain" scope="text/plain" />
+          <CSharpFormattingPolicy IndentSwitchBody="True" AnonymousMethodBraceStyle="NextLine" PropertyBraceStyle="NextLine" PropertyGetBraceStyle="NextLine" PropertySetBraceStyle="NextLine" EventBraceStyle="NextLine" EventAddBraceStyle="NextLine" EventRemoveBraceStyle="NextLine" StatementBraceStyle="NextLine" ElseNewLinePlacement="NewLine" ElseIfNewLinePlacement="SameLine" ArrayInitializerWrapping="DoNotWrap" ArrayInitializerBraceStyle="NextLine" BeforeMethodDeclarationParentheses="False" BeforeMethodCallParentheses="False" BeforeConstructorDeclarationParentheses="False" BeforeDelegateDeclarationParentheses="False" NewParentheses="False" inheritsSet="Mono" inheritsScope="text/x-csharp" scope="text/x-csharp" />
         </Policies>
       </Properties>
     </MonoDevelop>

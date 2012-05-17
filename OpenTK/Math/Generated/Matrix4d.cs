@@ -263,7 +263,7 @@ namespace OpenTK
         /// </summary>
         /// <param name="q">Quaternion to translate.</param>
         /// <returns>A matrix instance.</returns>
-        public static Matrix4d RotationQuaternion(ref unitQuaternion q)
+        public static Matrix4d RotationQuaternion(unitQuaternion q)
         {
             Matrix4d m = new Matrix4d();
             RotationQuaternion(ref q, ref m);

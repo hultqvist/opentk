@@ -13,10 +13,10 @@ namespace Bind
         // Disable BeforeFieldInit.
         static Settings() { }
 
-        public static string DefaultInputPath = "../../../Source/Bind/Specifications";
-        public static string DefaultOutputPath = "../../../Source/OpenTK/Graphics/OpenGL";
+        public static string DefaultInputPath = "../../Specifications";
+        public static string DefaultOutputPath = "../../../OpenTK/Graphics/OpenGL";
         public static string DefaultOutputNamespace = "OpenTK.Graphics.OpenGL";
-        public static string DefaultDocPath = "../../../Source/Bind/Specifications/Docs";
+        public static string DefaultDocPath = "../../Specifications/Docs";
         public static string DefaultDocFile = "ToInlineDocs.xslt";
         public static string DefaultLicenseFile = "License.txt";
         public static string DefaultOverridesFile = "GL2/gloverrides.xml";

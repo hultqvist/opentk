@@ -1,29 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenTK", "Source\OpenTK\OpenTK.csproj", "{A37A7E14-0000-0000-0000-000000000000}"
-	ProjectSection(ProjectDependencies) = postProject
-		{75DC22B1-113F-4A66-96B9-2FF8208C10E8} = {75DC22B1-113F-4A66-96B9-2FF8208C10E8}
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenTK", "OpenTK\OpenTK.csproj", "{A37A7E14-0000-0000-0000-000000000000}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenTK.GLControl", "Source\GLControl\OpenTK.GLControl.csproj", "{A625BE88-0000-0000-0000-000000000000}"
-	ProjectSection(ProjectDependencies) = postProject
-		{75DC22B1-113F-4A66-96B9-2FF8208C10E8} = {75DC22B1-113F-4A66-96B9-2FF8208C10E8}
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenTK.GLWidget", "GLWidget\OpenTK.GLWidget.csproj", "{F6E5AC35-2F3A-4EC8-A144-CC275F2A64F4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Generator.Bind", "Source\Bind\Generator.Bind.csproj", "{31D19132-0000-0000-0000-000000000000}"
-	ProjectSection(ProjectDependencies) = postProject
-		{75DC22B1-113F-4A66-96B9-2FF8208C10E8} = {75DC22B1-113F-4A66-96B9-2FF8208C10E8}
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenTK.GLControl", "GLControl\OpenTK.GLControl.csproj", "{A625BE88-0000-0000-0000-000000000000}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Generator.Convert", "Source\Converter\Generator.Convert.csproj", "{5FDFF4B6-0000-0000-0000-000000000000}"
-	ProjectSection(ProjectDependencies) = postProject
-		{75DC22B1-113F-4A66-96B9-2FF8208C10E8} = {75DC22B1-113F-4A66-96B9-2FF8208C10E8}
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Generator.Template", "Generator.Template\Generator.Template.csproj", "{F8986161-7A55-4C0F-9B4D-B12CD4A3B1B1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenTK.GLWidget", "Source\GLWidget\OpenTK.GLWidget.csproj", "{F6E5AC35-2F3A-4EC8-A144-CC275F2A64F4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Generator.Bind", "Generator.Bind\Generator.Bind.csproj", "{31D19132-0000-0000-0000-000000000000}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Generator.Template", "Source\Generator.Template\Generator.Template.csproj", "{F8986161-7A55-4C0F-9B4D-B12CD4A3B1B1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Generator.Convert", "Generator.Convert\Generator.Convert.csproj", "{5FDFF4B6-0000-0000-0000-000000000000}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -36,6 +24,7 @@ Global
 		{31D19132-0000-0000-0000-000000000000}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{31D19132-0000-0000-0000-000000000000}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{31D19132-0000-0000-0000-000000000000}.Documentation|Any CPU.ActiveCfg = Documentation|Any CPU
+		{31D19132-0000-0000-0000-000000000000}.Documentation|Any CPU.Build.0 = Documentation|Any CPU
 		{31D19132-0000-0000-0000-000000000000}.Nsis|Any CPU.ActiveCfg = Nsis|Any CPU
 		{31D19132-0000-0000-0000-000000000000}.Nsis|Any CPU.Build.0 = Nsis|Any CPU
 		{31D19132-0000-0000-0000-000000000000}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -43,22 +32,25 @@ Global
 		{5FDFF4B6-0000-0000-0000-000000000000}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5FDFF4B6-0000-0000-0000-000000000000}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5FDFF4B6-0000-0000-0000-000000000000}.Documentation|Any CPU.ActiveCfg = Documentation|Any CPU
+		{5FDFF4B6-0000-0000-0000-000000000000}.Documentation|Any CPU.Build.0 = Documentation|Any CPU
 		{5FDFF4B6-0000-0000-0000-000000000000}.Nsis|Any CPU.ActiveCfg = Nsis|Any CPU
 		{5FDFF4B6-0000-0000-0000-000000000000}.Nsis|Any CPU.Build.0 = Nsis|Any CPU
 		{5FDFF4B6-0000-0000-0000-000000000000}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5FDFF4B6-0000-0000-0000-000000000000}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A37A7E14-0000-0000-0000-000000000000}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A37A7E14-0000-0000-0000-000000000000}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A37A7E14-0000-0000-0000-000000000000}.Documentation|Any CPU.ActiveCfg = Documentation|Any CPU
-		{A37A7E14-0000-0000-0000-000000000000}.Nsis|Any CPU.ActiveCfg = Nsis|Any CPU
-		{A37A7E14-0000-0000-0000-000000000000}.Nsis|Any CPU.Build.0 = Nsis|Any CPU
+		{A37A7E14-0000-0000-0000-000000000000}.Documentation|Any CPU.ActiveCfg = Debug|Any CPU
+		{A37A7E14-0000-0000-0000-000000000000}.Documentation|Any CPU.Build.0 = Debug|Any CPU
+		{A37A7E14-0000-0000-0000-000000000000}.Nsis|Any CPU.ActiveCfg = Debug|Any CPU
+		{A37A7E14-0000-0000-0000-000000000000}.Nsis|Any CPU.Build.0 = Debug|Any CPU
 		{A37A7E14-0000-0000-0000-000000000000}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A37A7E14-0000-0000-0000-000000000000}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A625BE88-0000-0000-0000-000000000000}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A625BE88-0000-0000-0000-000000000000}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A625BE88-0000-0000-0000-000000000000}.Documentation|Any CPU.ActiveCfg = Documentation|Any CPU
-		{A625BE88-0000-0000-0000-000000000000}.Nsis|Any CPU.ActiveCfg = Nsis|Any CPU
-		{A625BE88-0000-0000-0000-000000000000}.Nsis|Any CPU.Build.0 = Nsis|Any CPU
+		{A625BE88-0000-0000-0000-000000000000}.Documentation|Any CPU.ActiveCfg = Debug|Any CPU
+		{A625BE88-0000-0000-0000-000000000000}.Documentation|Any CPU.Build.0 = Debug|Any CPU
+		{A625BE88-0000-0000-0000-000000000000}.Nsis|Any CPU.ActiveCfg = Debug|Any CPU
+		{A625BE88-0000-0000-0000-000000000000}.Nsis|Any CPU.Build.0 = Debug|Any CPU
 		{A625BE88-0000-0000-0000-000000000000}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A625BE88-0000-0000-0000-000000000000}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F6E5AC35-2F3A-4EC8-A144-CC275F2A64F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -86,7 +78,7 @@ Global
 		{62C0DB35-0000-0000-0000-000000000000}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = Source\Generator.Template\Generator.Template.csproj
+		StartupItem = OpenTK\OpenTK.csproj
 		Policies = $0
 		$0.TextStylePolicy = $1
 		$1.inheritsSet = VisualStudio

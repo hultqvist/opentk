@@ -31,9 +31,21 @@ namespace Generator.Template
         {
             Console.WriteLine("Template Generator");
                 
-            GenerateFromTemplate("Vector", new int[]{2,3,4}, new string[]{"d","","h","i"});
-            GenerateFromTemplate("Matrix", new int[]{3,4}, new string[]{"d",""});
-            GenerateFromTemplate("Quaternion", new int[]{0}, new string[]{"d",""});
+            GenerateFromTemplate(
+                "Vector",
+                new int[]{2,3,4},
+                new string[]{"d","","h","i"}
+            );
+            GenerateFromTemplate(
+                "Matrix",
+                new int[]{3,4},
+                new string[]{"d",""}
+            );
+            GenerateFromTemplate(
+                "Quaternion",
+                new int[]{0},
+                new string[]{"d",""}
+            );
         }
 
         static void GenerateFromTemplate(string baseName, int[] dimensions, string[] suffixes)
@@ -47,13 +59,13 @@ namespace Generator.Template
             //Generate code
             foreach (int d in dimensions)
             {
-                string ds = (d == 0 ? "": d.ToString());
+                string ds = (d == 0 ? "" : d.ToString());
 
                 foreach (string s in suffixes)
                 {
                     string filename = baseName + ds + s + ".cs";
                     Console.WriteLine("Generating " + filename);
-                    using (TextWriter w = new StreamWriter(Path.Combine(basePath, filename), false, Encoding.UTF8))
+                    using (TextWriter w = new StreamWriter(Path.Combine(basePath, "Generated" + Path.DirectorySeparatorChar + filename), false, Encoding.UTF8))
                         GenerateFile(template, baseName, d, s, w);
                 }
             }
@@ -72,7 +84,7 @@ namespace Generator.Template
                 include.Add("TEMPLATE_DIM_4");
 
             string templateClass = classBase + "Template";
-            string targetClass = classBase + (dimension == 0 ? "": dimension.ToString());
+            string targetClass = classBase + (dimension == 0 ? "" : dimension.ToString());
 
             if (suffix == "d")
             {

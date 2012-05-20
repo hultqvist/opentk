@@ -174,9 +174,6 @@
     <Compile Include="Platform\Utilities.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Platform\INativeGLWindow.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Platform\DesktopGraphicsContext.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -219,9 +216,6 @@
     <Compile Include="Platform\MacOS\MacOSException.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Platform\MacOS\CarbonGLNative.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Platform\MacOS\Application.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -259,9 +253,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Platform\Windows\API.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Platform\Windows\WinGLNative.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Platform\Windows\WinWindowInfo.cs">
@@ -304,9 +295,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Platform\X11\X11GraphicsMode.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Platform\X11\X11GLNative.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Platform\X11\X11GLContext.cs">
@@ -411,9 +399,6 @@
     <Compile Include="Math\Functions.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Math\Matrix4d.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Math\Point.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -503,7 +488,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <Compile Include="IntPtrEqualityComparer.cs" />
-    <Compile Include="Math\Matrix4.cs" />
     <Compile Include="Math\VectorOperators.cs" />
     <Compile Include="Math\MatrixOperators.cs" />
     <Compile Include="Math\Vector3Cross.cs" />
@@ -521,6 +505,15 @@
     <Compile Include="Math\Vector4h.cs" />
     <Compile Include="Math\Vector4i.cs" />
     <None Include="Math\VectorTemplate.cs" />
+    <Compile Include="Platform\MacOS\CarbonGLNative.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <None Include="Math\MatrixTemplate.cs" />
+    <Compile Include="Math\Matrix3.cs" />
+    <Compile Include="Math\Matrix3d.cs" />
+    <Compile Include="Math\Matrix4.cs" />
+    <Compile Include="Math\Matrix4d.cs" />
+    <None Include="Math\QuaternionTemplate.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

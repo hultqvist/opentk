@@ -1,8 +1,8 @@
 // Template for Vector[234][d_hi].cs
 // Run Generator.Template to generate the Vector files
-#define VECTOR_COMPONENT_3
-#define VECTOR_COMPONENT_4
-#define VECTOR_SINGLE
+#define TEMPLATE_DIM_3
+#define TEMPLATE_DIM_4
+#define TEMPLATE_UNIT_SINGLE
 // All up to the first empty line will be removed:
 
 #region --- License ---
@@ -35,19 +35,19 @@ using System.Xml.Serialization;
 
 namespace OpenTK
 {
-#if VECTOR_DOUBLE
+#if TEMPLATE_UNIT_DOUBLE
     using unit = System.Double;
     using vec2 = Vector2d;
     using vec3 = Vector3d;
-#elif VECTOR_SINGLE
+#elif TEMPLATE_UNIT_SINGLE
     using unit = System.Single;
     using vec2 = Vector2;
     using vec3 = Vector3;
-#elif VECTOR_INT32
+#elif TEMPLATE_UNIT_INT32
     using unit = System.Int32;
     using vec2 = Vector2i;
     using vec3 = Vector3i;
-#elif VECTOR_HALF
+#elif TEMPLATE_UNIT_HALF
     using unit = Half;
     using vec2 = Vector2h;
     using vec3 = Vector3h;
@@ -65,10 +65,10 @@ namespace OpenTK
         public unit X;
         /// <summary></summary>
         public unit Y;
-        #if VECTOR_COMPONENT_3
+        #if TEMPLATE_DIM_3
         /// <summary></summary>
         public unit Z;
-        #if VECTOR_COMPONENT_4
+        #if TEMPLATE_DIM_4
         /// <summary></summary>
         public unit W;
         #endif
@@ -85,9 +85,9 @@ namespace OpenTK
         /// Defines a unit-length VectorTemplate that points along the X-axis.
         /// </summary>
         public static readonly VectorTemplate UnitX = new VectorTemplate((unit)1, (unit)0
-                #if VECTOR_COMPONENT_3
+                #if TEMPLATE_DIM_3
                                                            , (unit)0
-                #if VECTOR_COMPONENT_4
+                #if TEMPLATE_DIM_4
                                                            , (unit)0
                 #endif
                 #endif
@@ -97,26 +97,26 @@ namespace OpenTK
         /// Defines a unit-length VectorTemplate that points along the Y-axis.
         /// </summary>
         public static readonly VectorTemplate UnitY = new VectorTemplate((unit)0, (unit)1
-                #if VECTOR_COMPONENT_3
+                #if TEMPLATE_DIM_3
                                                            , (unit)0
-                #if VECTOR_COMPONENT_4
+                #if TEMPLATE_DIM_4
                                                            , (unit)0
                 #endif
                 #endif
                                                            );
 
-        #if VECTOR_COMPONENT_3
+        #if TEMPLATE_DIM_3
         /// <summary>
         /// Defines a unit-length VectorTemplate that points along the Z-axis.
         /// </summary>
         public static readonly VectorTemplate UnitZ = new VectorTemplate((unit)0, (unit)0, (unit)1
-                #if VECTOR_COMPONENT_4
+                #if TEMPLATE_DIM_4
                                                            , (unit)0
                 #endif
                                                            );
         #endif
 
-        #if VECTOR_COMPONENT_4
+        #if TEMPLATE_DIM_4
         /// <summary>
         /// Defines a unit-length VectorTemplate that points along the W-axis.
         /// </summary>
@@ -145,9 +145,9 @@ namespace OpenTK
         {
             X = value;
             Y = value;
-#if VECTOR_COMPONENT_3
+#if TEMPLATE_DIM_3
             Z = value;
-#if VECTOR_COMPONENT_4
+#if TEMPLATE_DIM_4
             W = value;
 #endif
 #endif
@@ -158,9 +158,9 @@ namespace OpenTK
         /// </summary>
         public VectorTemplate(
             unit x, unit y
-            #if VECTOR_COMPONENT_3
+            #if TEMPLATE_DIM_3
             , unit z
-            #if VECTOR_COMPONENT_4
+            #if TEMPLATE_DIM_4
             , unit w
             #endif
             #endif
@@ -168,9 +168,9 @@ namespace OpenTK
         {
             X = x;
             Y = y;
-            #if VECTOR_COMPONENT_3
+            #if TEMPLATE_DIM_3
             Z = z;
-            #if VECTOR_COMPONENT_4
+            #if TEMPLATE_DIM_4
             W = w;
             #endif
             #endif
@@ -190,9 +190,9 @@ namespace OpenTK
             get
             {
                 return System.Math.Sqrt(X * X + Y * Y
-                #if VECTOR_COMPONENT_3
+                #if TEMPLATE_DIM_3
                     + Z * Z
-                #if VECTOR_COMPONENT_4
+                #if TEMPLATE_DIM_4
                     + W * W
                 #endif
                 #endif
@@ -214,9 +214,9 @@ namespace OpenTK
             get
             {
                 return 1.0 / MathHelper.InverseSqrtFast(X * X + Y * Y
-                #if VECTOR_COMPONENT_3
+                #if TEMPLATE_DIM_3
                     + Z * Z
-                #if VECTOR_COMPONENT_4
+                #if TEMPLATE_DIM_4
                     + W * W
                 #endif
                 #endif
@@ -238,9 +238,9 @@ namespace OpenTK
             get
             {
                 return X * X + Y * Y
-                #if VECTOR_COMPONENT_3
+                #if TEMPLATE_DIM_3
                     + Z * Z
-                #if VECTOR_COMPONENT_4
+                #if TEMPLATE_DIM_4
                     + W * W
                 #endif
                 #endif
@@ -252,7 +252,7 @@ namespace OpenTK
 
         #region Normalize
 
-        #if !VECTOR_INT32
+        #if !TEMPLATE_UNIT_INT32
 
         /// <summary>
         /// Return a VectorTemplate scaled to unit length.
@@ -261,9 +261,9 @@ namespace OpenTK
         {
             unit scale = (unit)( 1.0 / this.Length);
             return new VectorTemplate(X * scale, Y * scale
-                #if VECTOR_COMPONENT_3
+                #if TEMPLATE_DIM_3
                                , Z * scale
-                #if VECTOR_COMPONENT_4
+                #if TEMPLATE_DIM_4
                                , W * scale
                 #endif
                 #endif
@@ -277,24 +277,24 @@ namespace OpenTK
         public VectorTemplate NormalizeFast()
         {
             unit scale = MathHelper.InverseSqrtFast(X * X + Y * Y
-                #if VECTOR_COMPONENT_3
+                #if TEMPLATE_DIM_3
                                                       + Z * Z
-                #if VECTOR_COMPONENT_4
+                #if TEMPLATE_DIM_4
                                                       + W * W
                 #endif
                 #endif
                                                      );
             return new VectorTemplate(X * scale, Y * scale
-                #if VECTOR_COMPONENT_3
+                #if TEMPLATE_DIM_3
                                , Z * scale
-                #if VECTOR_COMPONENT_4
+                #if TEMPLATE_DIM_4
                                , W * scale
                 #endif
                 #endif
                                );
         }
 
-        #endif // !VECTOR_INT32
+        #endif // !TEMPLATE_UNIT_INT32
 
         #endregion
      
@@ -311,9 +311,9 @@ namespace OpenTK
             result = new VectorTemplate(
                 vector.X * scale,
                 vector.Y * scale
-                #if VECTOR_COMPONENT_3
+                #if TEMPLATE_DIM_3
                 , vector.Z * scale
-                #if VECTOR_COMPONENT_4
+                #if TEMPLATE_DIM_4
                 , vector.W * scale
                 #endif
                 #endif
@@ -343,9 +343,9 @@ namespace OpenTK
             result = new VectorTemplate(
                 vector.X * scale.X,
                 vector.Y * scale.Y
-                #if VECTOR_COMPONENT_3
+                #if TEMPLATE_DIM_3
                 , vector.Z * scale.Z
-                #if VECTOR_COMPONENT_4
+                #if TEMPLATE_DIM_4
                 , vector.W * scale.W
                 #endif
                 #endif
@@ -402,9 +402,9 @@ namespace OpenTK
             result = new VectorTemplate(
                 vector.X / scale.X,
                 vector.Y / scale.Y
-                #if VECTOR_COMPONENT_3
+                #if TEMPLATE_DIM_3
                 , vector.Z / scale.Z
-                #if VECTOR_COMPONENT_4
+                #if TEMPLATE_DIM_4
                 , vector.W / scale.W
                 #endif
                 #endif
@@ -423,9 +423,9 @@ namespace OpenTK
         {
             a.X = a.X < b.X ? a.X : b.X;
             a.Y = a.Y < b.Y ? a.Y : b.Y;
-                #if VECTOR_COMPONENT_3
+                #if TEMPLATE_DIM_3
             a.Z = a.Z < b.Z ? a.Z : b.Z;
-                #if VECTOR_COMPONENT_4
+                #if TEMPLATE_DIM_4
             a.W = a.W < b.W ? a.W : b.W;
                 #endif
                 #endif
@@ -439,9 +439,9 @@ namespace OpenTK
         {
             result.X = a.X < b.X ? a.X : b.X;
             result.Y = a.Y < b.Y ? a.Y : b.Y;
-                #if VECTOR_COMPONENT_3
+                #if TEMPLATE_DIM_3
             result.Z = a.Z < b.Z ? a.Z : b.Z;
-                #if VECTOR_COMPONENT_4
+                #if TEMPLATE_DIM_4
             result.W = a.W < b.W ? a.W : b.W;
                 #endif
                 #endif
@@ -455,9 +455,9 @@ namespace OpenTK
         {
             a.X = a.X > b.X ? a.X : b.X;
             a.Y = a.Y > b.Y ? a.Y : b.Y;
-                #if VECTOR_COMPONENT_3
+                #if TEMPLATE_DIM_3
             a.Z = a.Z > b.Z ? a.Z : b.Z;
-                #if VECTOR_COMPONENT_4
+                #if TEMPLATE_DIM_4
             a.W = a.W > b.W ? a.W : b.W;
                 #endif
                 #endif
@@ -471,9 +471,9 @@ namespace OpenTK
         {
             result.X = a.X > b.X ? a.X : b.X;
             result.Y = a.Y > b.Y ? a.Y : b.Y;
-                #if VECTOR_COMPONENT_3
+                #if TEMPLATE_DIM_3
             result.Z = a.Z > b.Z ? a.Z : b.Z;
-                #if VECTOR_COMPONENT_4
+                #if TEMPLATE_DIM_4
             result.W = a.W > b.W ? a.W : b.W;
                 #endif
                 #endif
@@ -521,9 +521,9 @@ namespace OpenTK
         {
             vec.X = vec.X < min.X ? min.X : vec.X > max.X ? max.X : vec.X;
             vec.Y = vec.Y < min.Y ? min.Y : vec.Y > max.Y ? max.Y : vec.Y;
-                #if VECTOR_COMPONENT_3
+                #if TEMPLATE_DIM_3
             vec.Z = vec.X < min.Z ? min.Z : vec.Z > max.Z ? max.Z : vec.Z;
-                #if VECTOR_COMPONENT_4
+                #if TEMPLATE_DIM_4
             vec.W = vec.Y < min.W ? min.W : vec.W > max.W ? max.W : vec.W;
                 #endif
                 #endif
@@ -541,9 +541,9 @@ namespace OpenTK
         {
             result.X = vec.X < min.X ? min.X : vec.X > max.X ? max.X : vec.X;
             result.Y = vec.Y < min.Y ? min.Y : vec.Y > max.Y ? max.Y : vec.Y;
-                #if VECTOR_COMPONENT_3
+                #if TEMPLATE_DIM_3
             result.Z = vec.X < min.Z ? min.Z : vec.Z > max.Z ? max.Z : vec.Z;
-                #if VECTOR_COMPONENT_4
+                #if TEMPLATE_DIM_4
             result.W = vec.Y < min.W ? min.W : vec.W > max.W ? max.W : vec.W;
                 #endif
                 #endif
@@ -553,7 +553,7 @@ namespace OpenTK
 
         #region Normalize
 
-        #if !VECTOR_INT32
+        #if !TEMPLATE_UNIT_INT32
 
         /// <summary>
         /// Scale a vector to unit length(1)
@@ -565,9 +565,9 @@ namespace OpenTK
             unit scale = 1.0f / (unit)vec.Length;
             result.X = vec.X * scale;
             result.Y = vec.Y * scale;
-                #if VECTOR_COMPONENT_3
+                #if TEMPLATE_DIM_3
             result.Z = vec.Z * scale;
-                #if VECTOR_COMPONENT_4
+                #if TEMPLATE_DIM_4
             result.W = vec.W * scale;
                 #endif
                 #endif
@@ -581,18 +581,18 @@ namespace OpenTK
         public static void NormalizeFast(ref VectorTemplate vec, out VectorTemplate result)
         {
             unit scale = MathHelper.InverseSqrtFast(vec.X * vec.X + vec.Y * vec.Y
-                #if VECTOR_COMPONENT_3
+                #if TEMPLATE_DIM_3
                                                       + vec.Z * vec.Z
-                #if VECTOR_COMPONENT_4
+                #if TEMPLATE_DIM_4
                                                       + vec.W * vec.W
                 #endif
                 #endif
                                                      );
             result.X = vec.X * scale;
             result.Y = vec.Y * scale;
-                #if VECTOR_COMPONENT_3
+                #if TEMPLATE_DIM_3
             result.Z = vec.Z * scale;
-                #if VECTOR_COMPONENT_4
+                #if TEMPLATE_DIM_4
             result.W = vec.W * scale;
                 #endif
                 #endif
@@ -610,9 +610,9 @@ namespace OpenTK
         public static unit Dot(VectorTemplate left, VectorTemplate right)
         {
             return left.X * right.X + left.Y * right.Y
-                #if VECTOR_COMPONENT_3
+                #if TEMPLATE_DIM_3
                     + left.Z * right.Z
-                #if VECTOR_COMPONENT_4
+                #if TEMPLATE_DIM_4
                     + left.W * right.W
                 #endif
                 #endif
@@ -625,9 +625,9 @@ namespace OpenTK
         public static void Dot(ref VectorTemplate left, ref VectorTemplate right, out unit result)
         {
             result = left.X * right.X + left.Y * right.Y
-                #if VECTOR_COMPONENT_3
+                #if TEMPLATE_DIM_3
                     + left.Z * right.Z
-                #if VECTOR_COMPONENT_4
+                #if TEMPLATE_DIM_4
                     + left.W * right.W
                 #endif
                 #endif
@@ -649,9 +649,9 @@ namespace OpenTK
         {
             a.X = blend * (b.X - a.X) + a.X;
             a.Y = blend * (b.Y - a.Y) + a.Y;
-                #if VECTOR_COMPONENT_3
+                #if TEMPLATE_DIM_3
             a.Z = blend * (b.Z - a.Z) + a.Z;
-                #if VECTOR_COMPONENT_4
+                #if TEMPLATE_DIM_4
             a.W = blend * (b.W - a.W) + a.W;
                 #endif
                 #endif
@@ -669,9 +669,9 @@ namespace OpenTK
         {
             result.X = blend * (b.X - a.X) + a.X;
             result.Y = blend * (b.Y - a.Y) + a.Y;
-                #if VECTOR_COMPONENT_3
+                #if TEMPLATE_DIM_3
             result.Z = blend * (b.Z - a.Z) + a.Z;
-                #if VECTOR_COMPONENT_4
+                #if TEMPLATE_DIM_4
             result.W = blend * (b.W - a.W) + a.W;
                 #endif
                 #endif
@@ -706,9 +706,9 @@ namespace OpenTK
         {
             result.X = a.X + u * (b.X - a.X) + v * (c.X - a.X);
             result.Y = a.Y + u * (b.Y - a.Y) + v * (c.Y - a.Y);
-                #if VECTOR_COMPONENT_3
+                #if TEMPLATE_DIM_3
             result.Z = a.Z + u * (b.Z - a.Z) + v * (c.Z - a.Z);
-                #if VECTOR_COMPONENT_4
+                #if TEMPLATE_DIM_4
             result.W = a.W + u * (b.W - a.W) + v * (c.W - a.W);
                 #endif
                 #endif
@@ -719,7 +719,7 @@ namespace OpenTK
 
         #region Swizzle
 
-        #if VECTOR_COMPONENT_3
+        #if TEMPLATE_DIM_3
 
         /// <summary></summary>
         [XmlIgnore]
@@ -735,7 +735,7 @@ namespace OpenTK
 
         #endif
 
-        #if VECTOR_COMPONENT_4
+        #if TEMPLATE_DIM_4
 
         /// <summary></summary>
         [XmlIgnore]
@@ -763,9 +763,9 @@ namespace OpenTK
         {
             right.X += left;
             right.Y += left;
-                #if VECTOR_COMPONENT_3
+                #if TEMPLATE_DIM_3
             right.Z += left;
-                #if VECTOR_COMPONENT_4
+                #if TEMPLATE_DIM_4
             right.W += left;
                 #endif
                 #endif
@@ -779,9 +779,9 @@ namespace OpenTK
         {
             left.X += right;
             left.Y += right;
-                #if VECTOR_COMPONENT_3
+                #if TEMPLATE_DIM_3
             left.Z += right;
-                #if VECTOR_COMPONENT_4
+                #if TEMPLATE_DIM_4
             left.W += right;
                 #endif
                 #endif
@@ -793,9 +793,9 @@ namespace OpenTK
         {
             left.X += right.X;
             left.Y += right.Y;
-                #if VECTOR_COMPONENT_3
+                #if TEMPLATE_DIM_3
             left.Z += right.Z;
-                #if VECTOR_COMPONENT_4
+                #if TEMPLATE_DIM_4
             left.W += right.W;
                 #endif
                 #endif
@@ -809,9 +809,9 @@ namespace OpenTK
         {
             right.X = left - right.X;
             right.Y = left - right.Y;
-                #if VECTOR_COMPONENT_3
+                #if TEMPLATE_DIM_3
             right.Z = left - right.Z;
-                #if VECTOR_COMPONENT_4
+                #if TEMPLATE_DIM_4
             right.W = left - right.W;
                 #endif
                 #endif
@@ -825,9 +825,9 @@ namespace OpenTK
         {
             left.X -= right;
             left.Y -= right;
-                #if VECTOR_COMPONENT_3
+                #if TEMPLATE_DIM_3
             left.Z -= right;
-                #if VECTOR_COMPONENT_4
+                #if TEMPLATE_DIM_4
             left.W -= right;
                 #endif
                 #endif
@@ -839,9 +839,9 @@ namespace OpenTK
         {
             left.X -= right.X;
             left.Y -= right.Y;
-                #if VECTOR_COMPONENT_3
+                #if TEMPLATE_DIM_3
             left.Z -= right.Z;
-                #if VECTOR_COMPONENT_4
+                #if TEMPLATE_DIM_4
             left.W -= right.W;
                 #endif
                 #endif
@@ -853,9 +853,9 @@ namespace OpenTK
         {
             vec.X = -vec.X;
             vec.Y = -vec.Y;
-                #if VECTOR_COMPONENT_3
+                #if TEMPLATE_DIM_3
             vec.Z = -vec.Z;
-                #if VECTOR_COMPONENT_4
+                #if TEMPLATE_DIM_4
             vec.W = -vec.W;
                 #endif
                 #endif
@@ -867,9 +867,9 @@ namespace OpenTK
         {
             vec.X *= scale;
             vec.Y *= scale;
-                #if VECTOR_COMPONENT_3
+                #if TEMPLATE_DIM_3
             vec.Z *= scale;
-                #if VECTOR_COMPONENT_4
+                #if TEMPLATE_DIM_4
             vec.W *= scale;
                 #endif
                 #endif
@@ -881,9 +881,9 @@ namespace OpenTK
         {
             vec.X *= scale;
             vec.Y *= scale;
-                #if VECTOR_COMPONENT_3
+                #if TEMPLATE_DIM_3
             vec.Z *= scale;
-                #if VECTOR_COMPONENT_4
+                #if TEMPLATE_DIM_4
             vec.W *= scale;
                 #endif
                 #endif
@@ -897,9 +897,9 @@ namespace OpenTK
             return new VectorTemplate(
             vec.X * mult,
             vec.Y * mult
-                #if VECTOR_COMPONENT_3
+                #if TEMPLATE_DIM_3
             , vec.Z * mult
-                #if VECTOR_COMPONENT_4
+                #if TEMPLATE_DIM_4
             , vec.W * mult
                 #endif
                 #endif
@@ -913,9 +913,9 @@ namespace OpenTK
             return new VectorTemplate(
             vec.X * mult,
             vec.Y * mult
-                #if VECTOR_COMPONENT_3
+                #if TEMPLATE_DIM_3
             , vec.Z * mult
-                #if VECTOR_COMPONENT_4
+                #if TEMPLATE_DIM_4
             , vec.W * mult
                 #endif
                 #endif
@@ -941,10 +941,10 @@ namespace OpenTK
         /// <summary></summary>
         public override string ToString()
         {
-            #if VECTOR_COMPONENT_4
+            #if TEMPLATE_DIM_4
             return String.Format("({0}, {1}, {2}, {3})'", X.ToString("0.0"), Y.ToString("0.0"), Z.ToString("0.0"), W.ToString("0.0"));
             #else
-            #if VECTOR_COMPONENT_3
+            #if TEMPLATE_DIM_3
             return String.Format("({0}, {1}, {2})'", X.ToString("0.0"), Y.ToString("0.0"), Z.ToString("0.0"));
             #else
             return String.Format("({0}, {1})'", X.ToString("0.0"), Y.ToString("0.0"));
@@ -956,9 +956,9 @@ namespace OpenTK
         public override int GetHashCode()
         {
             return X.GetHashCode() ^ Y.GetHashCode()
-                #if VECTOR_COMPONENT_3
+                #if TEMPLATE_DIM_3
                 ^ Z.GetHashCode()
-                #if VECTOR_COMPONENT_4
+                #if TEMPLATE_DIM_4
                 ^ W.GetHashCode()
                 #endif
                 #endif
@@ -984,9 +984,9 @@ namespace OpenTK
         public bool Equals(VectorTemplate other)
         {
             return X == other.X && Y == other.Y
-                #if VECTOR_COMPONENT_3
+                #if TEMPLATE_DIM_3
                 && Z == other.Z
-                #if VECTOR_COMPONENT_4
+                #if TEMPLATE_DIM_4
                 && W == other.W
                 #endif
                 #endif

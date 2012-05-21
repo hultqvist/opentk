@@ -42,6 +42,7 @@ namespace OpenTK.Graphics.OpenGL
     //
     // Make sure that no error checking is added to the GetError function,
     // as that would cause infinite recursion!
+    [DebuggerNonUserCode]
     struct ErrorHelper : IDisposable
     {
         #region Fields

@@ -179,34 +179,6 @@ namespace OpenTK
 
         #region Normalize
 
-        #if !TEMPLATE_UNIT_INT32
-
-        /// <summary>
-        /// Return a Vector3i scaled to unit length.
-        /// </summary>
-        public Vector3i Normalize()
-        {
-            unit scale = (unit)( 1.0 / this.Length);
-            return new Vector3i(X * scale, Y * scale
-                               , Z * scale
-                               );
-        }
-
-        
-        /// <summary>
-        /// Return a Vector3i scaled to approximately unit length.
-        /// </summary>
-        public Vector3i NormalizeFast()
-        {
-            unit scale = MathHelper.InverseSqrtFast(X * X + Y * Y
-                                                      + Z * Z
-                                                     );
-            return new Vector3i(X * scale, Y * scale
-                               , Z * scale
-                               );
-        }
-
-        #endif // !TEMPLATE_UNIT_INT32
 
         #endregion
      
@@ -418,41 +390,6 @@ namespace OpenTK
 
         #endregion
 
-        #region Normalize
-
-        #if !TEMPLATE_UNIT_INT32
-
-        /// <summary>
-        /// Scale a vector to unit length(1)
-        /// </summary>
-        /// <param name="vec">The input vector</param>
-        /// <param name="result">The normalized vector</param>
-        public static void Normalize(ref Vector3i vec, out Vector3i result)
-        {
-            unit scale = 1.0f / (unit)vec.Length;
-            result.X = vec.X * scale;
-            result.Y = vec.Y * scale;
-            result.Z = vec.Z * scale;
-        }
-
-        /// <summary>
-        /// Scale a vector to approximately unit length
-        /// </summary>
-        /// <param name="vec">The input vector</param>
-        /// <param name="result">The normalized vector</param>
-        public static void NormalizeFast(ref Vector3i vec, out Vector3i result)
-        {
-            unit scale = MathHelper.InverseSqrtFast(vec.X * vec.X + vec.Y * vec.Y
-                                                      + vec.Z * vec.Z
-                                                     );
-            result.X = vec.X * scale;
-            result.Y = vec.Y * scale;
-            result.Z = vec.Z * scale;
-        }
-
-        #endif
-
-        #endregion
 
         #region Dot
 
@@ -477,6 +414,68 @@ namespace OpenTK
         }
 
         #endregion
+                
+                
+        #region Cross product
+
+        /// <summary>
+        /// Caclulate the 3D cross (vector) product of two vectors
+        /// </summary>
+        /// <param name="left">First operand</param>
+        /// <param name="right">Second operand</param>
+        /// <returns>The cross product of the two inputs</returns>
+        public static Vector3i Cross(Vector3i left, Vector3i right)
+        {
+            Vector3i result;
+            Cross(ref left, ref right, out result);
+            return result;
+        }
+
+        /// <summary>
+        /// Caclulate the 3D cross (vector) product of two vectors
+        /// </summary>
+        /// <param name="left">First operand</param>
+        /// <param name="right">Second operand</param>
+        /// <returns>The cross product of the two inputs</returns>
+        /// <param name="result">The cross product of the two inputs</param>
+        public static void Cross(ref Vector3i left, ref Vector3i right, out Vector3i result)
+        {
+            result = new Vector3i(left.Y * right.Z - left.Z * right.Y,
+                left.Z * right.X - left.X * right.Z,
+                left.X * right.Y - left.Y * right.X
+            );
+        }
+ 
+        #endregion Cross product
+
+
+        #region Calculate Angle
+
+        /// <summary>
+        /// Calculates the angle (in radians) between two vectors.
+        /// </summary>
+        /// <param name="first">The first vector.</param>
+        /// <param name="second">The second vector.</param>
+        /// <returns>Angle (in radians) between the vectors.</returns>
+        /// <remarks>Note that the returned angle is never bigger than the constant Pi.</remarks>
+        public static double CalculateAngle(Vector3i first, Vector3i second)
+        {
+            return System.Math.Acos((Vector3i.Dot(first, second)) / (first.Length * second.Length));
+        }
+
+        /// <summary>Calculates the angle (in radians) between two vectors.</summary>
+        /// <param name="first">The first vector.</param>
+        /// <param name="second">The second vector.</param>
+        /// <param name="result">Angle (in radians) between the vectors.</param>
+        /// <remarks>Note that the returned angle is never bigger than the constant Pi.</remarks>
+        public static void CalculateAngle(ref Vector3i first, ref Vector3i second, out double result)
+        {
+            unit temp;
+            Vector3i.Dot(ref first, ref second, out temp);
+            result = System.Math.Acos(temp / (first.Length * second.Length));
+        }
+ 
+        #endregion Calculate Angle
 
         #region Lerp
 

@@ -163,7 +163,6 @@ namespace OpenTK
 
         #region Normalize
 
-        #if !TEMPLATE_UNIT_INT32
 
         /// <summary>
         /// Return a Vector2 scaled to unit length.
@@ -187,7 +186,6 @@ namespace OpenTK
                                );
         }
 
-        #endif // !TEMPLATE_UNIT_INT32
 
         #endregion
      
@@ -390,9 +388,8 @@ namespace OpenTK
 
         #endregion
 
-        #region Normalize
 
-        #if !TEMPLATE_UNIT_INT32
+        #region Normalize
 
         /// <summary>
         /// Scale a vector to unit length(1)
@@ -419,9 +416,8 @@ namespace OpenTK
             result.Y = vec.Y * scale;
         }
 
-        #endif
-
         #endregion
+
 
         #region Dot
 
@@ -444,6 +440,35 @@ namespace OpenTK
         }
 
         #endregion
+                
+
+        #region Calculate Angle
+
+        /// <summary>
+        /// Calculates the angle (in radians) between two vectors.
+        /// </summary>
+        /// <param name="first">The first vector.</param>
+        /// <param name="second">The second vector.</param>
+        /// <returns>Angle (in radians) between the vectors.</returns>
+        /// <remarks>Note that the returned angle is never bigger than the constant Pi.</remarks>
+        public static double CalculateAngle(Vector2 first, Vector2 second)
+        {
+            return System.Math.Acos((Vector2.Dot(first, second)) / (first.Length * second.Length));
+        }
+
+        /// <summary>Calculates the angle (in radians) between two vectors.</summary>
+        /// <param name="first">The first vector.</param>
+        /// <param name="second">The second vector.</param>
+        /// <param name="result">Angle (in radians) between the vectors.</param>
+        /// <remarks>Note that the returned angle is never bigger than the constant Pi.</remarks>
+        public static void CalculateAngle(ref Vector2 first, ref Vector2 second, out double result)
+        {
+            unit temp;
+            Vector2.Dot(ref first, ref second, out temp);
+            result = System.Math.Acos(temp / (first.Length * second.Length));
+        }
+ 
+        #endregion Calculate Angle
 
         #region Lerp
 

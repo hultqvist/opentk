@@ -1,4 +1,5 @@
 using System;
+
 namespace OpenTK
 {
     public partial struct Vector4
@@ -91,8 +92,5 @@ namespace OpenTK
 
         #endregion
     }
-
-
-
 }
 

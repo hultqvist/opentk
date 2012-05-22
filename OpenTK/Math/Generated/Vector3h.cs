@@ -179,7 +179,6 @@ namespace OpenTK
 
         #region Normalize
 
-        #if !TEMPLATE_UNIT_INT32
 
         /// <summary>
         /// Return a Vector3h scaled to unit length.
@@ -206,7 +205,6 @@ namespace OpenTK
                                );
         }
 
-        #endif // !TEMPLATE_UNIT_INT32
 
         #endregion
      
@@ -418,9 +416,8 @@ namespace OpenTK
 
         #endregion
 
-        #region Normalize
 
-        #if !TEMPLATE_UNIT_INT32
+        #region Normalize
 
         /// <summary>
         /// Scale a vector to unit length(1)
@@ -450,9 +447,8 @@ namespace OpenTK
             result.Z = vec.Z * scale;
         }
 
-        #endif
-
         #endregion
+
 
         #region Dot
 
@@ -477,6 +473,68 @@ namespace OpenTK
         }
 
         #endregion
+                
+                
+        #region Cross product
+
+        /// <summary>
+        /// Caclulate the 3D cross (vector) product of two vectors
+        /// </summary>
+        /// <param name="left">First operand</param>
+        /// <param name="right">Second operand</param>
+        /// <returns>The cross product of the two inputs</returns>
+        public static Vector3h Cross(Vector3h left, Vector3h right)
+        {
+            Vector3h result;
+            Cross(ref left, ref right, out result);
+            return result;
+        }
+
+        /// <summary>
+        /// Caclulate the 3D cross (vector) product of two vectors
+        /// </summary>
+        /// <param name="left">First operand</param>
+        /// <param name="right">Second operand</param>
+        /// <returns>The cross product of the two inputs</returns>
+        /// <param name="result">The cross product of the two inputs</param>
+        public static void Cross(ref Vector3h left, ref Vector3h right, out Vector3h result)
+        {
+            result = new Vector3h(left.Y * right.Z - left.Z * right.Y,
+                left.Z * right.X - left.X * right.Z,
+                left.X * right.Y - left.Y * right.X
+            );
+        }
+ 
+        #endregion Cross product
+
+
+        #region Calculate Angle
+
+        /// <summary>
+        /// Calculates the angle (in radians) between two vectors.
+        /// </summary>
+        /// <param name="first">The first vector.</param>
+        /// <param name="second">The second vector.</param>
+        /// <returns>Angle (in radians) between the vectors.</returns>
+        /// <remarks>Note that the returned angle is never bigger than the constant Pi.</remarks>
+        public static double CalculateAngle(Vector3h first, Vector3h second)
+        {
+            return System.Math.Acos((Vector3h.Dot(first, second)) / (first.Length * second.Length));
+        }
+
+        /// <summary>Calculates the angle (in radians) between two vectors.</summary>
+        /// <param name="first">The first vector.</param>
+        /// <param name="second">The second vector.</param>
+        /// <param name="result">Angle (in radians) between the vectors.</param>
+        /// <remarks>Note that the returned angle is never bigger than the constant Pi.</remarks>
+        public static void CalculateAngle(ref Vector3h first, ref Vector3h second, out double result)
+        {
+            unit temp;
+            Vector3h.Dot(ref first, ref second, out temp);
+            result = System.Math.Acos(temp / (first.Length * second.Length));
+        }
+ 
+        #endregion Calculate Angle
 
         #region Lerp
 

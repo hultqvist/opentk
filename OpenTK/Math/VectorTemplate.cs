@@ -551,9 +551,9 @@ namespace OpenTK
 
         #endregion
 
-        #region Normalize
-
         #if !TEMPLATE_UNIT_INT32
+
+        #region Normalize
 
         /// <summary>
         /// Scale a vector to unit length(1)
@@ -598,9 +598,9 @@ namespace OpenTK
                 #endif
         }
 
-        #endif
-
         #endregion
+
+        #endif
 
         #region Dot
 
@@ -635,6 +635,73 @@ namespace OpenTK
         }
 
         #endregion
+                
+        #if TEMPLATE_DIM_3
+                
+        #region Cross product
+
+        /// <summary>
+        /// Caclulate the 3D cross (vector) product of two vectors
+        /// </summary>
+        /// <param name="left">First operand</param>
+        /// <param name="right">Second operand</param>
+        /// <returns>The cross product of the two inputs</returns>
+        public static VectorTemplate Cross(VectorTemplate left, VectorTemplate right)
+        {
+            VectorTemplate result;
+            Cross(ref left, ref right, out result);
+            return result;
+        }
+
+        /// <summary>
+        /// Caclulate the 3D cross (vector) product of two vectors
+        /// </summary>
+        /// <param name="left">First operand</param>
+        /// <param name="right">Second operand</param>
+        /// <returns>The cross product of the two inputs</returns>
+        /// <param name="result">The cross product of the two inputs</param>
+        public static void Cross(ref VectorTemplate left, ref VectorTemplate right, out VectorTemplate result)
+        {
+            result = new VectorTemplate(left.Y * right.Z - left.Z * right.Y,
+                left.Z * right.X - left.X * right.Z,
+                left.X * right.Y - left.Y * right.X
+            #if TEMPLATE_DIM_4
+                , 1
+            #endif
+            );
+        }
+ 
+        #endregion Cross product
+
+        #endif
+
+        #region Calculate Angle
+
+        /// <summary>
+        /// Calculates the angle (in radians) between two vectors.
+        /// </summary>
+        /// <param name="first">The first vector.</param>
+        /// <param name="second">The second vector.</param>
+        /// <returns>Angle (in radians) between the vectors.</returns>
+        /// <remarks>Note that the returned angle is never bigger than the constant Pi.</remarks>
+        public static double CalculateAngle(VectorTemplate first, VectorTemplate second)
+        {
+            return System.Math.Acos((VectorTemplate.Dot(first, second)) / (first.Length * second.Length));
+        }
+
+        /// <summary>Calculates the angle (in radians) between two vectors.</summary>
+        /// <param name="first">The first vector.</param>
+        /// <param name="second">The second vector.</param>
+        /// <param name="result">Angle (in radians) between the vectors.</param>
+        /// <remarks>Note that the returned angle is never bigger than the constant Pi.</remarks>
+        public static void CalculateAngle(ref VectorTemplate first, ref VectorTemplate second, out double result)
+        {
+            unit temp;
+            VectorTemplate.Dot(ref first, ref second, out temp);
+            result = System.Math.Acos(temp / (first.Length * second.Length));
+        }
+ 
+        #endregion Calculate Angle
 
         #region Lerp
 

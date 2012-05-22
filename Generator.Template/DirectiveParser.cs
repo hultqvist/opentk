@@ -35,8 +35,11 @@ namespace Generator.Template
 
             if (d.StartsWith("#if "))
             {
-                d = d.Substring(4);
-                
+                d = d.Substring(4).Trim();
+                bool not = d.StartsWith("!");
+                if(not)
+                    d = d.Substring(1);
+
                 //Push
                 stackInclude.Push(currentInclude);
                 stackLocal.Push(currentLocal);
@@ -44,7 +47,7 @@ namespace Generator.Template
                 currentLocal = locals.Contains(d);
                 if (currentLocal)
                 {
-                    if (include.Contains(d) == false)
+                    if (include.Contains(d) == not)
                         currentInclude = false;
                     return false; //hide local directives
                 }
@@ -52,7 +55,10 @@ namespace Generator.Template
             }
             if (d.StartsWith("#elif "))
             {
-                d = d.Substring(6);
+                d = d.Substring(6).Trim();
+                bool not = d.StartsWith("!");
+                if(not)
+                    d = d.Substring(1);
                 //Stack is untouched
 
                 if (stackInclude.Peek() == false)
@@ -63,7 +69,10 @@ namespace Generator.Template
 
                 if (currentLocal)
                 {
-                    currentInclude = include.Contains(d);
+                    if(include.Contains(d) && !not)
+                        currentInclude = true;
+                    else
+                        currentInclude = false;
                     return false;
                 }
                 return currentInclude;

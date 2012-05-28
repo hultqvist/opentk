@@ -695,7 +695,12 @@ namespace OpenTK
         public override string ToString()
         {
             const string format = "0";
+            return ToString(format);
+        }
 
+        /// <summary></summary>
+        public string ToString(string format)
+        {
             return String.Format("({0}, {1}, {2})'", X.ToString(format), Y.ToString(format), Z.ToString(format));
         }
 

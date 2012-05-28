@@ -96,8 +96,5 @@ namespace OpenTK
 
         #endregion Operators
     }
-
-
-
 }
 

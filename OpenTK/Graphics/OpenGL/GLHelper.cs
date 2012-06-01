@@ -198,7 +198,7 @@ namespace OpenTK.Graphics.OpenGL
 
         #region GetActiveAttrib
 
-        public static string GetActiveAttrib(int program, int index, out int size, out ActiveAttribType type)
+        public static string GetActiveAttrib(uint program, uint index, out int size, out ActiveAttribType type)
         {
             int length;
             GetProgram(program, OpenTK.Graphics.OpenGL.ProgramParameter.ActiveAttributeMaxLength, out length);
@@ -212,7 +212,7 @@ namespace OpenTK.Graphics.OpenGL
 
         #region GetActiveUniform
 
-        public static string GetActiveUniform(int program, int uniformIndex, out int size, out ActiveUniformType type)
+        public static string GetActiveUniform(uint program, uint uniformIndex, out int size, out ActiveUniformType type)
         {
             int length;
             GetProgram(program, OpenTK.Graphics.OpenGL.ProgramParameter.ActiveUniformMaxLength, out length);
@@ -226,7 +226,7 @@ namespace OpenTK.Graphics.OpenGL
 
         #region GetActiveUniformName
 
-        public static string GetActiveUniformName(int program, int uniformIndex)
+        public static string GetActiveUniformName(uint program, uint uniformIndex)
         {
             int length;
             GetProgram(program, OpenTK.Graphics.OpenGL.ProgramParameter.ActiveUniformMaxLength, out length);
@@ -240,7 +240,7 @@ namespace OpenTK.Graphics.OpenGL
 
         #region GetActiveUniformBlockName
 
-        public static string GetActiveUniformBlockName(int program, int uniformIndex)
+        public static string GetActiveUniformBlockName(uint program, uint uniformIndex)
         {
             int length;
             GetProgram(program, OpenTK.Graphics.OpenGL.ProgramParameter.ActiveUniformBlockMaxNameLength, out length);
@@ -252,22 +252,22 @@ namespace OpenTK.Graphics.OpenGL
 
         #endregion
 
-        #region public static void ShaderSource(Int32 shader, System.String @string)
+        #region public static void ShaderSource(uint shader, System.String @string)
 
-        public static void ShaderSource(Int32 shader, System.String @string)
+        public static void ShaderSource(uint shader, System.String @string)
         {
             unsafe
             {
                 int length = @string.Length;
-                GL.ShaderSource((UInt32)shader, 1, new string[] { @string }, &length);
+                GL.ShaderSource(shader, 1, new string[] { @string }, &length);
             }
         }
 
         #endregion
 
-        #region public static string GetShaderInfoLog(Int32 shader)
+        #region public static string GetShaderInfoLog(uint shader)
 
-        public static string GetShaderInfoLog(Int32 shader)
+        public static string GetShaderInfoLog(uint shader)
         {
             string info;
             GetShaderInfoLog(shader, out info);
@@ -276,9 +276,9 @@ namespace OpenTK.Graphics.OpenGL
 
         #endregion
 
-        #region public static void GetShaderInfoLog(Int32 shader, out string info)
+        #region public static void GetShaderInfoLog(uint shader, out string info)
 
-        public static void GetShaderInfoLog(Int32 shader, out string info)
+        public static void GetShaderInfoLog(uint shader, out string info)
         {
             unsafe
             {
@@ -290,16 +290,16 @@ namespace OpenTK.Graphics.OpenGL
                     return;
                 }
                 StringBuilder sb = new StringBuilder(length * 2);
-                GL.GetShaderInfoLog((UInt32)shader, sb.Capacity, &length, sb);
+                GL.GetShaderInfoLog(shader, sb.Capacity, &length, sb);
                 info = sb.ToString();
             }
         }
 
         #endregion
 
-        #region public static string GetProgramInfoLog(Int32 program)
+        #region public static string GetProgramInfoLog(uint program)
 
-        public static string GetProgramInfoLog(Int32 program)
+        public static string GetProgramInfoLog(uint program)
         {
             string info;
             GetProgramInfoLog(program, out info);
@@ -308,9 +308,9 @@ namespace OpenTK.Graphics.OpenGL
 
         #endregion
 
-        #region public static void GetProgramInfoLog(Int32 program, out string info)
+        #region public static void GetProgramInfoLog(uint program, out string info)
 
-        public static void GetProgramInfoLog(Int32 program, out string info)
+        public static void GetProgramInfoLog(uint program, out string info)
         {
             unsafe
             {
@@ -321,7 +321,7 @@ namespace OpenTK.Graphics.OpenGL
                     return;
                 }
                 StringBuilder sb = new StringBuilder(length * 2);
-                GL.GetProgramInfoLog((UInt32)program, sb.Capacity, &length, sb);
+                GL.GetProgramInfoLog(program, sb.Capacity, &length, sb);
                 info = sb.ToString();
             }
         }
@@ -352,9 +352,9 @@ namespace OpenTK.Graphics.OpenGL
         /// Generates a single buffer object name
         /// </summary>
         /// <returns>The generated buffer object name</returns>
-        public static int GenBuffer()
+        public static uint GenBuffer()
         {
-            int id;
+            uint id;
             GenBuffers(1, out id);
             return id;
         }
@@ -362,15 +362,6 @@ namespace OpenTK.Graphics.OpenGL
         #endregion
 
         #region DeleteBuffer
-
-        /// <summary>[requires: v1.5]
-        /// Deletes a single buffer object
-        /// </summary>
-        /// <param name="id">The buffer object to be deleted</param>
-        public static void DeleteBuffer(int id)
-        {
-            DeleteBuffers(1, ref id);
-        }
 
         /// <summary>[requires: v1.5]
         /// Deletes a single buffer object
@@ -390,9 +381,9 @@ namespace OpenTK.Graphics.OpenGL
         /// Generates a single framebuffer object name
         /// </summary>
         /// <returns>The generated framebuffer object name</returns>
-        public static int GenFramebuffer()
+        public static uint GenFramebuffer()
         {
-            int id;
+            uint id;
             GenFramebuffers(1, out id);
             return id;
         }
@@ -400,15 +391,6 @@ namespace OpenTK.Graphics.OpenGL
         #endregion
 
         #region DeleteFramebuffer
-
-        /// <summary>[requires: v3.0 and ARB_framebuffer_object]
-        /// Deletes a single framebuffer object
-        /// </summary>
-        /// <param name="id">The framebuffer object to be deleted</param>
-        public static void DeleteFramebuffer(int id)
-        {
-            DeleteFramebuffers(1, ref id);
-        }
 
         /// <summary>[requires: v3.0 and ARB_framebuffer_object]
         /// Deletes a single framebuffer object
@@ -428,9 +410,9 @@ namespace OpenTK.Graphics.OpenGL
         /// Generates a single single pipeline object name
         /// </summary>
         /// <returns>The generated single pipeline object name</returns>
-        public static int GenProgramPipeline()
+        public static uint GenProgramPipeline()
         {
-            int id;
+            uint id;
             GenProgramPipelines(1, out id);
             return id;
         }
@@ -438,15 +420,6 @@ namespace OpenTK.Graphics.OpenGL
         #endregion
 
         #region DeleteProgramPipeline
-
-        /// <summary>[requires: v4.1 and ARB_separate_shader_objects]
-        /// Deletes a single program pipeline object
-        /// </summary>
-        /// <param name="id">The program pipeline object to be deleted</param>
-        public static void DeleteProgramPipeline(int id)
-        {
-            DeleteProgramPipelines(1, ref id);
-        }
 
         /// <summary>[requires: v4.1 and ARB_separate_shader_objects]
         /// Deletes a single program pipeline object
@@ -466,9 +439,9 @@ namespace OpenTK.Graphics.OpenGL
         /// Generates a single query object name
         /// </summary>
         /// <returns>The generated query object name</returns>
-        public static int GenQuery()
+        public static uint GenQuery()
         {
-            int id;
+            uint id;
             GenQueries(1, out id);
             return id;
         }
@@ -476,15 +449,6 @@ namespace OpenTK.Graphics.OpenGL
         #endregion
 
         #region DeleteQuery
-
-        /// <summary>[requires: v1.5]
-        /// Deletes a single query object
-        /// </summary>
-        /// <param name="id">The query object to be deleted</param>
-        public static void DeleteQuery(int id)
-        {
-            DeleteQueries(1, ref id);
-        }
 
         /// <summary>
         /// Deletes a single query object
@@ -504,9 +468,9 @@ namespace OpenTK.Graphics.OpenGL
         /// Generates a single renderbuffer object name
         /// </summary>
         /// <returns>The generated renderbuffer object name</returns>
-        public static int GenRenderbuffer()
+        public static uint GenRenderbuffer()
         {
-            int id;
+            uint id;
             GenRenderbuffers(1, out id);
             return id;
         }
@@ -514,15 +478,6 @@ namespace OpenTK.Graphics.OpenGL
         #endregion
 
         #region DeleteRenderbuffer
-
-        /// <summary>[requires: v3.0 and ARB_framebuffer_object]
-        /// Deletes a single renderbuffer object
-        /// </summary>
-        /// <param name="id">The renderbuffer object to be deleted</param>
-        public static void DeleteRenderbuffer(int id)
-        {
-            DeleteRenderbuffers(1, ref id);
-        }
 
         /// <summary>[requires: v3.0 and ARB_framebuffer_object]
         /// Deletes a single renderbuffer object
@@ -542,9 +497,9 @@ namespace OpenTK.Graphics.OpenGL
         /// Generates a single sampler object name
         /// </summary>
         /// <returns>The generated sampler object name</returns>
-        public static int GenSampler()
+        public static uint GenSampler()
         {
-            int id;
+            uint id;
             GenSamplers(1, out id);
             return id;
         }
@@ -552,15 +507,6 @@ namespace OpenTK.Graphics.OpenGL
         #endregion
 
         #region DeleteSampler
-
-        /// <summary>
-        /// Deletes a single sampler object
-        /// </summary>
-        /// <param name="id">The sampler object to be deleted</param>
-        public static void DeleteSampler(int id)
-        {
-            DeleteSamplers(1, ref id);
-        }
 
         /// <summary>
         /// Deletes a single sampler object
@@ -580,9 +526,9 @@ namespace OpenTK.Graphics.OpenGL
         /// Generate a single texture name
         /// </summary>
         /// <returns>The generated texture name</returns>
-        public static int GenTexture()
+        public static uint GenTexture()
         {
-            int id;
+            uint id;
             GenTextures(1, out id);
             return id;
         }
@@ -590,15 +536,6 @@ namespace OpenTK.Graphics.OpenGL
         #endregion
 
         #region DeleteTexture
-
-        /// <summary>[requires: v1.1]
-        /// Delete a single texture name
-        /// </summary>
-        /// <param name="id">The texture to be deleted</param>
-        public static void DeleteTexture(int id)
-        {
-            DeleteTextures(1, ref id);
-        }
 
         /// <summary>[requires: v1.1]
         /// Delete a single texture name
@@ -618,9 +555,9 @@ namespace OpenTK.Graphics.OpenGL
         /// Generates a single transform feedback object name
         /// </summary>
         /// <returns>The generated transform feedback object name</returns>
-        public static int GenTransformFeedback()
+        public static uint GenTransformFeedback()
         {
-            int id;
+            uint id;
             GenTransformFeedback(1, out id);
             return id;
         }
@@ -628,15 +565,6 @@ namespace OpenTK.Graphics.OpenGL
         #endregion
 
         #region DeleteTransformFeedback
-
-        /// <summary>[requires: v1.2 and ARB_transform_feedback2]
-        /// Deletes a single transform feedback object
-        /// </summary>
-        /// <param name="id">The transform feedback object to be deleted</param>
-        public static void DeleteTransformFeedback(int id)
-        {
-            DeleteTransformFeedback(1, ref id);
-        }
 
         /// <summary>[requires: v1.2 and ARB_transform_feedback2]
         /// Deletes a single transform feedback object
@@ -656,9 +584,9 @@ namespace OpenTK.Graphics.OpenGL
         /// Generates a single vertex array object name
         /// </summary>
         /// <returns>The generated vertex array object name</returns>
-        public static int GenVertexArray()
+        public static uint GenVertexArray()
         {
-            int id;
+            uint id;
             GenVertexArrays(1, out id);
             return id;
         }
@@ -666,15 +594,6 @@ namespace OpenTK.Graphics.OpenGL
         #endregion
 
         #region DeleteVertexArray
-
-        /// <summary>[requires: v3.0 and ARB_vertex_array_object]
-        /// Deletes a single vertex array object
-        /// </summary>
-        /// <param name="id">The vertex array object to be deleted</param>
-        public static void DeleteVertexArray(int id)
-        {
-            DeleteVertexArrays(1, ref id);
-        }
 
         /// <summary>[requires: v3.0 and ARB_vertex_array_object]
         /// Deletes a single vertex array object
@@ -690,7 +609,7 @@ namespace OpenTK.Graphics.OpenGL
 
         #region VertexAttribPointer
 
-        public static void VertexAttribPointer(int index, int size, VertexAttribPointerType type, bool normalized, int stride, int offset)
+        public static void VertexAttribPointer(uint index, int size, VertexAttribPointerType type, bool normalized, int stride, int offset)
         {
             VertexAttribPointer(index, size, type, normalized, stride, (IntPtr)offset);
         }
@@ -820,12 +739,12 @@ namespace OpenTK.Graphics.OpenGL
     }
 
     /// <summary></summary>
-    public delegate void DebugProcAmd(int id,
+    public delegate void DebugProcAmd(uint id,
         AmdDebugOutput category, AmdDebugOutput severity,
         IntPtr length, string message, IntPtr userParam);
 
     /// <summary></summary>
-    public delegate void DebugProcArb(int id,
+    public delegate void DebugProcArb(uint id,
         ArbDebugOutput category, ArbDebugOutput severity,
         IntPtr length, string message, IntPtr userParam);
 }

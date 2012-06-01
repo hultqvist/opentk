@@ -533,77 +533,56 @@ namespace Bind
                 )
                 );
 
-            if ((Settings.Compatibility & Settings.Legacy.ConstIntEnums) == Settings.Legacy.None)
+            if ((Settings.Compatibility & Settings.Legacy.NestedEnums) != Settings.Legacy.None &&
+                !String.IsNullOrEmpty(Settings.NestedEnumsClass))
             {
-                if ((Settings.Compatibility & Settings.Legacy.NestedEnums) != Settings.Legacy.None &&
-                    !String.IsNullOrEmpty(Settings.NestedEnumsClass))
-                {
-                    sw.WriteLine("public class Enums");
-                    sw.WriteLine("{");
-                    sw.Indent();
-                }
+                sw.WriteLine("public class Enums");
+                sw.WriteLine("{");
+                sw.Indent();
+            }
 
-                foreach (Enum @enum in enums.Values)
-                {
-                    if (!Settings.IsEnabled(Settings.Legacy.NoDocumentation))
-                    {
-                        // Document which functions use this enum.
-                        var functions =
-                            (from wrapper in wrappers
-                            from function in wrapper.Value
-                            from param in function.Parameters
-                            where param.CurrentType == @enum.Name
-                            select Settings.GLClass + (function.Extension != "Core" ? ("." + function.Extension) : "") + "." + function.TrimmedName)
-                            .Distinct();
-
-                        sw.WriteLine("/// <summary>");
-                        sw.WriteLine(String.Format(
-                            "/// {0}",
-                            functions.Count() > 0 ?
-                            ("Used in " + String.Join(
-                            ", ",
-                            functions.ToArray()
-                        )) : "Not used directly."
-                        )
-                        );
-                        sw.WriteLine("/// </summary>");
-                    }
-
-                    if (@enum.IsFlagCollection)
-                        sw.WriteLine("[Flags]");
-                    sw.WriteLine("public enum " + @enum.Name + " : " + @enum.Type);
-                    sw.WriteLine("{");
-                    sw.Indent();
-                    WriteConstants(sw,  @enum.ConstantCollection.Values);
-                    sw.Unindent();
-                    sw.WriteLine("}");
-                    sw.WriteLine();
-                }
-
-                if ((Settings.Compatibility & Settings.Legacy.NestedEnums) != Settings.Legacy.None &&
-                    !String.IsNullOrEmpty(Settings.NestedEnumsClass))
-                {
-                    sw.Unindent();
-                    sw.WriteLine("}");
-                }
-            } else
+            foreach (Enum @enum in enums.Values)
             {
-                // Tao legacy mode: dump all enums as constants in GLClass.
-                foreach (Constant c in enums[Settings.CompleteEnumName].ConstantCollection.Values)
+                if (!Settings.IsEnabled(Settings.Legacy.NoDocumentation))
                 {
-                    // Print constants avoiding circular definitions
-                    if (c.Name != c.Value)
-                    {
-                        sw.WriteLine(String.Format(
-                            "public const int {0} = {2}((int){1});",
-                            c.Name.StartsWith(Settings.ConstantPrefix) ? c.Name : Settings.ConstantPrefix + c.Name,
-                            Char.IsDigit(c.Value [0]) ? c.Value : c.Value.StartsWith(Settings.ConstantPrefix) ? c.Value : Settings.ConstantPrefix + c.Value,
-                            c.Unchecked ? "unchecked" : "")
-                        );
-                    } else
-                    {
-                    }
+                    // Document which functions use this enum.
+                    var functions =
+                        (from wrapper in wrappers
+                        from function in wrapper.Value
+                        from param in function.Parameters
+                        where param.CurrentType == @enum.Name
+                        select Settings.GLClass + (function.Extension != "Core" ? ("." + function.Extension) : "") + "." + function.TrimmedName)
+                        .Distinct();
+
+                    sw.WriteLine("/// <summary>");
+                    sw.WriteLine(String.Format(
+                        "/// {0}",
+                        functions.Count() > 0 ?
+                        ("Used in " + String.Join(
+                        ", ",
+                        functions.ToArray()
+                    )) : "Not used directly."
+                    )
+                    );
+                    sw.WriteLine("/// </summary>");
                 }
+
+                if (@enum.IsFlagCollection)
+                    sw.WriteLine("[Flags]");
+                sw.WriteLine("public enum " + @enum.Name + " : " + @enum.Type);
+                sw.WriteLine("{");
+                sw.Indent();
+                WriteConstants(sw,  @enum.ConstantCollection.Values);
+                sw.Unindent();
+                sw.WriteLine("}");
+                sw.WriteLine();
+            }
+
+            if ((Settings.Compatibility & Settings.Legacy.NestedEnums) != Settings.Legacy.None &&
+                !String.IsNullOrEmpty(Settings.NestedEnumsClass))
+            {
+                sw.Unindent();
+                sw.WriteLine("}");
             }
         }
 

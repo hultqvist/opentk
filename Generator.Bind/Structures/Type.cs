@@ -285,11 +285,8 @@ namespace Bind.Structures
 
         public string GetCLSCompliantType()
         {
-            if (!CLSCompliant)
+            if (!CLSCompliant && Settings.IsEnabled(Settings.Legacy.ClsCompliant))
             {
-                if (Pointer != 0 && Settings.Compatibility == Settings.Legacy.Tao)
-                    return "IntPtr";
-
                 switch (CurrentType)
                 {
                     case "UInt16":
@@ -341,17 +338,10 @@ namespace Bind.Structures
             // Translate enum types
             if ((normal /*|| aux*/) && @enum.Name != "GLenum" && @enum.Name != "Boolean")
             {
-                if ((Settings.Compatibility & Settings.Legacy.ConstIntEnums) != Settings.Legacy.None)
-                {
-                    QualifiedType = "int";
-                }
-                else
-                {
-                    // Some functions and enums have the same names.
-                    // Make sure we reference the enums rather than the functions.
-                    if (normal)
-                        QualifiedType = CurrentType.Insert(0, String.Format("{0}.", Settings.EnumsOutput));
-                }
+                // Some functions and enums have the same names.
+                // Make sure we reference the enums rather than the functions.
+                if (normal)
+                    QualifiedType = CurrentType.Insert(0, String.Format("{0}.", Settings.EnumsOutput));
             }
             else if (GLTypes.TryGetValue(CurrentType, out s))
             {
@@ -359,23 +349,16 @@ namespace Bind.Structures
                 // otherwise fallback to Settings.CompleteEnumName (named 'All' by default).
                 if (s.Contains("GLenum") /*&& !String.IsNullOrEmpty(category)*/)
                 {
-                    if ((Settings.Compatibility & Settings.Legacy.ConstIntEnums) != Settings.Legacy.None)
+                    // Better match: enum.Name == function.Category (e.g. GL_VERSION_1_1 etc)
+                    if (enums.ContainsKey(category))
                     {
-                        QualifiedType = "int";
+                        QualifiedType = String.Format("{0}{1}{2}", Settings.EnumsOutput,
+                            Settings.NamespaceSeparator, EnumProcessor.TranslateEnumName(category));
                     }
                     else
                     {
-                        // Better match: enum.Name == function.Category (e.g. GL_VERSION_1_1 etc)
-                        if (enums.ContainsKey(category))
-                        {
-                            QualifiedType = String.Format("{0}{1}{2}", Settings.EnumsOutput,
-                                Settings.NamespaceSeparator, EnumProcessor.TranslateEnumName(category));
-                        }
-                        else
-                        {
-                            QualifiedType = String.Format("{0}{1}{2}", Settings.EnumsOutput,
-                                Settings.NamespaceSeparator, Settings.CompleteEnumName);
-                        }
+                        QualifiedType = String.Format("{0}{1}{2}", Settings.EnumsOutput,
+                            Settings.NamespaceSeparator, Settings.CompleteEnumName);
                     }
                 }
                 else

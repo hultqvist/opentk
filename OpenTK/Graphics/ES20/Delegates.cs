@@ -141,10 +141,10 @@ namespace OpenTK.Graphics.ES20
             internal delegate void CoverageOperationNV(OpenTK.Graphics.ES20.All operation);
             internal static CoverageOperationNV glCoverageOperationNV;
             [System.Security.SuppressUnmanagedCodeSecurity()]
-            internal delegate Int32 CreateProgram();
+            internal delegate UInt32 CreateProgram();
             internal static CreateProgram glCreateProgram;
             [System.Security.SuppressUnmanagedCodeSecurity()]
-            internal delegate Int32 CreateShader(OpenTK.Graphics.ES20.ShaderType type);
+            internal delegate UInt32 CreateShader(OpenTK.Graphics.ES20.ShaderType type);
             internal static CreateShader glCreateShader;
             [System.Security.SuppressUnmanagedCodeSecurity()]
             internal delegate void CullFace(OpenTK.Graphics.ES20.CullFaceMode mode);

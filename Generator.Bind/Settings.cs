@@ -95,7 +95,7 @@ namespace Bind
         public static string DelegatesClass = "Delegates";
         public static string ImportsClass = "Core";
 
-        public static Legacy Compatibility = Legacy.NoDropMultipleTokens;
+        public static Legacy Compatibility = Legacy.None;
 
         /// <summary>
         /// The name of the C# enum which holds every single OpenGL enum (for compatibility purposes).
@@ -107,7 +107,7 @@ namespace Bind
             /// <summary>Default value.</summary>
             None = 0x00,
             /// <summary>Leave enums as plain const ints.</summary>
-            ConstIntEnums = 0x01,
+            //ConstIntEnums = 0x01,
             /// <summary>Leave enums in the default STRANGE_capitalization.ALL_CAPS form.</summary>
             NoAdvancedEnumProcessing = 0x02,
             /// <summary>Don't allow unsafe wrappers in the interface.</summary>
@@ -134,7 +134,7 @@ namespace Bind
             /// <summary>Turn GLboolean to int (Boolean enum), not bool.</summary>
             NoBoolParameters = 0x100,
             /// <summary>Keep all enum tokens, even if same value (e.g. FooARB, FooEXT and FooSGI).</summary>
-            NoDropMultipleTokens = 0x200,
+            //NoDropMultipleTokens = 0x200,
             /// <summary>Do not emit inline documentation.</summary>
             NoDocumentation = 0x400,
             /// <summary>Disables ErrorHelper generation.</summary>
@@ -143,21 +143,10 @@ namespace Bind
             KeepUntypedEnums = 0x1000,
             /// <summary>Marks deprecated functions as [Obsolete]</summary>
             AddDeprecationWarnings = 0x2000,
+            /// <summary>Do not generate wrapper for deprecated functions</summary>
             RemoveDeprecated = 0x4000,
-
-            Tao = ConstIntEnums |
-                  NoAdvancedEnumProcessing |
-                  NoPublicUnsafeFunctions |
-                  NoTrimFunctionEnding |
-                  NoTrimFunctionPrefix |
-                  NoSeparateFunctionNamespaces |
-                  TurnVoidPointersToIntPtr |
-                  NestedEnums |
-                  NoBoolParameters |
-                  NoDropMultipleTokens |
-                  NoDocumentation | 
-                  NoDebugHelpers
-                  /*GenerateAllPermutations,*/
+            /// <summary>Generate CLS-compliant wrappers</summary>
+            ClsCompliant = 0x8000,
         }
 
         // Returns true if flag is enabled.
@@ -178,13 +167,6 @@ namespace Bind
             Compatibility &= ~flag;
         }
 
-        /// <summary>True if multiple tokens should be dropped (e.g. FooARB, FooEXT and FooSGI).</summary>
-        public static bool DropMultipleTokens
-        { 
-            get { return (Compatibility & Legacy.NoDropMultipleTokens) == Legacy.None; } 
-            set { if (value) Compatibility |= Legacy.NoDropMultipleTokens; else Compatibility &= ~Legacy.NoDropMultipleTokens; }
-        }
-        
         public static string WindowsGDI = "OpenTK.Platform.Windows.API";
 
         public static GeneratorLanguage Language { get; set; }

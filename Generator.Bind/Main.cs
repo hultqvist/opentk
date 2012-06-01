@@ -128,7 +128,6 @@ namespace Bind
                             case "legacy":
                             case "o":
                             case "option":
-                                Settings.Compatibility |= val.ToLower() == "tao" ? Settings.Legacy.Tao : Settings.Legacy.None;
                                 Settings.Compatibility |= val.ToLower() == "simple_enums" ? Settings.Legacy.NoAdvancedEnumProcessing : Settings.Legacy.None;
                                 Settings.Compatibility |= val.ToLower() == "safe" ? Settings.Legacy.NoPublicUnsafeFunctions : Settings.Legacy.None;
                                 //Settings.Compatibility |= b[1].ToLower().Contains("novoid") ? Settings.Legacy.TurnVoidPointersToIntPtr : Settings.Legacy.None;

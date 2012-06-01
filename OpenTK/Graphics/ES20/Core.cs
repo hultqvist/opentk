@@ -143,10 +143,10 @@ namespace OpenTK.Graphics.ES20
             internal extern static void CoverageOperationNV(OpenTK.Graphics.ES20.All operation);
             [System.Security.SuppressUnmanagedCodeSecurity()]
             [System.Runtime.InteropServices.DllImport(GL.Library, EntryPoint = "glCreateProgram", ExactSpelling = true)]
-            internal extern static Int32 CreateProgram();
+            internal extern static UInt32 CreateProgram();
             [System.Security.SuppressUnmanagedCodeSecurity()]
             [System.Runtime.InteropServices.DllImport(GL.Library, EntryPoint = "glCreateShader", ExactSpelling = true)]
-            internal extern static Int32 CreateShader(OpenTK.Graphics.ES20.ShaderType type);
+            internal extern static UInt32 CreateShader(OpenTK.Graphics.ES20.ShaderType type);
             [System.Security.SuppressUnmanagedCodeSecurity()]
             [System.Runtime.InteropServices.DllImport(GL.Library, EntryPoint = "glCullFace", ExactSpelling = true)]
             internal extern static void CullFace(OpenTK.Graphics.ES20.CullFaceMode mode);

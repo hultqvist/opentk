@@ -44,16 +44,6 @@ namespace Bind.GL
 
         public Generator()
         {
-            if (Settings.Compatibility == Settings.Legacy.Tao)
-            {
-                Settings.OutputNamespace = "Tao.OpenGl";
-                Settings.OutputClass = "Gl";
-            }
-            else
-            {
-                // Defaults
-            }
-
             Settings.ImportsFile = "GLCore.cs";
             Settings.DelegatesFile = "GLDelegates.cs";
             Settings.EnumsFile = "GLEnums.cs";

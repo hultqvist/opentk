@@ -169,11 +169,8 @@ namespace Bind
 
             if (d.ReturnType.CurrentType.Contains("GLenum"))
             {
-                if ((Settings.Compatibility & Settings.Legacy.ConstIntEnums) == Settings.Legacy.None)
-                    d.ReturnType.QualifiedType = String.Format("{0}{1}{2}",
-                        Settings.EnumsOutput, Settings.NamespaceSeparator, Settings.CompleteEnumName);
-                else
-                    d.ReturnType.QualifiedType = "int";
+                d.ReturnType.QualifiedType = String.Format("{0}{1}{2}",
+                    Settings.EnumsOutput, Settings.NamespaceSeparator, Settings.CompleteEnumName);
             }
 
             d.ReturnType.CurrentType = d.ReturnType.GetCLSCompliantType();
@@ -238,7 +235,7 @@ namespace Bind
                 {
                     wrappers.AddChecked(f);
 
-                    if (!f.CLSCompliant)
+                    if (!f.CLSCompliant && Settings.IsEnabled(Settings.Legacy.ClsCompliant))
                     {
                         Function cls = new Function(f);
 

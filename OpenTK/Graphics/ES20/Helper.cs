@@ -155,7 +155,7 @@ namespace OpenTK.Graphics.ES20
 
         #region GetActiveAttrib
 
-        public static string GetActiveAttrib(int program, int index, out int size, out ActiveAttribType type)
+        public static string GetActiveAttrib(uint program, uint index, out int size, out ActiveAttribType type)
         {
             int length;
             GetProgram(program, ProgramParameter.ActiveAttributeMaxLength, out length);
@@ -169,7 +169,7 @@ namespace OpenTK.Graphics.ES20
 
         #region GetActiveUniform
 
-        public static string GetActiveUniform(int program, int uniformIndex, out int size, out ActiveUniformType type)
+        public static string GetActiveUniform(uint program, uint uniformIndex, out int size, out ActiveUniformType type)
         {
             int length;
             GetProgram(program, ProgramParameter.ActiveUniformMaxLength, out length);
@@ -183,7 +183,7 @@ namespace OpenTK.Graphics.ES20
 
         #region public static void ShaderSource(Int32 shader, System.String @string)
 
-        public static void ShaderSource(Int32 shader, System.String @string)
+        public static void ShaderSource(uint shader, System.String @string)
         {
             unsafe
             {
@@ -196,7 +196,7 @@ namespace OpenTK.Graphics.ES20
 
         #region public static string GetShaderInfoLog(Int32 shader)
 
-        public static string GetShaderInfoLog(Int32 shader)
+        public static string GetShaderInfoLog(uint shader)
         {
             string info;
             GetShaderInfoLog(shader, out info);
@@ -207,7 +207,7 @@ namespace OpenTK.Graphics.ES20
 
         #region public static void GetShaderInfoLog(Int32 shader, out string info)
 
-        public static void GetShaderInfoLog(Int32 shader, out string info)
+        public static void GetShaderInfoLog(uint shader, out string info)
         {
             unsafe
             {
@@ -226,9 +226,9 @@ namespace OpenTK.Graphics.ES20
 
         #endregion
 
-        #region public static string GetProgramInfoLog(Int32 program)
+        #region public static string GetProgramInfoLog(uint program)
 
-        public static string GetProgramInfoLog(Int32 program)
+        public static string GetProgramInfoLog(uint program)
         {
             string info;
             GetProgramInfoLog(program, out info);
@@ -237,9 +237,9 @@ namespace OpenTK.Graphics.ES20
 
         #endregion
 
-        #region public static void GetProgramInfoLog(Int32 program, out string info)
+        #region public static void GetProgramInfoLog(uint program, out string info)
 
-        public static void GetProgramInfoLog(Int32 program, out string info)
+        public static void GetProgramInfoLog(uint program, out string info)
         {
             unsafe
             {
@@ -262,7 +262,7 @@ namespace OpenTK.Graphics.ES20
         #region public static void VertexAttrib2(Int32 index, ref Vector2 v)
 
         [CLSCompliant(false)]
-        public static void VertexAttrib2(Int32 index, ref Vector2 v)
+        public static void VertexAttrib2(uint index, ref Vector2 v)
         {
             GL.VertexAttrib2(index, v.X, v.Y);
         }
@@ -272,7 +272,7 @@ namespace OpenTK.Graphics.ES20
         #region public static void VertexAttrib3(Int32 index, ref Vector3 v)
 
         [CLSCompliant(false)]
-        public static void VertexAttrib3(Int32 index, ref Vector3 v)
+        public static void VertexAttrib3(uint index, ref Vector3 v)
         {
             GL.VertexAttrib3(index, v.X, v.Y, v.Z);
         }
@@ -282,7 +282,7 @@ namespace OpenTK.Graphics.ES20
         #region public static void VertexAttrib4(Int32 index, ref Vector4 v)
 
         [CLSCompliant(false)]
-        public static void VertexAttrib4(Int32 index, ref Vector4 v)
+        public static void VertexAttrib4(uint index, ref Vector4 v)
         {
             GL.VertexAttrib4(index, v.X, v.Y, v.Z, v.W);
         }
@@ -291,7 +291,7 @@ namespace OpenTK.Graphics.ES20
 
         #region public static void VertexAttrib2(Int32 index, Vector2 v)
 
-        public static void VertexAttrib2(Int32 index, Vector2 v)
+        public static void VertexAttrib2(uint index, Vector2 v)
         {
             GL.VertexAttrib2(index, v.X, v.Y);
         }
@@ -300,7 +300,7 @@ namespace OpenTK.Graphics.ES20
 
         #region public static void VertexAttrib3(Int32 index, Vector3 v)
 
-        public static void VertexAttrib3(Int32 index, Vector3 v)
+        public static void VertexAttrib3(uint index, Vector3 v)
         {
             GL.VertexAttrib3(index, v.X, v.Y, v.Z);
         }
@@ -309,7 +309,7 @@ namespace OpenTK.Graphics.ES20
 
         #region public static void VertexAttrib4(Int32 index, Vector4 v)
 
-        public static void VertexAttrib4(Int32 index, Vector4 v)
+        public static void VertexAttrib4(uint index, Vector4 v)
         {
             GL.VertexAttrib4(index, v.X, v.Y, v.Z, v.W);
         }
@@ -317,11 +317,6 @@ namespace OpenTK.Graphics.ES20
         #endregion
 
         #region VertexAttribPointer
-
-        public static void VertexAttribPointer(int index, int size, VertexAttribPointerType type, bool normalized, int stride, int offset)
-        {
-            VertexAttribPointer(index, size, type, normalized, stride, (IntPtr)offset);
-        }
 
         [CLSCompliant(false)]
         public static void VertexAttribPointer(uint index, int size, VertexAttribPointerType type, bool normalized, int stride, int offset)
@@ -342,9 +337,9 @@ namespace OpenTK.Graphics.ES20
 
         #region public static int GenTexture()
 
-        public static int GenTexture()
+        public static uint GenTexture()
         {
-            int id;
+            uint id;
             GenTextures(1, out id);
             return id;
         }
@@ -353,7 +348,7 @@ namespace OpenTK.Graphics.ES20
 
         #region public static void DeleteTexture(int id)
 
-        public static void DeleteTexture(int id)
+        public static void DeleteTexture(uint id)
         {
             DeleteTextures(1, ref id);
         }
